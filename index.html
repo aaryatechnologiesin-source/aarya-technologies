@@ -1,138 +1,295 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aarya Technologies | Digital Excellence</title>
-    <!-- Luxury Typography -->
+    <title>Aarya Technologies | Luxury Enterprise Solutions</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Aarya Technologies provides world-class website development, AI solutions, and cloud infrastructure for visionary enterprises.">
+    <meta name="keywords" content="Enterprise Software, AI Solutions, Cloud Infrastructure, Web Development, Mobile Apps">
+    
+    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Phosphor Icons (Thin, elegant weights) -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link rel="stylesheet" href="style.css">
+    
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <!-- Custom Luxury Cursor -->
+    <!-- Scroll Progress & Cursor -->
+    <div id="scroll-progress"></div>
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
-    <!-- Elegant Loading Screen -->
-    <div class="loader">
-        <div class="loader-text">AARYA</div>
+    <!-- Global Loader -->
+    <div id="global-loader">
+        <div class="loader-brand">AARYA.</div>
     </div>
 
-    <!-- Solid/Transparent Header -->
-    <header class="header">
-        <div class="container header-container">
-            <div class="logo">
-                <span class="logo-mark">A</span>
-                <span class="logo-text">Aarya Technologies</span>
-            </div>
+    <!-- Sticky Header -->
+    <header class="header" id="main-header">
+        <div class="container nav-wrapper">
+            <a href="index.html" class="logo-container">
+                <div class="logo-icon">A</div>
+                <div class="logo-text">Aarya Technologies</div>
+            </a>
             
-            <nav class="nav-links">
-                <a href="#services">Services</a>
-                <a href="#solutions">Solutions</a>
-                <a href="#portfolio">Portfolio</a>
-                <a href="#about">About</a>
-                <a href="#contact">Contact</a>
-            </nav>
+            <ul class="main-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="solutions.html">Solutions</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+            </ul>
 
             <div class="header-actions">
-                <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                <button class="icon-btn" id="theme-toggle" aria-label="Toggle Theme">
                     <i class="ph ph-moon"></i>
                 </button>
-                <div class="lang-selector">EN</div>
-                <a href="#quote" class="btn-primary">Get Quote</a>
+                <a href="login.html" class="icon-btn" aria-label="Login">
+                    <i class="ph ph-user"></i>
+                </a>
+                <a href="contact.html" class="btn btn-primary">Get Quote</a>
             </div>
         </div>
     </header>
 
-    <main data-scroll-container>
-        <!-- Ultra-Clean Hero Section -->
+    <main>
+        <!-- Section 1: Hero -->
         <section class="hero">
             <div class="container hero-grid">
-                <div class="hero-content">
-                    <div class="luxury-badge">EST. 2026 &mdash; ENTERPRISE SOLUTIONS</div>
-                    <h1 class="hero-title">Building<br>Digital<br>Excellence.</h1>
-                    <p class="hero-subtitle">Engineering world-class technological infrastructure for visionary enterprises. Minimal, scalable, and timeless.</p>
-                    <div class="hero-cta-group">
-                        <a href="#consultation" class="btn-primary large">Schedule Consultation</a>
-                        <a href="#portfolio" class="btn-secondary large">Discover Our Work</a>
+                <div class="hero-content fade-up">
+                    <div class="luxury-badge">Engineering Excellence</div>
+                    <h1>Digital Infrastructure for Visionary Enterprises.</h1>
+                    <p>We craft ultra-premium, highly scalable software solutions, AI integrations, and digital platforms that define industry leaders.</p>
+                    <div class="hero-buttons">
+                        <a href="services.html" class="btn btn-primary">Explore Services <i class="ph ph-arrow-right"></i></a>
+                        <a href="portfolio.html" class="btn btn-secondary">View Portfolio</a>
+                    </div>
+                    <div class="client-rating">
+                        <div class="stars">
+                            <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                        </div>
+                        <div class="rating-text">4.9/5 from 200+ Enterprise Reviews</div>
                     </div>
                 </div>
                 
-                <div class="hero-visual">
-                    <!-- Placeholder for high-end MacBook Mockup -->
-                    <div class="mockup-container">
-                        <div class="mockup-screen">
-                            <div class="mockup-ui"></div>
+                <div class="hero-visual fade-up">
+                    <div class="macbook-mockup">
+                        <div class="mac-header">
+                            <div class="mac-dot"></div><div class="mac-dot"></div><div class="mac-dot"></div>
                         </div>
+                        <div class="mac-screen"></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Trusted By (Grayscale Logos) -->
-        <section class="companies section-padding bg-ivory">
+        <!-- Section 2: Trusted Companies -->
+        <section class="section-padding bg-secondary">
             <div class="container">
-                <p class="section-label text-center">TRUSTED BY GLOBAL ENTERPRISES</p>
-                <div class="logo-grid">
-                    <i class="ph ph-stripe-logo brand-logo"></i>
-                    <i class="ph ph-amazon-logo brand-logo"></i>
-                    <i class="ph ph-google-logo brand-logo"></i>
-                    <i class="ph ph-microsoft-logo brand-logo"></i>
+                <p class="rating-text" style="text-align: center; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px;">Trusted by Global Innovators</p>
+                <div class="trusted-logos fade-up">
+                    <i class="ph ph-microsoft-logo"></i>
+                    <i class="ph ph-amazon-logo"></i>
+                    <i class="ph ph-stripe-logo"></i>
+                    <i class="ph ph-github-logo"></i>
+                    <i class="ph ph-google-logo"></i>
                 </div>
             </div>
         </section>
 
-        <!-- Luxury Services Grid -->
-        <section id="services" class="services section-padding">
+        <!-- Section 3: Premium Services (8 Requested) -->
+        <section class="section-padding">
             <div class="container">
-                <div class="section-header">
-                    <div class="luxury-badge">OUR EXPERTISE</div>
-                    <h2 class="section-title">Corporate<br>Capabilities.</h2>
+                <div class="section-header fade-up">
+                    <div class="luxury-badge">Our Expertise</div>
+                    <h2>Uncompromising Digital Capabilities.</h2>
+                    <p>End-to-end technological solutions designed with precision, security, and immaculate architecture.</p>
                 </div>
                 
                 <div class="services-grid">
-                    <!-- Service 1 -->
                     <div class="service-card">
                         <i class="ph ph-desktop service-icon"></i>
-                        <h3>Website Development</h3>
-                        <p>Bespoke digital platforms engineered for performance, security, and immaculate design.</p>
-                        <div class="card-line"></div>
+                        <h3>Web Development</h3>
+                        <p>High-performance, SEO-optimized web platforms built with modern JS frameworks.</p>
+                        <a href="services.html" class="service-link">Read More <i class="ph ph-arrow-right"></i></a>
+                        <div class="card-border-bottom"></div>
                     </div>
-                    <!-- Service 2 -->
+                    
                     <div class="service-card">
                         <i class="ph ph-device-mobile service-icon"></i>
-                        <h3>Mobile Applications</h3>
-                        <p>Native iOS and Android experiences built with uncompromising attention to detail.</p>
-                        <div class="card-line"></div>
+                        <h3>Mobile Apps</h3>
+                        <p>Native iOS and Android experiences engineered for massive scale.</p>
+                        <a href="services.html" class="service-link">Read More <i class="ph ph-arrow-right"></i></a>
+                        <div class="card-border-bottom"></div>
                     </div>
-                    <!-- Service 3 -->
+                    
                     <div class="service-card">
                         <i class="ph ph-cpu service-icon"></i>
-                        <h3>AI Automation</h3>
-                        <p>Sophisticated machine learning models to streamline complex enterprise workflows.</p>
-                        <div class="card-line"></div>
+                        <h3>AI Solutions</h3>
+                        <p>Custom machine learning models and intelligent business automation.</p>
+                        <a href="services.html" class="service-link">Read More <i class="ph ph-arrow-right"></i></a>
+                        <div class="card-border-bottom"></div>
                     </div>
-                    <!-- Service 4 -->
+                    
                     <div class="service-card">
                         <i class="ph ph-cloud service-icon"></i>
-                        <h3>Cloud Infrastructure</h3>
-                        <p>Secure, scalable, and highly available architecture deployments.</p>
-                        <div class="card-line"></div>
+                        <h3>Cloud Architecture</h3>
+                        <p>Secure, decentralized, and highly available infrastructure management.</p>
+                        <a href="services.html" class="service-link">Read More <i class="ph ph-arrow-right"></i></a>
+                        <div class="card-border-bottom"></div>
                     </div>
+
+                    <div class="service-card">
+                        <i class="ph ph-shopping-cart service-icon"></i>
+                        <h3>E-Commerce</h3>
+                        <p>High-conversion luxury retail platforms with seamless integrations.</p>
+                        <a href="services.html" class="service-link">Read More <i class="ph ph-arrow-right"></i></a>
+                        <div class="card-border-bottom"></div>
+                    </div>
+
+                    <div class="service-card">
+                        <i class="ph ph-pen-nib service-icon"></i>
+                        <h3>UI/UX Design</h3>
+                        <p>Bespoke interfaces blending timeless aesthetics with intuitive psychology.</p>
+                        <a href="services.html" class="service-link">Read More <i class="ph ph-arrow-right"></i></a>
+                        <div class="card-border-bottom"></div>
+                    </div>
+
+                    <div class="service-card">
+                        <i class="ph ph-code service-icon"></i>
+                        <h3>Custom Software</h3>
+                        <p>Proprietary internal tools tailored strictly to your operational workflows.</p>
+                        <a href="services.html" class="service-link">Read More <i class="ph ph-arrow-right"></i></a>
+                        <div class="card-border-bottom"></div>
+                    </div>
+
+                    <div class="service-card">
+                        <i class="ph ph-trend-up service-icon"></i>
+                        <h3>Enterprise SEO</h3>
+                        <p>Data-driven search visibility strategies for global market dominance.</p>
+                        <a href="services.html" class="service-link">Read More <i class="ph ph-arrow-right"></i></a>
+                        <div class="card-border-bottom"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Cost Calculator -->
+        <section class="section-padding bg-secondary">
+            <div class="container">
+                <div class="section-header fade-up">
+                    <div class="luxury-badge">Instant Estimate</div>
+                    <h2>Project Investment Calculator.</h2>
+                    <p>Transparent forecasting for enterprise-grade digital transformations.</p>
+                </div>
+                
+                <div class="calculator-box fade-up">
+                    <form id="cost-calculator">
+                        <div class="calc-grid">
+                            <div class="form-group">
+                                <label>Service Required</label>
+                                <select id="service-type">
+                                    <option value="0">Select Service</option>
+                                    <option value="5000">Corporate Website (Starts $5k)</option>
+                                    <option value="15000">E-Commerce Platform (Starts $15k)</option>
+                                    <option value="25000">Native Mobile App (Starts $25k)</option>
+                                    <option value="40000">AI Automation Tool (Starts $40k)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Project Scale / Complexity</label>
+                                <select id="project-scale">
+                                    <option value="0">Select Scale</option>
+                                    <option value="2000">Standard (Essential Features)</option>
+                                    <option value="8000">Advanced (Custom Integrations)</option>
+                                    <option value="20000">Enterprise (High Security/Scale)</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="grid-column: 1 / -1;">
+                                <label>Delivery Timeline</label>
+                                <select id="timeline">
+                                    <option value="1">Standard (3-4 Months)</option>
+                                    <option value="1.5">Expedited (1-2 Months) - 50% Rush Fee</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="cost-result">
+                            <p>Estimated Initial Investment</p>
+                            <h3 id="estimated-cost">$0</h3>
+                            <a href="contact.html" class="btn btn-primary" style="margin-top: 24px;">Request Formal Proposal</a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- GSAP & Lenis Smooth Scroll -->
+    <!-- Large Premium Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo-container" style="margin-bottom: 24px;">
+                        <div class="logo-icon">A</div>
+                        <div class="logo-text">Aarya Technologies</div>
+                    </a>
+                    <p style="margin-bottom: 24px;">Building timeless digital infrastructure for visionary enterprises worldwide. Minimal, scalable, and secure.</p>
+                    <div style="display: flex; gap: 16px;">
+                        <a href="#" class="icon-btn"><i class="ph ph-linkedin-logo"></i></a>
+                        <a href="#" class="icon-btn"><i class="ph ph-twitter-logo"></i></a>
+                        <a href="#" class="icon-btn"><i class="ph ph-github-logo"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="portfolio.html">Our Work</a></li>
+                        <li><a href="career.html">Careers</a></li>
+                        <li><a href="blog.html">Journal</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="cookies.html">Cookie Policy</a></li>
+                        <li><a href="refund.html">Refund Policy</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Headquarters</h4>
+                    <ul>
+                        <li style="color: var(--text-muted);">Level 42, Enterprise Tower,<br>Financial District, NY 10004</li>
+                        <li><a href="mailto:contact@aaryatech.com">contact@aaryatech.com</a></li>
+                        <li><a href="tel:+18001234567">+1 (800) 123-4567</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Aarya Technologies. All Rights Reserved.</p>
+                <p>Designed for Excellence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="script.js"></script>
+    <!-- Main App Logic (Firebase & UI) -->
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>
