@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aarya Technologies | Building the Future</title>
+    <!-- Premium Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons (Premium look) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 1. Premium Loading Screen -->
+    <div class="loader-wrapper">
+        <div class="loader-content">
+            <h1 class="loader-logo">Aarya <span class="text-gradient">Tech</span></h1>
+            <div class="progress-bar-container">
+                <div class="progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Sticky Glass Navbar -->
+    <nav class="glass-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="ph ph-hexagon"></i>
+                <span>Aarya Technologies</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#solutions">Solutions</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="#login" class="nav-link-secondary">Login</a>
+                <a href="#quote" class="btn-primary">Get Free Quote</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 3. Hero Section (100vh) -->
+    <section id="home" class="hero">
+        <!-- Animated glowing background elements -->
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="badge">Next-Generation Solutions</div>
+                <h1 class="hero-title">Building the <span class="text-gradient">Future</span><br>with Technology.</h1>
+                <p class="hero-subtitle">We craft ultra-premium digital experiences, providing AI solutions, cloud infrastructure, and enterprise-grade software to scale your business.</p>
+                <div class="hero-cta">
+                    <a href="#start" class="btn-primary large">Get Started <i class="ph ph-arrow-right"></i></a>
+                    <a href="#portfolio" class="btn-secondary large">View Portfolio</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <!-- Abstract 3D Representation / Glass Card -->
+                <div class="glass-card 3d-element main-card">
+                    <i class="ph ph-cpu text-gradient" style="font-size: 3rem;"></i>
+                    <h3>AI & Cloud Engine</h3>
+                    <p>System operational</p>
+                </div>
+                <div class="glass-card 3d-element floating-card card-top">Security Active</div>
+                <div class="glass-card 3d-element floating-card card-bottom">Web Metrics 99.9%</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Services Section -->
+    <section id="services" class="services">
+        <div class="section-header">
+            <h2 class="section-title">Premium <span class="text-gradient">Services</span></h2>
+            <p>End-to-end technology solutions tailored for industry leaders.</p>
+        </div>
+        
+        <div class="services-grid">
+            <!-- Service Card 1 -->
+            <div class="service-card glass-card hover-glow">
+                <div class="icon-wrapper"><i class="ph ph-code"></i></div>
+                <h3>Website Development</h3>
+                <p>Ultra-fast, fully responsive, and scalable web platforms built with modern frameworks.</p>
+                <a href="#" class="learn-more">Learn More <i class="ph ph-caret-right"></i></a>
+            </div>
+            <!-- Service Card 2 -->
+            <div class="service-card glass-card hover-glow">
+                <div class="icon-wrapper"><i class="ph ph-device-mobile"></i></div>
+                <h3>Mobile Apps</h3>
+                <p>Native and cross-platform mobile experiences designed for maximum engagement.</p>
+                <a href="#" class="learn-more">Learn More <i class="ph ph-caret-right"></i></a>
+            </div>
+            <!-- Service Card 3 -->
+            <div class="service-card glass-card hover-glow">
+                <div class="icon-wrapper"><i class="ph ph-brain"></i></div>
+                <h3>AI Solutions</h3>
+                <p>Intelligent automation, machine learning models, and custom AI integrations.</p>
+                <a href="#" class="learn-more">Learn More <i class="ph ph-caret-right"></i></a>
+            </div>
+             <!-- Service Card 4 -->
+             <div class="service-card glass-card hover-glow">
+                <div class="icon-wrapper"><i class="ph ph-cloud"></i></div>
+                <h3>Cloud Services</h3>
+                <p>Secure, decentralized, and high-performance cloud infrastructure management.</p>
+                <a href="#" class="learn-more">Learn More <i class="ph ph-caret-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- GSAP & Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
