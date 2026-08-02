@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Authentication | Aarya Technologies</title>
-    <meta name="description" content="Secure enterprise authentication portal for Aarya Technologies.">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,41 +15,41 @@
 
     <style>
         /* =================================================================
-           CSS VARIABLES & DESIGN SYSTEM (Apple / Stripe / Linear Luxury)
+           DESIGN SYSTEM & CSS VARIABLES (Apple / Stripe / Linear Luxury)
            ================================================================= */
         :root {
             --bg-primary: #FFFFFF;
-            --bg-secondary: #FAF9F6;
-            --bg-tertiary: #F3F1EC;
-            --text-primary: #111111;
-            --text-secondary: #555555;
-            --text-muted: #888888;
+            --bg-secondary: #FAFAFC;
+            --bg-tertiary: #F1F1F5;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --text-muted: #94A3B8;
             --accent: #D4AF37; /* Luxury Gold */
             --accent-hover: #C5A028;
-            --border-color: rgba(0, 0, 0, 0.08);
-            --glass-bg: rgba(255, 255, 255, 0.82);
-            --shadow: 0 30px 60px rgba(0, 0, 0, 0.05);
-            --card-bg: #FFFFFF;
-            --error-color: #E53935;
-            --success-color: #2E7D32;
+            --accent-gradient: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%);
+            --border-color: rgba(15, 23, 42, 0.08);
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05), 0 0 1px 1px rgba(0, 0, 0, 0.04);
+            --error-color: #EF4444;
+            --success-color: #10B981;
             --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         [data-theme="dark"] {
-            --bg-primary: #0A0A0A;
-            --bg-secondary: #141414;
-            --bg-tertiary: #1F1F1F;
-            --text-primary: #FFFFFF;
-            --text-secondary: #AAAAAA;
-            --text-muted: #777777;
+            --bg-primary: #090A0F;
+            --bg-secondary: #10121B;
+            --bg-tertiary: #181B26;
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
             --accent: #D4AF37;
             --accent-hover: #E6C158;
+            --accent-gradient: linear-gradient(135deg, #F3E5AB 0%, #D4AF37 100%);
             --border-color: rgba(255, 255, 255, 0.08);
-            --glass-bg: rgba(10, 10, 10, 0.82);
-            --shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
-            --card-bg: #121212;
-            --error-color: #EF5350;
-            --success-color: #66BB6A;
+            --card-bg: rgba(16, 18, 27, 0.75);
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            --error-color: #F87171;
+            --success-color: #34D399;
         }
 
         /* =================================================================
@@ -92,7 +91,7 @@
         }
 
         /* =================================================================
-           SPLIT SCREEN LAYOUT
+           LAYOUT STRUCTURE (SPLIT SCREEN)
            ================================================================= */
         .auth-wrapper {
             display: grid;
@@ -102,7 +101,7 @@
             overflow: hidden;
         }
 
-        /* LEFT SIDE: Branding / Illustration */
+        /* LEFT SIDE: Brand & Showcase */
         .auth-brand-side {
             background: var(--bg-secondary);
             border-right: 1px solid var(--border-color);
@@ -114,16 +113,37 @@
             overflow: hidden;
         }
 
-        .auth-brand-side::before {
-            content: '';
+        /* Floating Luxury Shapes */
+        .shape {
             position: absolute;
-            top: -20%;
-            left: -20%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
             border-radius: 50%;
+            filter: blur(80px);
             z-index: 1;
+            opacity: 0.15;
+            pointer-events: none;
+            animation: floatShape 10s ease-in-out infinite alternate;
+        }
+
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent);
+            top: -100px;
+            left: -100px;
+        }
+
+        .shape-2 {
+            width: 500px;
+            height: 500px;
+            background: #3B82F6;
+            bottom: -150px;
+            right: -150px;
+            animation-delay: -5s;
+        }
+
+        @keyframes floatShape {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(30px) scale(1.08); }
         }
 
         .brand-top {
@@ -134,24 +154,25 @@
         .logo-wrapper {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.25rem;
         }
 
         .logo-placeholder {
-            width: 44px;
-            height: 44px;
+            width: 52px;
+            height: 52px;
             background: var(--text-primary);
             color: var(--bg-primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 12px;
+            border-radius: 16px;
             font-weight: 800;
-            font-size: 1.15rem;
+            font-size: 1.3rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
         .logo-text {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 800;
             letter-spacing: -0.03em;
             background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent) 100%);
@@ -162,11 +183,12 @@
         .brand-center {
             position: relative;
             z-index: 2;
-            max-width: 500px;
+            max-width: 540px;
+            margin: auto 0;
         }
 
         .brand-center h1 {
-            font-size: 3.5rem;
+            font-size: 3.8rem;
             line-height: 1.1;
             margin-bottom: 1.5rem;
             font-weight: 800;
@@ -179,7 +201,7 @@
         }
 
         .brand-center p {
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             color: var(--text-secondary);
             line-height: 1.7;
         }
@@ -194,7 +216,7 @@
             font-size: 0.9rem;
         }
 
-        /* RIGHT SIDE: Authentication Card Container */
+        /* RIGHT SIDE: Authentication Form Container */
         .auth-form-side {
             background: var(--bg-primary);
             display: flex;
@@ -219,33 +241,35 @@
             color: var(--text-primary);
             font-size: 1.1rem;
             cursor: pointer;
-            width: 42px;
-            height: 42px;
+            width: 44px;
+            height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
             border: 1px solid var(--border-color);
             transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         }
 
         .icon-btn:hover {
             border-color: var(--accent);
             color: var(--accent);
+            transform: translateY(-2px);
         }
 
-        /* Glassmorphism Card */
+        /* Glassmorphic Authentication Card */
         .auth-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 24px;
+            border-radius: 28px;
             padding: 3rem;
             width: 100%;
             max-width: 480px;
             box-shadow: var(--shadow);
             position: relative;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
         }
 
         .form-header {
@@ -254,8 +278,9 @@
         }
 
         .form-header h2 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             margin-bottom: 0.5rem;
+            letter-spacing: -0.04em;
         }
 
         .form-header p {
@@ -263,23 +288,23 @@
             font-size: 0.95rem;
         }
 
-        /* Forms Container */
+        /* Form Switcher Panels */
         .auth-form-panel {
             display: none;
             flex-direction: column;
             gap: 1.25rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
         .auth-form-panel.active {
             display: flex;
-            animation: fadeIn 0.4s ease forwards;
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        /* Input Controls */
         .input-group {
             display: flex;
             flex-direction: column;
@@ -288,7 +313,7 @@
         }
 
         .input-group label {
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-weight: 600;
             color: var(--text-primary);
         }
@@ -303,8 +328,8 @@
             width: 100%;
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 0.9rem 1rem 0.9rem 2.75rem;
+            border-radius: 14px;
+            padding: 0.95rem 1rem 0.95rem 3rem;
             color: var(--text-primary);
             font-size: 0.95rem;
             transition: var(--transition);
@@ -313,23 +338,29 @@
         .input-field-wrapper input:focus {
             border-color: var(--accent);
             background: var(--card-bg);
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.12);
         }
 
         .input-field-wrapper i.field-icon {
             position: absolute;
-            left: 1rem;
+            left: 1.1rem;
             color: var(--text-muted);
             font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .input-field-wrapper input:focus ~ i.field-icon {
+            color: var(--accent);
         }
 
         .toggle-password {
             position: absolute;
-            right: 1rem;
+            right: 1.1rem;
             background: transparent;
             color: var(--text-muted);
             cursor: pointer;
             font-size: 1rem;
+            transition: var(--transition);
         }
 
         .toggle-password:hover {
@@ -337,12 +368,16 @@
         }
 
         /* Password Strength Meter */
-        .password-strength {
-            display: flex;
-            gap: 4px;
+        .password-strength-container {
             margin-top: 0.25rem;
+        }
+
+        .password-strength-bars {
+            display: flex;
+            gap: 6px;
             height: 4px;
             width: 100%;
+            margin-bottom: 0.35rem;
         }
 
         .strength-bar {
@@ -355,29 +390,31 @@
         .strength-text {
             font-size: 0.75rem;
             color: var(--text-muted);
-            margin-top: 0.2rem;
         }
 
-        /* Checkbox Styling */
+        /* Checkbox & Links */
         .checkbox-group {
             display: flex;
             align-items: center;
             justify-content: space-between;
             font-size: 0.9rem;
+            margin: 0.2rem 0;
         }
 
         .custom-checkbox {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.65rem;
             cursor: pointer;
+            user-select: none;
         }
 
         .custom-checkbox input {
             accent-color: var(--accent);
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             cursor: pointer;
+            border-radius: 4px;
         }
 
         .forgot-link {
@@ -390,36 +427,39 @@
             text-decoration: underline;
         }
 
-        /* Buttons */
+        /* Buttons & Ripple Effect */
         .btn-primary {
             background: var(--text-primary);
             color: var(--bg-primary);
-            padding: 0.95rem;
-            border-radius: 12px;
+            padding: 1rem;
+            border-radius: 14px;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.98rem;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.75rem;
             cursor: pointer;
             transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.06);
             margin-top: 0.5rem;
         }
 
         .btn-primary:hover {
             background: var(--accent);
-            color: #111111;
+            color: #090A0F;
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.25);
+            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.25);
         }
 
         .btn-google {
             background: var(--bg-secondary);
             color: var(--text-primary);
             border: 1px solid var(--border-color);
-            padding: 0.95rem;
-            border-radius: 12px;
+            padding: 1rem;
+            border-radius: 14px;
             font-weight: 600;
             font-size: 0.95rem;
             display: flex;
@@ -434,6 +474,7 @@
             border-color: var(--text-primary);
             background: var(--card-bg);
             transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.04);
         }
 
         .divider {
@@ -451,12 +492,12 @@
             border-bottom: 1px solid var(--border-color);
         }
 
-        .divider::before { margin-right: 0.75rem; }
-        .divider::after { margin-left: 0.75rem; }
+        .divider::before { margin-right: 0.85rem; }
+        .divider::after { margin-left: 0.85rem; }
 
         .form-footer-text {
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.92rem;
             color: var(--text-secondary);
             margin-top: 1rem;
         }
@@ -470,7 +511,22 @@
             text-decoration: underline;
         }
 
-        /* Toast Notifications */
+        /* Loading Spinner */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2.5px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast Notifications Container */
         #toast-container {
             position: fixed;
             bottom: 2rem;
@@ -484,80 +540,77 @@
         .toast {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
+            padding: 1.1rem 1.6rem;
+            border-radius: 16px;
             box-shadow: var(--shadow);
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.85rem;
             font-size: 0.95rem;
             color: var(--text-primary);
-            animation: slideIn 0.3s ease forwards;
-            max-width: 350px;
+            animation: slideInToast 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            max-width: 380px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
 
         .toast.success { border-left: 4px solid var(--success-color); }
         .toast.error { border-left: 4px solid var(--error-color); }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(50px); }
+        @keyframes slideInToast {
+            from { opacity: 0; transform: translateX(60px); }
             to { opacity: 1; transform: translateX(0); }
         }
 
-        /* Loading Spinner Overlay inside button */
-        .spinner {
-            width: 18px;
-            height: 18px;
-            border: 2px solid transparent;
-            border-top-color: currentColor;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            display: none;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Responsive */
+        /* Responsive Query Styles */
         @media (max-width: 1024px) {
             .auth-wrapper { grid-template-columns: 1fr; }
             .auth-brand-side { display: none; }
             .auth-form-side { padding: 2rem; }
         }
+
+        @media (max-width: 480px) {
+            .auth-card { padding: 2rem 1.5rem; border: none; background: transparent; box-shadow: none; }
+            .top-controls { top: 1.5rem; right: 1.5rem; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Top Controls (Theme Toggle) -->
+    <!-- Top Controls: Theme Toggle -->
     <div class="top-controls">
         <button class="icon-btn" id="theme-toggle" aria-label="Toggle Dark/Light Mode">
             <i class="fa-solid fa-moon"></i>
         </button>
     </div>
 
-    <!-- Main Split Screen Layout -->
+    <!-- Main Split-Screen Authentication Container -->
     <div class="auth-wrapper">
         
-        <!-- LEFT SIDE: Branding -->
+        <!-- LEFT SIDE: Showcase & Branding -->
         <div class="auth-brand-side">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            
             <div class="brand-top">
-                <a href="index.html" class="logo-wrapper">
+                <a href="#" class="logo-wrapper">
                     <div class="logo-placeholder">AT</div>
                     <div class="logo-text">Aarya Technologies</div>
                 </a>
             </div>
+
             <div class="brand-center">
                 <h1>Architecting <span>Digital</span> Excellence & Scale</h1>
-                <p>Access your secure enterprise dashboard, manage infrastructure architectures, and coordinate high-performance digital solutions.</p>
+                <p>Access your secure enterprise portal to manage corporate infrastructure architectures, high-performance web solutions, and digital identity vaults.</p>
             </div>
+
             <div class="brand-footer">
                 <p>&copy; 2026 Aarya Technologies. All rights reserved.</p>
                 <p>Enterprise Security Vault</p>
             </div>
         </div>
 
-        <!-- RIGHT SIDE: Authentication Card -->
+        <!-- RIGHT SIDE: Authentication Card & Interactive Forms -->
         <div class="auth-form-side">
             <div class="auth-card">
                 
@@ -581,7 +634,7 @@
                         <div class="input-field-wrapper">
                             <i class="fa-solid fa-lock field-icon"></i>
                             <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
-                            <button type="button" class="toggle-password" data-target="login-password" aria-label="Toggle Password">
+                            <button type="button" class="toggle-password" data-target="login-password" aria-label="Toggle Password Visibility">
                                 <i class="fa-solid fa-eye"></i>
                             </button>
                         </div>
@@ -614,7 +667,7 @@
                 <form id="signup-form" class="auth-form-panel">
                     <div class="form-header">
                         <h2>Create Account</h2>
-                        <p>Join Aarya Technologies corporate ecosystem.</p>
+                        <p>Join the Aarya Technologies corporate ecosystem.</p>
                     </div>
 
                     <div class="input-group">
@@ -638,17 +691,19 @@
                         <div class="input-field-wrapper">
                             <i class="fa-solid fa-lock field-icon"></i>
                             <input type="password" id="signup-password" placeholder="••••••••" required autocomplete="new-password">
-                            <button type="button" class="toggle-password" data-target="signup-password" aria-label="Toggle Password">
+                            <button type="button" class="toggle-password" data-target="signup-password" aria-label="Toggle Password Visibility">
                                 <i class="fa-solid fa-eye"></i>
                             </button>
                         </div>
-                        <div class="password-strength">
-                            <div class="strength-bar" id="sb-1"></div>
-                            <div class="strength-bar" id="sb-2"></div>
-                            <div class="strength-bar" id="sb-3"></div>
-                            <div class="strength-bar" id="sb-4"></div>
+                        <div class="password-strength-container">
+                            <div class="password-strength-bars">
+                                <div class="strength-bar" id="sb-1"></div>
+                                <div class="strength-bar" id="sb-2"></div>
+                                <div class="strength-bar" id="sb-3"></div>
+                                <div class="strength-bar" id="sb-4"></div>
+                            </div>
+                            <div class="strength-text" id="strength-text">Min 8 chars, 1 uppercase, 1 lowercase, 1 number & 1 special char.</div>
                         </div>
-                        <div class="strength-text" id="strength-text">Min 8 chars, uppercase, lowercase, number & special char.</div>
                     </div>
 
                     <div class="input-group">
@@ -685,7 +740,7 @@
                 <form id="forgot-form" class="auth-form-panel">
                     <div class="form-header">
                         <h2>Reset Password</h2>
-                        <p>Enter your email to receive a secure password reset link.</p>
+                        <p>Enter your email to receive a secure recovery link.</p>
                     </div>
 
                     <div class="input-group">
@@ -697,7 +752,7 @@
                     </div>
 
                     <button type="submit" class="btn-primary" id="forgot-submit-btn">
-                        <span>Send Reset Link</span>
+                        <span>Send Recovery Link</span>
                         <div class="spinner"></div>
                     </button>
 
@@ -713,7 +768,7 @@
     <!-- Toast Notifications Container -->
     <div id="toast-container"></div>
 
-    <!-- ================= FIREBASE & APP LOGIC ================= -->
+    <!-- ================= FIREBASE & APPLICATION LOGIC ================= -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { 
@@ -732,8 +787,10 @@
             doc, 
             getDoc, 
             setDoc, 
+            updateDoc,
             serverTimestamp 
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
 
         // Firebase Configuration
         const firebaseConfig = {
@@ -746,14 +803,15 @@
             measurementId: "G-ZWXXVNZ5TF"
         };
 
-        // Initialize Firebase App, Auth, Firestore
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        try { getAnalytics(app); } catch (e) { /* Analytics optional */ }
         const googleProvider = new GoogleAuthProvider();
 
         /* =================================================================
-           THEME TOGGLE & LOCALSTORAGE
+           THEME TOGGLE MANAGEMENT
            ================================================================= */
         const themeToggleBtn = document.getElementById('theme-toggle');
         const htmlElement = document.documentElement;
@@ -783,17 +841,32 @@
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
             const icon = type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation';
-            toast.innerHTML = `<i class="fa-solid ${icon}" style="color: ${type === 'success' ? 'var(--success-color)' : 'var(--error-color)'}; font-size: 1.1rem;"></i> <span>${message}</span>`;
+            toast.innerHTML = `<i class="fa-solid ${icon}" style="color: ${type === 'success' ? 'var(--success-color)' : 'var(--error-color)'}; font-size: 1.15rem;"></i> <span>${message}</span>`;
             container.appendChild(toast);
 
             setTimeout(() => {
                 toast.style.opacity = '0';
-                setTimeout(() => toast.remove(), 300);
-            }, 4000);
+                toast.style.transform = 'translateX(60px)';
+                setTimeout(() => toast.remove(), 400);
+            }, 4500);
+        }
+
+        // Friendly Error Mapper
+        function handleAuthError(error) {
+            let msg = error.message;
+            const code = error.code || '';
+            if (code.includes('email-already-in-use')) msg = 'This email address is already registered.';
+            else if (code.includes('user-not-found') || code.includes('invalid-credential')) msg = 'Invalid email or password.';
+            else if (code.includes('wrong-password')) msg = 'Incorrect password entered.';
+            else if (code.includes('invalid-email')) msg = 'Please enter a valid email address.';
+            else if (code.includes('weak-password')) msg = 'Password is too weak. Please use a stronger password.';
+            else if (code.includes('network-request-failed')) msg = 'Network error. Please check your connection.';
+            else if (code.includes('permission-denied') || code.includes('insufficient-permissions')) msg = 'Database permission denied.';
+            showToast(msg.replace('Firebase: ', ''), 'error');
         }
 
         /* =================================================================
-           FORM SWITCHING & PASSWORD TOGGLE
+           FORM NAVIGATION & PASSWORD VISIBILITY TOGGLE
            ================================================================= */
         const loginForm = document.getElementById('login-form');
         const signupForm = document.getElementById('signup-form');
@@ -823,7 +896,7 @@
             loginForm.classList.add('active');
         });
 
-        // Show/Hide Password
+        // Show/Hide Password Toggle
         document.querySelectorAll('.toggle-password').forEach(btn => {
             btn.addEventListener('click', () => {
                 const targetId = btn.getAttribute('data-target');
@@ -840,7 +913,7 @@
         });
 
         /* =================================================================
-           PASSWORD STRENGTH VALIDATION
+           LIVE PASSWORD STRENGTH VALIDATION
            ================================================================= */
         const signupPassword = document.getElementById('signup-password');
         signupPassword.addEventListener('input', () => {
@@ -849,12 +922,12 @@
             if (val.length >= 8) strength++;
             if (/[A-Z]/.test(val)) strength++;
             if (/[a-z]/.test(val)) strength++;
-            if (/[0-9^$*.[\]{}()?"!@#%&/\\,><':;|_~`]/.test(val)) strength++;
+            if (/[0-9]/.test(val) && /[^A-Za-z0-9]/.test(val)) strength++;
 
             for (let i = 1; i <= 4; i++) {
                 const bar = document.getElementById(`sb-${i}`);
                 if (i <= strength) {
-                    bar.style.backgroundColor = strength <= 2 ? 'var(--error-color)' : strength === 3 ? '#FFB300' : 'var(--success-color)';
+                    bar.style.backgroundColor = strength <= 2 ? 'var(--error-color)' : strength === 3 ? '#F59E0B' : 'var(--success-color)';
                 } else {
                     bar.style.backgroundColor = 'var(--border-color)';
                 }
@@ -862,22 +935,30 @@
         });
 
         function validatePasswordPolicy(password) {
-            const minLength = password.length >= 8;
-            const hasUpper = /[A-Z]/.test(password);
-            const hasLower = /[a-z]/.test(password);
-            const hasNum = /[0-9]/.test(password);
-            const hasSpecial = /[^A-Za-z0-9]/.test(password);
-            return minLength && hasUpper && hasLower && hasNum && hasSpecial;
+            return password.length >= 8 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password);
         }
 
         /* =================================================================
-           AUTO LOGIN & AUTH STATE LISTENER
+           AUTO LOGIN & AUTH STATE LISTENER (STRICT RULES)
            ================================================================= */
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // If user is logged in and email is verified, redirect to index.html
+                await user.reload();
                 if (user.emailVerified) {
+                    // Update lastLogin timestamp in Firestore
+                    try {
+                        const userDocRef = doc(db, 'users', user.uid);
+                        await updateDoc(userDocRef, {
+                            lastLogin: serverTimestamp(),
+                            emailVerified: true
+                        });
+                    } catch (err) {
+                        // Document might not exist yet in edge cases
+                    }
                     window.location.href = 'index.html';
+                } else {
+                    // Stay on login page if not verified
+                    await signOut(auth);
                 }
             }
         });
@@ -900,13 +981,39 @@
             try {
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
+                await user.reload();
 
                 if (!user.emailVerified) {
                     showToast('Please verify your email before login.', 'error');
+                    await signOut(auth);
                     spinner.style.display = 'none';
                     btnText.style.display = 'block';
                     btn.disabled = false;
                     return;
+                }
+
+                // Update Firestore
+                const userDocRef = doc(db, 'users', user.uid);
+                const docSnap = await getDoc(userDocRef);
+                if (docSnap.exists()) {
+                    await updateDoc(userDocRef, {
+                        lastLogin: serverTimestamp(),
+                        emailVerified: true
+                    });
+                } else {
+                    await setDoc(userDocRef, {
+                        uid: user.uid,
+                        fullName: user.displayName || 'Enterprise User',
+                        email: user.email,
+                        photoURL: user.photoURL || '',
+                        role: 'user',
+                        status: 'active',
+                        theme: 'light',
+                        language: 'en',
+                        emailVerified: true,
+                        createdAt: serverTimestamp(),
+                        lastLogin: serverTimestamp()
+                    });
                 }
 
                 showToast('Login successful! Redirecting...', 'success');
@@ -915,7 +1022,7 @@
                 }, 1000);
 
             } catch (error) {
-                showToast(error.message.replace('Firebase: ', ''), 'error');
+                handleAuthError(error);
                 spinner.style.display = 'none';
                 btnText.style.display = 'block';
                 btn.disabled = false;
@@ -953,10 +1060,10 @@
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // Send Email Verification
+                // Send Email Verification Immediately
                 await sendEmailVerification(user);
 
-                // Create Firestore User Document
+                // Create Firestore Document under users/{uid}
                 const userDocRef = doc(db, 'users', user.uid);
                 await setDoc(userDocRef, {
                     uid: user.uid,
@@ -973,6 +1080,8 @@
                 });
 
                 showToast('Account created successfully! Verification email sent.', 'success');
+                await signOut(auth);
+
                 setTimeout(() => {
                     signupForm.reset();
                     signupForm.classList.remove('active');
@@ -980,10 +1089,10 @@
                     btnText.style.display = 'block';
                     spinner.style.display = 'none';
                     btn.disabled = false;
-                }, 1500);
+                }, 1800);
 
             } catch (error) {
-                showToast(error.message.replace('Firebase: ', ''), 'error');
+                handleAuthError(error);
                 btnText.style.display = 'block';
                 spinner.style.display = 'none';
                 btn.disabled = false;
@@ -991,7 +1100,7 @@
         });
 
         /* =================================================================
-           GOOGLE AUTHENTICATION (POPUP & FIRESTORE SYNC)
+           GOOGLE AUTHENTICATION & AUTOMATIC FIRESTORE SYNC
            ================================================================= */
         async function handleGoogleAuth() {
             try {
@@ -1002,7 +1111,6 @@
                 const userSnapshot = await getDoc(userDocRef);
 
                 if (!userSnapshot.exists()) {
-                    // First login via Google: Create Firestore document automatically
                     await setDoc(userDocRef, {
                         uid: user.uid,
                         fullName: user.displayName || 'Google User',
@@ -1016,6 +1124,11 @@
                         createdAt: serverTimestamp(),
                         lastLogin: serverTimestamp()
                     });
+                } else {
+                    await updateDoc(userDocRef, {
+                        lastLogin: serverTimestamp(),
+                        emailVerified: true
+                    });
                 }
 
                 showToast('Google Authentication successful! Redirecting...', 'success');
@@ -1024,7 +1137,7 @@
                 }, 1000);
 
             } catch (error) {
-                showToast(error.message.replace('Firebase: ', ''), 'error');
+                handleAuthError(error);
             }
         }
 
@@ -1032,7 +1145,7 @@
         document.getElementById('google-signup-btn').addEventListener('click', handleGoogleAuth);
 
         /* =================================================================
-           FORGOT PASSWORD
+           FORGOT PASSWORD FUNCTIONALITY
            ================================================================= */
         forgotForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -1047,7 +1160,7 @@
 
             try {
                 await sendPasswordResetEmail(auth, email);
-                showToast('Password reset email sent successfully.', 'success');
+                showToast('Password reset link sent to your email.', 'success');
                 setTimeout(() => {
                     forgotForm.reset();
                     forgotForm.classList.remove('active');
@@ -1057,12 +1170,24 @@
                     btn.disabled = false;
                 }, 1500);
             } catch (error) {
-                showToast(error.message.replace('Firebase: ', ''), 'error');
+                handleAuthError(error);
                 btnText.style.display = 'block';
                 spinner.style.display = 'none';
                 btn.disabled = false;
             }
         });
+
+        /* =================================================================
+           LOGOUT FUNCTION EXPORT / HOOK
+           ================================================================= */
+        window.logoutUser = async function() {
+            try {
+                await signOut(auth);
+                window.location.href = 'login.html';
+            } catch (error) {
+                showToast('Error signing out.', 'error');
+            }
+        };
     </script>
 </body>
 </html>
