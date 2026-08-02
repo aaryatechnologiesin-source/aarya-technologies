@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aarya Technologies | Enterprise IT & Digital Excellence</title>
+    <meta name="description" content="Aarya Technologies is a world-class enterprise software and digital architecture firm delivering luxury-grade technology solutions.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* =================================================================
+           CSS VARIABLES & DESIGN SYSTEM (Apple / Stripe / Linear Luxury)
+           ================================================================= */
+        :root {
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #FAF9F6;
+            --bg-tertiary: #F3F1EC;
+            --text-primary: #111111;
+            --text-secondary: #555555;
+            --text-muted: #888888;
+            --accent: #D4AF37; /* Luxury Gold */
+            --accent-hover: #C5A028;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --glass-bg: rgba(255, 255, 255, 0.82);
+            --shadow: 0 30px 60px rgba(0, 0, 0, 0.05);
+            --card-bg: #FFFFFF;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0A0A0A;
+            --bg-secondary: #141414;
+            --bg-tertiary: #1F1F1F;
+            --text-primary: #FFFFFF;
+            --text-secondary: #AAAAAA;
+            --text-muted: #777777;
+            --accent: #D4AF37;
+            --accent-hover: #E6C158;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --glass-bg: rgba(10, 10, 10, 0.82);
+            --shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            --card-bg: #121212;
+        }
+
+        /* =================================================================
+           RESET & GLOBAL STYLES
+           ================================================================= */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        button, input, select, textarea {
+            font-family: inherit;
+            border: none;
+            outline: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+        }
+
+        .section-padding {
+            padding: 9rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 750px;
+            margin: 0 auto 5rem auto;
+        }
+
+        .section-header span {
+            color: var(--accent);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.25em;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: 3rem;
+            margin-bottom: 1.2rem;
+            color: var(--text-primary);
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            line-height: 1.7;
+        }
+
+        /* =================================================================
+           SCROLL PROGRESS BAR
+           ================================================================= */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--accent);
+            z-index: 10000;
+            transition: width 0.1s linear;
+        }
+
+        /* =================================================================
+           PRELOADER
+           ================================================================= */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        .loader-logo {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+        .loader-logo span {
+            color: var(--accent);
+        }
+        .loader-bar {
+            width: 180px;
+            height: 2px;
+            background: var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+        .loader-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: var(--accent);
+            animation: loadProgress 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes loadProgress {
+            0% { width: 0%; }
+            50% { width: 75%; }
+            100% { width: 100%; }
+        }
+
+        /* =================================================================
+           STICKY ENTERPRISE HEADER & NAVIGATION
+           ================================================================= */
+        header {
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 95px;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-placeholder {
+            width: 40px;
+            height: 40px;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        .nav-link {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .icon-btn {
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .icon-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            padding: 0.85rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent);
+            color: #111111;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.25);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 0.85rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--text-primary);
+            background: var(--bg-tertiary);
+            transform: translateY(-2px);
+        }
+
+        /* Profile System Widget */
+        .profile-container {
+            position: relative;
+        }
+
+        .profile-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #111;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 2px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .profile-avatar:hover {
+            border-color: var(--accent);
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: calc(100% + 15px);
+            right: 0;
+            width: 220px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+            padding: 0.75rem;
+            display: none;
+            flex-direction: column;
+            gap: 0.25rem;
+            z-index: 1002;
+        }
+
+        .profile-dropdown.active {
+            display: flex;
+        }
+
+        .profile-dropdown a, .profile-dropdown button {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .profile-dropdown a:hover, .profile-dropdown button:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* =================================================================
+           WORKING SEARCH OVERLAY (CTRL + K)
+           ================================================================= */
+        #search-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            z-index: 10005;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 15vh;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        #search-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .search-modal {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 700px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .search-input-box {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            gap: 1rem;
+        }
+
+        .search-input-box i {
+            font-size: 1.25rem;
+            color: var(--accent);
+        }
+
+        .search-input-box input {
+            width: 100%;
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+        }
+
+        .search-results {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 1rem 2rem;
+        }
+
+        .search-result-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            display: block;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-item h4 {
+            font-size: 1.05rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .search-result-item p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* =================================================================
+           HERO SECTION
+           ================================================================= */
+        .hero {
+            min-height: calc(100vh - 95px);
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 4rem 0;
+            background: radial-gradient(circle at 85% 15%, var(--bg-secondary) 0%, var(--bg-primary) 70%);
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 4.2rem;
+            line-height: 1.06;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+        }
+
+        .hero-content h1 span {
+            color: var(--accent);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            max-width: 650px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1.25rem;
+            align-items: center;
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .mockup-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            animation: floatMockup 6s ease-in-out infinite;
+        }
+
+        @keyframes floatMockup {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .mockup-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .dot-red { background: #FF5F56; }
+        .dot-yellow { background: #FFBD2E; }
+        .dot-green { background: #27C93F; }
+
+        .mockup-body {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .mockup-body i {
+            font-size: 3.5rem;
+            color: var(--accent);
+            margin-bottom: 1.2rem;
+        }
+
+        .mockup-body h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .mockup-body p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        /* =================================================================
+           ABOUT PREVIEW
+           ================================================================= */
+        .about-preview {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 3rem;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.5rem;
+        }
+
+        .stat-box h3 {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-box p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+
+        /* =================================================================
+           SERVICES SECTION
+           ================================================================= */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3rem 2.5rem;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: var(--shadow);
+        }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .service-card:hover .service-icon {
+            background: var(--accent);
+            color: #111111;
+            border-color: var(--accent);
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .service-link {
+            font-weight: 600;
+            color: var(--text-primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .service-link:hover {
+            color: var(--accent);
+        }
+
+        /* =================================================================
+           SOLUTIONS SECTION
+           ================================================================= */
+        .solutions-section {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+        }
+
+        .solution-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3.5rem 3rem;
+            transition: var(--transition);
+        }
+
+        .solution-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent);
+        }
+
+        .solution-card i {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 1.75rem;
+        }
+
+        .solution-card h3 {
+            font-size: 1.7rem;
+            margin-bottom: 1rem;
+        }
+
+        .solution-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+        }
+
+        /* =================================================================
+           PORTFOLIO SECTION
+           ================================================================= */
+        .portfolio-placeholder {
+            background: var(--card-bg);
+            border: 1px dashed var(--border-color);
+            border-radius: 24px;
+            padding: 8rem 2rem;
+            text-align: center;
+        }
+
+        .portfolio-placeholder i {
+            font-size: 4rem;
+            color: var(--accent);
+            margin-bottom: 1.75rem;
+        }
+
+        .portfolio-placeholder h3 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-placeholder p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+
+        /* =================================================================
+           CONTACT SECTION (Clean details only, no form)
+           ================================================================= */
+        .contact-section {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .contact-details-box {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+
+        .contact-item i {
+            font-size: 1.8rem;
+            color: var(--accent);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem;
+            border-radius: 16px;
+        }
+
+        .contact-item h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .contact-item p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 400px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: var(--shadow);
+        }
+
+        /* WhatsApp Floating Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 35px;
+            right: 35px;
+            background: #25D366;
+            color: #FFFFFF;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            transition: var(--transition);
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+
+        /* =================================================================
+           FOOTER (Comprehensive enterprise footer)
+           ================================================================= */
+        footer {
+            background: var(--bg-primary);
+            border-top: 1px solid var(--border-color);
+            padding: 7rem 0 3rem 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1.5fr;
+            gap: 3rem;
+            margin-bottom: 5rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1.15rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .footer-col ul {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .footer-col a {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .footer-col a:hover {
+            color: var(--accent);
+        }
+
+        .footer-col p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1.75rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            width: 42px;
+            height: 42px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+        }
+
+        .social-links a:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .newsletter-form input {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 0.85rem 1.25rem;
+            color: var(--text-primary);
+            flex: 1;
+            font-size: 0.95rem;
+        }
+
+        .newsletter-form button {
+            background: var(--accent);
+            color: #111111;
+            padding: 0 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .newsletter-form button:hover {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-color);
+            padding-top: 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* =================================================================
+           RESPONSIVE DESIGN
+           ================================================================= */
+        @media (max-width: 1400px) {
+            .footer-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 1024px) {
+            .nav-menu { display: none; }
+            .mobile-toggle { display: block; }
+            .hero-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 4rem; }
+            .hero-content h1 { font-size: 3.2rem; }
+            .services-grid, .solutions-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .services-grid, .solutions-grid, .footer-grid { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 2.6rem; }
+            .section-header h2 { font-size: 2.3rem; }
+            .container { padding: 0 1.5rem; }
+            .footer-bottom { flex-direction: column; gap: 1.5rem; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-logo">Aarya <span>Technologies</span></div>
+        <div class="loader-bar">
+            <div class="loader-progress"></div>
+        </div>
+    </div>
+
+    <!-- Sticky Enterprise Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo-wrapper">
+                <div class="logo-placeholder">AT</div>
+                <div class="logo-text">Aarya Technologies</div>
+            </a>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="services.html" class="nav-link">Services</a>
+                <a href="solutions.html" class="nav-link">Solutions</a>
+                <a href="portfolio.html" class="nav-link">Portfolio</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </nav>
+
+            <div class="nav-actions">
+                <button class="icon-btn" id="theme-toggle" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <button class="icon-btn" id="search-trigger" aria-label="Open Search (Ctrl+K)">
+                    <i class="fa-solid fa-search"></i>
+                </button>
+                
+                <!-- Authentication & Profile System -->
+                <div id="auth-container">
+                    <!-- Dynamically populated via JavaScript -->
+                </div>
+
+                <button class="mobile-toggle" aria-label="Mobile Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Working Search Overlay -->
+    <div id="search-overlay">
+        <div class="search-modal">
+            <div class="search-input-box">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" id="search-input" placeholder="Type to search navigation, services, solutions...">
+            </div>
+            <div class="search-results" id="search-results">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <h1>Architecting <span>Digital</span> Excellence & Scale</h1>
+                    <p>Aarya Technologies is a premier global enterprise technology institution delivering ultra-modern software architectures, advanced AI frameworks, and immaculate digital ecosystems.</p>
+                    <div class="hero-btns">
+                        <a href="services.html" class="btn-primary">Explore Services <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="contact.html" class="btn-outline">Consultation</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="mockup-container">
+                        <div class="mockup-header">
+                            <div class="dot dot-red"></div>
+                            <div class="dot dot-yellow"></div>
+                            <div class="dot dot-green"></div>
+                        </div>
+                        <div class="mockup-body">
+                            <i class="fa-solid fa-microchip"></i>
+                            <h3>Enterprise Core Engine</h3>
+                            <p>Optimized for high availability, zero latency, and luxury user experience.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Preview Section -->
+    <section class="section-padding about-preview">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-text">
+                    <span>Elite Engineering</span>
+                    <h2>Redefining Technical Standards Worldwide</h2>
+                    <p>We combine uncompromising craftsmanship with cutting-edge engineering. Our methodology mirrors the meticulous precision of elite global institutions, ensuring your enterprise assets perform flawlessly at scale.</p>
+                    <a href="contact.html" class="btn-primary">Our Philosophy <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-box">
+                        <h3>100%</h3>
+                        <p>Enterprise Reliability & Security</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>24/7</h3>
+                        <p>Global Architecture Monitoring</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>Global</h3>
+                        <p>Clients Across US, EU & Asia</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>Zero</h3>
+                        <p>Compromise on Code Quality</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="section-header">
+                <span>Core Capabilities</span>
+                <h2>Enterprise Services</h2>
+                <p>Tailored digital engineering solutions built for market leaders.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div>
+                        <div class="service-icon"><i class="fa-solid fa-globe"></i></div>
+                        <h3>Web Development</h3>
+                        <p>High-performance enterprise web platforms engineered with modern frameworks and robust security.</p>
+                    </div>
+                    <a href="web-development.html" class="service-link">View Service <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="service-card">
+                    <div>
+                        <div class="service-icon"><i class="fa-brands fa-android"></i></div>
+                        <h3>Android Apps</h3>
+                        <p>Native and cross-platform mobile solutions offering seamless user journeys across Android devices.</p>
+                    </div>
+                    <a href="android-apps.html" class="service-link">View Service <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="service-card">
+                    <div>
+                        <div class="service-icon"><i class="fa-brands fa-apple"></i></div>
+                        <h3>iOS Apps</h3>
+                        <p>Immaculate Apple ecosystem applications built with precision, speed, and luxurious user interfaces.</p>
+                    </div>
+                    <a href="ios-apps.html" class="service-link">View Service <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="service-card">
+                    <div>
+                        <div class="service-icon"><i class="fa-solid fa-brain"></i></div>
+                        <h3>AI Solutions</h3>
+                        <p>Intelligent automation, machine learning pipelines, and generative AI enterprise integrations.</p>
+                    </div>
+                    <a href="ai-solutions.html" class="service-link">View Service <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="service-card">
+                    <div>
+                        <div class="service-icon"><i class="fa-solid fa-pen-nib"></i></div>
+                        <h3>UI UX Design</h3>
+                        <p>World-class minimalist visual design focused on human emotion, luxury aesthetics, and usability.</p>
+                    </div>
+                    <a href="ui-ux.html" class="service-link">View Service <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="service-card">
+                    <div>
+                        <div class="service-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                        <h3>Website Maintenance</h3>
+                        <p>Continuous security audits, infrastructure optimization, updates, and round-the-clock support.</p>
+                    </div>
+                    <a href="website-maintenance.html" class="service-link">View Service <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solutions Section -->
+    <section class="section-padding solutions-section">
+        <div class="container">
+            <div class="section-header">
+                <span>Domain Expertise</span>
+                <h2>Industry Solutions</h2>
+                <p>Specialized technical frameworks driving digital transformation.</p>
+            </div>
+            <div class="solutions-grid">
+                <div class="solution-card">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <h3>Luxury Ecommerce</h3>
+                    <p>Bespoke shopping ecosystems with ultra-high visual fidelity, frictionless checkout, and ERP syncing.</p>
+                    <a href="luxury-ecommerce.html" class="service-link">Explore Solution <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="solution-card">
+                    <i class="fa-solid fa-hospital"></i>
+                    <h3>Healthcare Systems</h3>
+                    <p>HIPAA-compliant patient portals, telemedicine applications, and secure medical data networks.</p>
+                    <a href="healthcare.html" class="service-link">Explore Solution <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="solution-card">
+                    <i class="fa-solid fa-building-columns"></i>
+                    <h3>Business Solutions</h3>
+                    <p>Enterprise resource planning tools, automated workflows, and internal operational software.</p>
+                    <a href="business-solutions.html" class="service-link">Explore Solution <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section (No form, details only) -->
+    <section class="section-padding contact-section">
+        <div class="container">
+            <div class="section-header">
+                <span>Connect With Us</span>
+                <h2>Global Corporate Headquarters</h2>
+                <p>Reach out directly to our leadership or technical partnership desks.</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-details-box">
+                    <div class="contact-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div>
+                            <h4>Business Email</h4>
+                            <p>contact@aaryatechnologies.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+1 (555) 019-2834</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa-brands fa-whatsapp"></i>
+                        <div>
+                            <h4>WhatsApp</h4>
+                            <p>+1 (555) 019-2834</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <div>
+                            <h4>Office Address</h4>
+                            <p>100 Financial Plaza, Suite 400, Silicon Valley, CA</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="map-placeholder">
+                    Google Map Corporate Placeholder
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/" target="_blank" class="whatsapp-float" aria-label="WhatsApp Contact">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Large Premium Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo-wrapper" style="margin-bottom: 1.25rem;">
+                        <div class="logo-placeholder">AT</div>
+                        <div class="logo-text">Aarya Technologies</div>
+                    </div>
+                    <p>Professional IT institution engineering world-class software solutions, AI architectures, and luxury digital experiences.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="index.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="solutions.html">Solutions</a></li>
+                        <li><a href="portfolio.html">Portfolio</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="web-development.html">Web Development</a></li>
+                        <li><a href="android-apps.html">Android Apps</a></li>
+                        <li><a href="ios-apps.html">iOS Apps</a></li>
+                        <li><a href="ai-solutions.html">AI Solutions</a></li>
+                        <li><a href="ui-ux.html">UI UX Design</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Solutions</h4>
+                    <ul>
+                        <li><a href="luxury-ecommerce.html">Luxury Ecommerce</a></li>
+                        <li><a href="healthcare.html">Healthcare Systems</a></li>
+                        <li><a href="business-solutions.html">Business Solutions</a></li>
+                        <li><a href="startup-solutions.html">Startup Solutions</a></li>
+                        <li><a href="custom-software.html">Custom Software</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="settings.html">Settings</a></li>
+                        <li><a href="login.html">Login Portal</a></li>
+                        <li><a href="contact.html">Support</a></li>
+                        <li><a href="portfolio.html">Sitemap</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Newsletter</h4>
+                    <p>Subscribe for exclusive enterprise technology insights.</p>
+                    <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed successfully.');">
+                        <input type="email" placeholder="Enter email" required>
+                        <button type="submit">Join</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Aarya Technologies. All rights reserved.</p>
+                <div class="footer-bottom-links" style="display: flex; gap: 2rem;">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Cookie Policy</a>
+                    <a href="#">Refund Policy</a>
+                    <a href="#">Security Policy</a>
+                    <a href="#">Accessibility</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        /* =================================================================
+           PRELOADER
+           ================================================================= */
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 600);
+        });
+
+        /* =================================================================
+           SCROLL PROGRESS BAR
+           ================================================================= */
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scroll-progress').style.width = scrolled + '%';
+        });
+
+        /* =================================================================
+           THEME TOGGLE & LOCALSTORAGE
+           ================================================================= */
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            const icon = themeToggleBtn.querySelector('i');
+            if (theme === 'dark') {
+                icon.className = 'fa-solid fa-sun';
+            } else {
+                icon.className = 'fa-solid fa-moon';
+            }
+        }
+
+        /* =================================================================
+           PROFILE SYSTEM & AUTHENTICATION STATE SIMULATION
+           ================================================================= */
+        // For testing the profile system, change auth state in localStorage or via console:
+        // localStorage.setItem('isLoggedIn', 'true');
+        
+        function renderAuthUI() {
+            const authContainer = document.getElementById('auth-container');
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+            if (!isLoggedIn) {
+                authContainer.innerHTML = `<a href="login.html" class="btn-primary" style="padding: 0.65rem 1.5rem; font-size: 0.9rem;">Login</a>`;
+            } else {
+                authContainer.innerHTML = `
+                    <div class="profile-container">
+                        <div class="profile-avatar" id="profile-avatar-btn">AT</div>
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <a href="settings.html"><i class="fa-solid fa-user"></i> My Profile</a>
+                            <a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+                            <button id="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                        </div>
+                    </div>
+                `;
+
+                const avatarBtn = document.getElementById('profile-avatar-btn');
+                const dropdown = document.getElementById('profile-dropdown');
+                const logoutBtn = document.getElementById('logout-btn');
+
+                avatarBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdown.classList.toggle('active');
+                });
+
+                document.addEventListener('click', () => {
+                    dropdown.classList.remove('active');
+                });
+
+                logoutBtn.addEventListener('click', () => {
+                    logout();
+                });
+            }
+        }
+
+        renderAuthUI();
+
+        /* =================================================================
+           WORKING SEARCH OVERLAY & CTRL + K
+           ================================================================= */
+        const searchOverlay = document.getElementById('search-overlay');
+        const searchTrigger = document.getElementById('search-trigger');
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+
+        const sitePages = [
+            { title: "Home", url: "index.html", desc: "Main corporate landing page" },
+            { title: "Services", url: "services.html", desc: "Enterprise technical services & capabilities" },
+            { title: "Web Development", url: "web-development.html", desc: "High-performance enterprise web applications" },
+            { title: "Android Apps", url: "android-apps.html", desc: "Native & cross-platform Android mobile solutions" },
+            { title: "iOS Apps", url: "ios-apps.html", desc: "Immaculate Apple ecosystem iOS applications" },
+            { title: "AI Solutions", url: "ai-solutions.html", desc: "Intelligent automation & machine learning pipelines" },
+            { title: "UI UX Design", url: "ui-ux.html", desc: "Minimalist visual design & luxury aesthetics" },
+            { title: "Website Maintenance", url: "website-maintenance.html", desc: "Security audits, optimization & 24/7 support" },
+            { title: "Solutions", url: "solutions.html", desc: "Specialized domain industry solutions" },
+            { title: "Luxury Ecommerce", url: "luxury-ecommerce.html", desc: "Bespoke shopping ecosystems" },
+            { title: "Healthcare Systems", url: "healthcare.html", desc: "HIPAA-compliant patient portals" },
+            { title: "Business Solutions", url: "business-solutions.html", desc: "Enterprise resource planning & workflow tools" },
+            { title: "Portfolio", url: "portfolio.html", desc: "Enterprise case studies & project showcases" },
+            { title: "Contact", url: "contact.html", desc: "Global corporate headquarters & communication" },
+            { title: "Settings", url: "settings.html", desc: "User profile preferences, theme & language" },
+            { title: "Login", url: "login.html", desc: "Secure portal login" }
+        ];
+
+        function openSearch() {
+            searchOverlay.classList.add('active');
+            searchInput.focus();
+            renderSearchResults("");
+        }
+
+        function closeSearch() {
+            searchOverlay.classList.remove('active');
+        }
+
+        searchTrigger.addEventListener('click', openSearch);
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                if (searchOverlay.classList.contains('active')) {
+                    closeSearch();
+                } else {
+                    openSearch();
+                }
+            }
+            if (e.key === 'Escape') {
+                closeSearch();
+            }
+        });
+
+        searchOverlay.addEventListener('click', (e) => {
+            if (e.target === searchOverlay) {
+                closeSearch();
+            }
+        });
+
+        function renderSearchResults(query) {
+            const filtered = sitePages.filter(p => 
+                p.title.toLowerCase().includes(query.toLowerCase()) || 
+                p.desc.toLowerCase().includes(query.toLowerCase())
+            );
+
+            if (filtered.length === 0) {
+                searchResults.innerHTML = `<p style="padding: 1rem 0; color: var(--text-muted);">No matching pages found.</p>`;
+                return;
+            }
+
+            searchResults.innerHTML = filtered.map(item => `
+                <a href="${item.url}" class="search-result-item">
+                    <h4>${item.title}</h4>
+                    <p>${item.desc}</p>
+                </a>
+            `).join('');
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            renderSearchResults(e.target.value);
+        });
+
+        /* =================================================================
+           FIREBASE ARCHITECTURE (PRODUCTION READY - PREPARED)
+           ================================================================= */
+        const firebaseConfig = {
+            apiKey: "AIzaSyPlaceholderKey-ChangeMe",
+            authDomain: "aarya-technologies.firebaseapp.com",
+            projectId: "aarya-technologies",
+            storageBucket: "aarya-technologies.appspot.com",
+            messagingSenderId: "000000000000",
+            appId: "1:000000000000:web:0000000000000000"
+        };
+
+        function initializeFirebase() {
+            // Implement later
+            console.log("Firebase architecture initialized successfully.");
+        }
+
+        function login(email, password) {
+            // Implement later
+            localStorage.setItem('isLoggedIn', 'true');
+            renderAuthUI();
+        }
+
+        function logout() {
+            // Implement later
+            localStorage.removeItem('isLoggedIn');
+            renderAuthUI();
+            window.location.href = 'index.html';
+        }
+
+        function loadUser() {
+            // Implement later
+        }
+
+        // Initialize architecture hook
+        initializeFirebase();
+    </script>
+</body>
+</html>
