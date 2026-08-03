@@ -87,6 +87,52 @@
             cursor: pointer;
         }
 
+        /* Scroll Progress Bar */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            width: 0%;
+            z-index: 2000;
+            transition: width 0.1s linear;
+        }
+
+        /* Luxury Loader */
+        #page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        #page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-brand {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulseLoader 1.5s infinite alternate;
+        }
+
+        @keyframes pulseLoader {
+            0% { opacity: 0.4; transform: scale(0.98); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
         /* =================================================================
            HEADER & NAVIGATION
            ================================================================= */
@@ -138,6 +184,13 @@
             background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: shimmerName 6s infinite linear;
+        }
+
+        @keyframes shimmerName {
+            0% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+            100% { filter: brightness(1); }
         }
 
         .nav-links {
@@ -175,6 +228,7 @@
             border-radius: 50%;
             border: 1px solid var(--border-color);
             transition: var(--transition);
+            cursor: pointer;
         }
 
         .icon-btn:hover {
@@ -190,6 +244,7 @@
             font-weight: 600;
             font-size: 0.92rem;
             transition: var(--transition);
+            display: inline-block;
         }
 
         .btn-login:hover {
@@ -308,9 +363,98 @@
         }
 
         /* =================================================================
+           SEARCH OVERLAY
+           ================================================================= */
+        .search-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(9, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 3000;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 15vh;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .search-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .search-modal {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 650px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            animation: searchModalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes searchModalIn {
+            from { transform: scale(0.95) translateY(-20px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            gap: 1rem;
+        }
+
+        .search-input-wrapper i {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        .search-input-wrapper input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            font-family: inherit;
+        }
+
+        .search-results {
+            padding: 1.5rem;
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .search-item {
+            padding: 0.85rem 1rem;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-item:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        /* =================================================================
            HERO SECTION
            ================================================================= */
         .hero {
+            min-height: 100vh;
             padding: 12rem 2rem 8rem 2rem;
             max-width: 1280px;
             margin: 0 auto;
@@ -318,6 +462,7 @@
             grid-template-columns: 1.1fr 0.9fr;
             align-items: center;
             gap: 4rem;
+            position: relative;
         }
 
         .hero-content h1 {
@@ -355,6 +500,7 @@
             font-size: 1rem;
             transition: var(--transition);
             box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+            display: inline-block;
         }
 
         .btn-primary:hover {
@@ -372,6 +518,7 @@
             font-weight: 600;
             font-size: 1rem;
             transition: var(--transition);
+            display: inline-block;
         }
 
         .btn-secondary:hover {
@@ -383,7 +530,7 @@
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
             border-radius: 28px;
-            height: 450px;
+            height: 480px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -395,10 +542,16 @@
         .hero-visual::before {
             content: '';
             position: absolute;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.18) 0%, transparent 70%);
             border-radius: 50%;
+            animation: floatGlow 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatGlow {
+            0% { transform: translate(-30px, -30px); }
+            100% { transform: translate(30px, 30px); }
         }
 
         .visual-badge {
@@ -411,6 +564,12 @@
             align-items: center;
             gap: 1rem;
             z-index: 2;
+            animation: floatingCard 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatingCard {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-12px); }
         }
 
         .visual-badge i {
@@ -429,9 +588,58 @@
         }
 
         /* =================================================================
-           FEATURES SECTION
+           ABOUT PREVIEW SECTION
            ================================================================= */
-        .features {
+        .about-preview {
+            padding: 8rem 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-content h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .about-content p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: var(--shadow);
+        }
+
+        .about-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .about-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* =================================================================
+           SERVICES & SOLUTIONS SECTIONS
+           ================================================================= */
+        .services, .solutions {
             padding: 8rem 2rem;
             max-width: 1280px;
             margin: 0 auto;
@@ -453,27 +661,30 @@
             color: var(--text-secondary);
         }
 
-        .features-grid {
+        .cards-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 2.5rem;
         }
 
-        .feature-card {
+        .luxury-card {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
             border-radius: 24px;
             padding: 3rem 2.5rem;
             transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .feature-card:hover {
-            transform: translateY(-5px);
+        .luxury-card:hover {
+            transform: translateY(-6px);
             border-color: var(--accent);
             box-shadow: var(--shadow);
         }
 
-        .feature-icon {
+        .card-icon {
             width: 60px;
             height: 60px;
             background: var(--card-bg);
@@ -487,15 +698,132 @@
             margin-bottom: 1.5rem;
         }
 
-        .feature-card h3 {
+        .luxury-card h3 {
             font-size: 1.35rem;
             margin-bottom: 1rem;
         }
 
-        .feature-card p {
+        .luxury-card p {
             color: var(--text-secondary);
             line-height: 1.6;
             font-size: 0.98rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-link {
+            font-weight: 600;
+            font-size: 0.92rem;
+            color: var(--text-primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-link:hover {
+            color: var(--accent);
+            gap: 0.75rem;
+        }
+
+        /* =================================================================
+           PORTFOLIO SECTION
+           ================================================================= */
+        .portfolio {
+            padding: 8rem 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .portfolio-banner {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 28px;
+            padding: 5rem 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .portfolio-banner h3 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .portfolio-banner p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* =================================================================
+           CONTACT SECTION
+           ================================================================= */
+        .contact {
+            padding: 8rem 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.25rem;
+        }
+
+        .contact-item i {
+            font-size: 1.4rem;
+            color: var(--accent);
+            margin-top: 0.2rem;
+        }
+
+        .contact-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-item p {
+            color: var(--text-secondary);
+            font-size: 0.98rem;
+        }
+
+        .map-placeholder {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            height: 100%;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            gap: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .map-placeholder i {
+            font-size: 3rem;
+            color: var(--accent);
         }
 
         /* =================================================================
@@ -504,26 +832,105 @@
         footer {
             background: var(--bg-secondary);
             border-top: 1px solid var(--border-color);
-            padding: 4rem 2rem 2rem 2rem;
+            padding: 6rem 2rem 3rem 2rem;
         }
 
-        .footer-container {
+        .footer-grid {
             max-width: 1280px;
             margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 3rem;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 3rem;
+            padding-bottom: 4rem;
             border-bottom: 1px solid var(--border-color);
         }
 
-        .footer-bottom {
+        .footer-col h4 {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .footer-col ul a {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+        }
+
+        .footer-col ul a:hover {
+            color: var(--accent);
+        }
+
+        .footer-newsletter {
+            grid-column: span 2;
+        }
+
+        .footer-newsletter h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .newsletter-form input {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 0.85rem 1.25rem;
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            outline: none;
+            width: 100%;
+        }
+
+        .newsletter-form button {
+            background: var(--accent);
+            color: #090A0F;
+            padding: 0.85rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .newsletter-form button:hover {
+            filter: brightness(1.1);
+        }
+
+        .footer-bottom-bar {
             max-width: 1280px;
-            margin: 2rem auto 0 auto;
+            margin: 3rem auto 0 auto;
             display: flex;
             justify-content: space-between;
+            align-items: center;
             color: var(--text-muted);
             font-size: 0.9rem;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1.25rem;
+        }
+
+        .social-icons a {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+
+        .social-icons a:hover {
+            color: var(--accent);
         }
 
         /* Responsive Layouts */
@@ -531,12 +938,36 @@
             .hero { grid-template-columns: 1fr; text-align: center; padding-top: 10rem; }
             .hero-content p { margin: 0 auto 2.5rem auto; }
             .hero-btns { justify-content: center; }
-            .features-grid { grid-template-columns: 1fr; }
+            .about-grid, .cards-grid, .contact-grid, .footer-grid { grid-template-columns: 1fr; }
+            .footer-newsletter { grid-column: span 1; }
             .nav-links { display: none; }
         }
     </style>
 </head>
 <body>
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- Luxury Loader -->
+    <div id="page-loader">
+        <div class="loader-brand">Aarya Technologies</div>
+    </div>
+
+    <!-- Search Overlay -->
+    <div class="search-overlay" id="search-overlay">
+        <div class="search-modal">
+            <div class="search-input-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="search-input" placeholder="Search enterprise solutions, services, architecture..." autocomplete="off">
+            </div>
+            <div class="search-results" id="search-results">
+                <div class="search-item" onclick="window.location.href='services.html'"><span>Web Development</span><i class="fa-solid fa-arrow-right"></i></div>
+                <div class="search-item" onclick="window.location.href='solutions.html'"><span>Luxury E-Commerce</span><i class="fa-solid fa-arrow-right"></i></div>
+                <div class="search-item" onclick="window.location.href='contact.html'"><span>Contact & Office Address</span><i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+        </div>
+    </div>
 
     <!-- Header & Navigation -->
     <header>
@@ -547,13 +978,18 @@
             </a>
 
             <ul class="nav-links">
-                <li><a href="#features">Solutions</a></li>
-                <li><a href="#architecture">Architecture</a></li>
-                <li><a href="#enterprise">Enterprise</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#solutions">Solutions</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
 
             <div class="nav-actions">
+                <!-- Search Trigger Button -->
+                <button class="icon-btn" id="search-trigger-btn" aria-label="Search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+
                 <!-- Theme Toggle Button -->
                 <button class="icon-btn" id="theme-toggle" aria-label="Toggle Dark/Light Mode">
                     <i class="fa-solid fa-moon"></i>
@@ -594,7 +1030,7 @@
             <p>Empowering global enterprises with bespoke high-performance software architectures, secure cloud solutions, and world-class digital engineering.</p>
             <div class="hero-btns">
                 <a href="login.html" class="btn-primary">Explore Enterprise Portal</a>
-                <a href="#features" class="btn-secondary">Learn More</a>
+                <a href="#services" class="btn-secondary">Our Services</a>
             </div>
         </div>
         <div class="hero-visual">
@@ -608,44 +1044,258 @@
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features" id="features">
+    <!-- About Preview Section -->
+    <section class="about-preview">
+        <div class="about-grid">
+            <div class="about-content">
+                <h2>Engineering World-Class Digital Assets</h2>
+                <p>At Aarya Technologies, we bridge the gap between visionary ideas and flawless technological execution. Our team of elite engineers and architects build robust digital systems designed to scale seamlessly.</p>
+                <p>We adhere to uncompromising standards of code quality, absolute security, and minimalist design elegance.</p>
+            </div>
+            <div class="about-card">
+                <h3>Enterprise Philosophy</h3>
+                <p>Precision engineering, uncompromising data security, and flawless user experience form the core of every solution we deliver to our global clientele.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
         <div class="section-header">
-            <h2>Core Engineering Solutions</h2>
-            <p>Built for resilience, scale, and uncompromising security standards.</p>
+            <h2>Core Services</h2>
+            <p>Comprehensive digital engineering solutions tailored for market leaders.</p>
         </div>
 
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fa-solid fa-code"></i></div>
-                <h3>Cloud Architecture</h3>
-                <p>Scalable cloud-native infrastructure engineered for ultra-low latency and absolute reliability under peak enterprise workloads.</p>
+        <div class="cards-grid">
+            <div class="luxury-card" onclick="window.location.href='web-development.html'">
+                <div>
+                    <div class="card-icon"><i class="fa-solid fa-code"></i></div>
+                    <h3>Web Development</h3>
+                    <p>High-performance web applications built with cutting-edge architectures, ultra-fast load speeds, and pristine responsive design.</p>
+                </div>
+                <a href="web-development.html" class="card-link">Explore Service <i class="fa-solid fa-arrow-right"></i></a>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fa-solid fa-lock"></i></div>
-                <h3>Identity Security</h3>
-                <p>Advanced authentication frameworks powered by modern security standards to safeguard critical enterprise data ecosystems.</p>
+
+            <div class="luxury-card" onclick="window.location.href='android-apps.html'">
+                <div>
+                    <div class="card-icon"><i class="fa-brands fa-android"></i></div>
+                    <h3>Android Apps</h3>
+                    <p>Native and cross-platform Android solutions engineered for fluid performance, deep hardware integration, and maximum engagement.</p>
+                </div>
+                <a href="android-apps.html" class="card-link">Explore Service <i class="fa-solid fa-arrow-right"></i></a>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fa-solid fa-chart-line"></i></div>
-                <h3>Performance Analytics</h3>
-                <p>Real-time telemetry and intelligence dashboards designed to provide absolute visibility across all digital assets.</p>
+
+            <div class="luxury-card" onclick="window.location.href='ios-apps.html'">
+                <div>
+                    <div class="card-icon"><i class="fa-brands fa-apple"></i></div>
+                    <h3>iOS Apps</h3>
+                    <p>Exquisite Apple-ecosystem applications featuring meticulous attention to human interface guidelines and buttery-smooth animations.</p>
+                </div>
+                <a href="ios-apps.html" class="card-link">Explore Service <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+
+            <div class="luxury-card" onclick="window.location.href='ai-solutions.html'">
+                <div>
+                    <div class="card-icon"><i class="fa-solid fa-brain"></i></div>
+                    <h3>AI Solutions</h3>
+                    <p>Advanced machine learning models and generative AI integrations designed to automate complex workflows and drive smart decisions.</p>
+                </div>
+                <a href="ai-solutions.html" class="card-link">Explore Service <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+
+            <div class="luxury-card" onclick="window.location.href='ui-ux-design.html'">
+                <div>
+                    <div class="card-icon"><i class="fa-solid fa-pen-nib"></i></div>
+                    <h3>UI UX Design</h3>
+                    <p>World-class interface and experience design inspired by Apple, Stripe, and Linear standards to elevate brand authority.</p>
+                </div>
+                <a href="ui-ux-design.html" class="card-link">Explore Service <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+
+            <div class="luxury-card" onclick="window.location.href='website-maintenance.html'">
+                <div>
+                    <div class="card-icon"><i class="fa-solid fa-shield-heart"></i></div>
+                    <h3>Website Maintenance</h3>
+                    <p>Continuous monitoring, security hardening, performance optimization, and regular updates to keep digital assets pristine.</p>
+                </div>
+                <a href="website-maintenance.html" class="card-link">Explore Service <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solutions Section -->
+    <section class="solutions" id="solutions">
+        <div class="section-header">
+            <h2>Enterprise Solutions</h2>
+            <p>Industry-grade digital ecosystems built for enterprise scale.</p>
+        </div>
+
+        <div class="cards-grid">
+            <div class="luxury-card" onclick="window.location.href='luxury-ecommerce.html'">
+                <div>
+                    <div class="card-icon"><i class="fa-solid fa-bag-shopping"></i></div>
+                    <h3>Luxury Ecommerce</h3>
+                    <p>Immersive online storefronts optimized for high-ticket transactions, seamless checkout flows, and luxury visual storytelling.</p>
+                </div>
+                <a href="luxury-ecommerce.html" class="card-link">Explore Solution <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+
+            <div class="luxury-card" onclick="window.location.href='healthcare-systems.html'">
+                <div>
+                    <div class="card-icon"><i class="fa-solid fa-hospital"></i></div>
+                    <h3>Healthcare Systems</h3>
+                    <p>Secure, HIPAA-compliant digital portals and management systems designed for hospitals, clinics, and medical practitioners.</p>
+                </div>
+                <a href="healthcare-systems.html" class="card-link">Explore Solution <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+
+            <div class="luxury-card" onclick="window.location.href='business-solutions.html'">
+                <div>
+                    <div class="card-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                    <h3>Business Solutions</h3>
+                    <p>Custom enterprise resource planning and telemetry dashboards tailored to streamline complex organizational workflows.</p>
+                </div>
+                <a href="business-solutions.html" class="card-link">Explore Solution <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+
+            <div class="luxury-card" onclick="window.location.href='startup-solutions.html'">
+                <div>
+                    <div class="card-icon"><i class="fa-solid fa-rocket"></i></div>
+                    <h3>Startup Solutions</h3>
+                    <p>Rapid MVP development, scalable cloud scaffolding, and technical advisory to help ambitious startups dominate their markets.</p>
+                </div>
+                <a href="startup-solutions.html" class="card-link">Explore Solution <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+
+            <div class="luxury-card" onclick="window.location.href='custom-software.html'" style="grid-column: span 2;">
+                <div>
+                    <div class="card-icon"><i class="fa-solid fa-network-wired"></i></div>
+                    <h3>Custom Software Architecture</h3>
+                    <p>Bespoke enterprise-grade software engineered from scratch to solve highly unique business challenges with absolute precision and security.</p>
+                </div>
+                <a href="custom-software.html" class="card-link">Explore Solution <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="portfolio" id="portfolio">
+        <div class="section-header">
+            <h2>Portfolio</h2>
+            <p>Showcasing our commitment to elite digital engineering.</p>
+        </div>
+        <div class="portfolio-banner">
+            <h3>Our Portfolio Will Be Updated Soon</h3>
+            <p>We are currently curating our latest enterprise case studies and high-impact digital deployments. Check back shortly.</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="section-header">
+            <h2>Connect With Us</h2>
+            <p>Reach out to our executive engineering team.</p>
+        </div>
+
+        <div class="contact-grid">
+            <div class="contact-info-card">
+                <div class="contact-item">
+                    <i class="fa-solid fa-envelope"></i>
+                    <div>
+                        <h4>Business Email</h4>
+                        <p>contact@aaryatech.com</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <div>
+                        <h4>Phone Number</h4>
+                        <p>+91 (0) 98765 43210</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <div>
+                        <h4>WhatsApp</h4>
+                        <p>+91 (0) 98765 43210</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div>
+                        <h4>Office Address</h4>
+                        <p>Aarya Technologies HQ, Enterprise Tower, Maharashtra, India</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="map-placeholder">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <h3>Google Map Location</h3>
+                <p>Interactive Map Integration Active</p>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <div class="footer-container">
-            <div class="logo-wrapper">
-                <div class="logo-placeholder">AT</div>
-                <div class="logo-text">Aarya Technologies</div>
+        <div class="footer-grid">
+            <div class="footer-col footer-newsletter">
+                <div class="logo-wrapper" style="margin-bottom: 1rem;">
+                    <div class="logo-placeholder">AT</div>
+                    <div class="logo-text">Aarya Technologies</div>
+                </div>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem;">Subscribe to our elite engineering newsletter for insights on cloud architecture and digital scale.</p>
+                <form class="newsletter-form" onsubmit="event.preventDefault();">
+                    <input type="email" placeholder="Enter your business email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
             </div>
-            <p style="color: var(--text-secondary); font-size: 0.95rem;">Architecting tomorrow's digital infrastructure today.</p>
+
+            <div class="footer-col">
+                <h4>Company & Services</h4>
+                <ul>
+                    <li><a href="index.html">Company Home</a></li>
+                    <li><a href="services.html">Web Development</a></li>
+                    <li><a href="services.html">Mobile Applications</a></li>
+                    <li><a href="services.html">AI Solutions</a></li>
+                    <li><a href="services.html">UI/UX Design</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Solutions & Resources</h4>
+                <ul>
+                    <li><a href="solutions.html">Luxury Ecommerce</a></li>
+                    <li><a href="solutions.html">Healthcare Systems</a></li>
+                    <li><a href="solutions.html">Startup Solutions</a></li>
+                    <li><a href="portfolio.html">Portfolio Case Studies</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Support & Policies</h4>
+                <ul>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms & Conditions</a></li>
+                    <li><a href="cookies.html">Cookie Policy</a></li>
+                    <li><a href="security.html">Security Policy</a></li>
+                    <li><a href="accessibility.html">Accessibility Policy</a></li>
+                    <li><a href="disclaimer.html">Disclaimer</a></li>
+                    <li><a href="sitemap.html">Sitemap</a></li>
+                </ul>
+            </div>
         </div>
-        <div class="footer-bottom">
+
+        <div class="footer-bottom-bar">
             <p>&copy; 2026 Aarya Technologies. All rights reserved.</p>
-            <p>Enterprise Security Vault</p>
+            <div class="social-icons">
+                <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="https://github.com" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://youtube.com" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            </div>
         </div>
     </footer>
 
@@ -680,7 +1330,23 @@
         const db = getFirestore(app);
 
         /* =================================================================
-           THEME TOGGLE MANAGEMENT (Preserved)
+           PAGE LOADER & SCROLL PROGRESS
+           ================================================================= */
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('page-loader');
+            if (loader) loader.classList.add('hidden');
+        });
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            const progressBar = document.getElementById('scroll-progress');
+            if (progressBar) progressBar.style.width = scrolled + '%';
+        });
+
+        /* =================================================================
+           THEME TOGGLE MANAGEMENT
            ================================================================= */
         const themeToggleBtn = document.getElementById('theme-toggle');
         const htmlElement = document.documentElement;
@@ -703,6 +1369,41 @@
                 icon.className = theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
             }
         }
+
+        /* =================================================================
+           SEARCH OVERLAY & SHORTCUT (CTRL + K)
+           ================================================================= */
+        const searchOverlay = document.getElementById('search-overlay');
+        const searchTriggerBtn = document.getElementById('search-trigger-btn');
+        const searchInput = document.getElementById('search-input');
+
+        function toggleSearch(open) {
+            if (open) {
+                searchOverlay.classList.add('active');
+                if (searchInput) searchInput.focus();
+            } else {
+                searchOverlay.classList.remove('active');
+            }
+        }
+
+        if (searchTriggerBtn) {
+            searchTriggerBtn.addEventListener('click', () => toggleSearch(true));
+        }
+
+        searchOverlay.addEventListener('click', (e) => {
+            if (e.target === searchOverlay) toggleSearch(false);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                const isActive = searchOverlay.classList.contains('active');
+                toggleSearch(!isActive);
+            }
+            if (e.key === 'Escape') {
+                toggleSearch(false);
+            }
+        });
 
         /* =================================================================
            PROFILE DROPDOWN INTERACTION
@@ -736,7 +1437,7 @@
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 // User is NOT logged in -> Show Login Button, Hide Profile
-                if (loginBtn) loginBtn.style.display = 'block';
+                if (loginBtn) loginBtn.style.display = 'inline-block';
                 if (profileWrapper) profileWrapper.style.display = 'none';
             } else {
                 // User exists -> Reload user to check latest email verification state
@@ -764,6 +1465,11 @@
                             const data = userSnap.data();
                             if (data.fullName) displayName = data.fullName;
                             if (data.photoURL) photoURL = data.photoURL;
+                            if (data.theme) {
+                                htmlElement.setAttribute('data-theme', data.theme);
+                                localStorage.setItem('theme', data.theme);
+                                updateThemeIcon(data.theme);
+                            }
                         }
                     } catch (firestoreErr) {
                         // Error fallback: continues gracefully with Auth data without crashing
@@ -783,7 +1489,7 @@
                     }
                 } else {
                     // Email NOT verified -> Show Login Button, Hide Profile
-                    if (loginBtn) loginBtn.style.display = 'block';
+                    if (loginBtn) loginBtn.style.display = 'inline-block';
                     if (profileWrapper) profileWrapper.style.display = 'none';
                 }
             }
