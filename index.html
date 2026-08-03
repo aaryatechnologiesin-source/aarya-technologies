@@ -1,55 +1,43 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aarya Technologies | Enterprise Digital Solutions</title>
+    <title>Aarya Technologies | Premier Software Development & AI Solutions</title>
+    <meta name="description" content="Aarya Technologies is a elite software development company specializing in web, Android, iOS development, AI solutions, and luxury digital products.">
     
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <!-- Inline CSS for Single-File Architecture -->
     <style>
-        /* =================================================================
-           DESIGN SYSTEM & CSS VARIABLES (Apple / Stripe / Linear Luxury)
-           ================================================================= */
         :root {
-            --bg-primary: #FFFFFF;
-            --bg-secondary: #FAFAFC;
-            --bg-tertiary: #F1F1F5;
-            --text-primary: #0F172A;
-            --text-secondary: #475569;
-            --text-muted: #94A3B8;
-            --accent: #D4AF37; /* Luxury Gold */
-            --accent-hover: #C5A028;
-            --border-color: rgba(15, 23, 42, 0.08);
-            --card-bg: rgba(255, 255, 255, 0.85);
-            --shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05), 0 0 1px 1px rgba(0, 0, 0, 0.04);
-            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        [data-theme="dark"] {
-            --bg-primary: #090A0F;
-            --bg-secondary: #10121B;
-            --bg-tertiary: #181B26;
-            --text-primary: #F8FAFC;
-            --text-secondary: #94A3B8;
-            --text-muted: #64748B;
-            --accent: #D4AF37;
-            --accent-hover: #E6C158;
+            --bg-primary: #0a0b0e;
+            --bg-secondary: #12141c;
+            --bg-glass: rgba(18, 20, 28, 0.75);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-primary: #6366f1;
+            --accent-secondary: #a855f7;
+            --accent-glow: rgba(99, 102, 241, 0.3);
             --border-color: rgba(255, 255, 255, 0.08);
-            --card-bg: rgba(16, 18, 27, 0.75);
-            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            --card-bg: rgba(255, 255, 255, 0.02);
+            --card-hover: rgba(255, 255, 255, 0.05);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* =================================================================
-           RESET & GLOBAL STYLES
-           ================================================================= */
-        * {
+        [data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.85);
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --accent-primary: #4f46e5;
+            --accent-secondary: #9333ea;
+            --accent-glow: rgba(79, 70, 229, 0.2);
+            --border-color: rgba(0, 0, 0, 0.08);
+            --card-bg: rgba(0, 0, 0, 0.01);
+            --card-hover: rgba(0, 0, 0, 0.03);
+        }
+
+        *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
@@ -57,798 +45,605 @@
 
         html {
             scroll-behavior: smooth;
+            font-size: 16px;
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background-color: var(--bg-primary);
             color: var(--text-primary);
-            transition: background-color 0.4s ease, color 0.4s ease;
-            -webkit-font-smoothing: antialiased;
+            line-height: 1.6;
             overflow-x: hidden;
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-            transition: var(--transition);
-        }
-
-        button {
-            font-family: inherit;
-            border: none;
-            outline: none;
-            cursor: pointer;
-        }
-
-        /* Scroll Progress Bar */
-        #scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: var(--accent);
-            width: 0%;
-            z-index: 2000;
-            transition: width 0.1s linear;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         /* Luxury Loader */
-        #page-loader {
+        #loader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: var(--bg-primary);
+            background-color: var(--bg-primary);
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
+            align-items: center;
             z-index: 9999;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
 
-        #page-loader.hidden {
+        #loader.fade-out {
             opacity: 0;
             visibility: hidden;
         }
 
-        .loader-brand {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: pulseLoader 1.5s infinite alternate;
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
         }
 
-        @keyframes pulseLoader {
-            0% { opacity: 0.4; transform: scale(0.98); }
-            100% { opacity: 1; transform: scale(1); }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        /* =================================================================
-           HEADER & NAVIGATION
-           ================================================================= */
+        /* Glassmorphism Header */
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: var(--card-bg);
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            background: transparent;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid transparent;
             z-index: 1000;
-            transition: var(--transition);
+            transition: var(--transition-smooth);
         }
 
-        .nav-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 1.25rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        header.scrolled {
+            background: var(--bg-glass);
+            border-bottom-color: var(--border-color);
+            height: 70px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
-        .logo-wrapper {
+        .nav-left {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 15px;
+            text-decoration: none;
         }
 
         .logo-placeholder {
-            width: 42px;
-            height: 42px;
-            background: var(--text-primary);
-            color: var(--bg-primary);
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 10px;
             display: flex;
-            align-items: center;
             justify-content: center;
-            border-radius: 12px;
-            font-weight: 800;
-            font-size: 1.1rem;
+            align-items: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            box-shadow: 0 0 20px var(--accent-glow);
         }
 
-        .logo-text {
-            font-size: 1.4rem;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent) 100%);
+        .company-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: shimmerName 6s infinite linear;
+            letter-spacing: -0.5px;
         }
 
-        @keyframes shimmerName {
-            0% { filter: brightness(1); }
-            50% { filter: brightness(1.2); }
-            100% { filter: brightness(1); }
-        }
-
-        .nav-links {
+        .nav-center nav ul {
             display: flex;
-            align-items: center;
-            gap: 2.5rem;
             list-style: none;
+            gap: 30px;
         }
 
-        .nav-links a {
-            font-size: 0.95rem;
-            font-weight: 500;
+        .nav-center nav a {
+            text-decoration: none;
             color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
+            position: relative;
         }
 
-        .nav-links a:hover {
-            color: var(--accent);
+        .nav-center nav a:hover,
+        .nav-center nav a.active {
+            color: var(--text-primary);
         }
 
-        .nav-actions {
+        .nav-center nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-primary);
+            transition: var(--transition-smooth);
+        }
+
+        .nav-center nav a:hover::after,
+        .nav-center nav a.active::after {
+            width: 100%;
+        }
+
+        .nav-right {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 15px;
         }
 
         .icon-btn {
-            background: var(--bg-secondary);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             color: var(--text-primary);
-            font-size: 1rem;
             width: 40px;
             height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             border-radius: 50%;
-            border: 1px solid var(--border-color);
-            transition: var(--transition);
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
+            transition: var(--transition-smooth);
         }
 
         .icon-btn:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        .btn-login {
-            background: var(--text-primary);
-            color: var(--bg-primary);
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.92rem;
-            transition: var(--transition);
-            display: inline-block;
-        }
-
-        .btn-login:hover {
-            background: var(--accent);
-            color: #090A0F;
+            background: var(--card-hover);
+            border-color: var(--accent-primary);
             transform: translateY(-2px);
-        }
-
-        /* Profile Dropdown Component */
-        .profile-menu-wrapper {
-            position: relative;
-            display: none; /* Controlled dynamically by auth state */
-        }
-
-        .profile-avatar-btn {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: #090A0F;
-            font-weight: 700;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            border: 2px solid var(--border-color);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .profile-avatar-btn img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .profile-avatar-btn:hover {
-            border-color: var(--accent);
-            transform: scale(1.05);
-        }
-
-        .profile-dropdown {
-            position: absolute;
-            top: 55px;
-            right: 0;
-            width: 220px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            display: none;
-            flex-direction: column;
-            padding: 0.5rem;
-            z-index: 1001;
-            animation: fadeInDropdown 0.25s ease forwards;
-        }
-
-        .profile-dropdown.active {
-            display: flex;
-        }
-
-        @keyframes fadeInDropdown {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .dropdown-header {
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 0.25rem;
-        }
-
-        .dropdown-header .user-name {
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: var(--text-primary);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .dropdown-header .user-email {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .dropdown-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            border-radius: 10px;
-            transition: var(--transition);
-        }
-
-        .dropdown-item:hover {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-        }
-
-        .dropdown-item.logout {
-            color: #EF4444;
-        }
-
-        .dropdown-item.logout:hover {
-            background: rgba(239, 68, 68, 0.1);
-            color: #EF4444;
-        }
-
-        /* =================================================================
-           SEARCH OVERLAY
-           ================================================================= */
-        .search-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(9, 10, 15, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 3000;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding-top: 15vh;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-
-        .search-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .search-modal {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            width: 90%;
-            max-width: 650px;
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            animation: searchModalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes searchModalIn {
-            from { transform: scale(0.95) translateY(-20px); opacity: 0; }
-            to { transform: scale(1) translateY(0); opacity: 1; }
-        }
-
-        .search-input-wrapper {
-            display: flex;
-            align-items: center;
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-            gap: 1rem;
-        }
-
-        .search-input-wrapper i {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-        }
-
-        .search-input-wrapper input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            outline: none;
-            font-size: 1.1rem;
-            color: var(--text-primary);
-            font-family: inherit;
-        }
-
-        .search-results {
-            padding: 1.5rem;
-            max-height: 350px;
-            overflow-y: auto;
-        }
-
-        .search-item {
-            padding: 0.85rem 1rem;
-            border-radius: 10px;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .search-item:hover {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-        }
-
-        /* =================================================================
-           HERO SECTION
-           ================================================================= */
-        .hero {
-            min-height: 100vh;
-            padding: 12rem 2rem 8rem 2rem;
-            max-width: 1280px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            align-items: center;
-            gap: 4rem;
-            position: relative;
-        }
-
-        .hero-content h1 {
-            font-size: 4rem;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            font-weight: 800;
-        }
-
-        .hero-content h1 span {
-            color: var(--accent);
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-        }
-
-        .hero-content p {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 2.5rem;
-            max-width: 580px;
-        }
-
-        .hero-btns {
-            display: flex;
-            gap: 1rem;
         }
 
         .btn-primary {
-            background: var(--text-primary);
-            color: var(--bg-primary);
-            padding: 1rem 2rem;
-            border-radius: 14px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 50px;
             font-weight: 600;
-            font-size: 1rem;
-            transition: var(--transition);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.06);
-            display: inline-block;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px var(--accent-glow);
         }
 
         .btn-primary:hover {
-            background: var(--accent);
-            color: #090A0F;
             transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--accent-glow);
         }
 
         .btn-secondary {
-            background: var(--bg-secondary);
+            background: transparent;
             color: var(--text-primary);
             border: 1px solid var(--border-color);
-            padding: 1rem 2rem;
-            border-radius: 14px;
+            padding: 10px 24px;
+            border-radius: 50px;
             font-weight: 600;
-            font-size: 1rem;
-            transition: var(--transition);
-            display: inline-block;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .btn-secondary:hover {
+            background: var(--card-hover);
             border-color: var(--text-primary);
             transform: translateY(-2px);
         }
 
-        .hero-visual {
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid var(--accent-primary);
+            display: none;
+        }
+
+        /* Profile Dropdown */
+        .profile-dropdown-container {
+            position: relative;
+        }
+
+        .profile-menu {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            width: 200px;
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            border-radius: 28px;
-            height: 480px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1001;
+            animation: fadeIn 0.2s ease forwards;
+        }
+
+        .profile-menu.active {
+            display: flex;
+        }
+
+        .profile-menu a, .profile-menu button {
+            padding: 12px 20px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            background: transparent;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .profile-menu a:hover, .profile-menu button:hover {
+            background: var(--card-hover);
+            color: var(--accent-primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            padding: 0 5%;
             position: relative;
             overflow: hidden;
-            box-shadow: var(--shadow);
+            margin-top: 80px;
         }
 
-        .hero-visual::before {
-            content: '';
-            position: absolute;
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.18) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: floatGlow 6s ease-in-out infinite alternate;
-        }
-
-        @keyframes floatGlow {
-            0% { transform: translate(-30px, -30px); }
-            100% { transform: translate(30px, 30px); }
-        }
-
-        .visual-badge {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 1.25rem 2rem;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+        .hero-content {
+            max-width: 600px;
             z-index: 2;
-            animation: floatingCard 4s ease-in-out infinite alternate;
         }
 
-        @keyframes floatingCard {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-12px); }
+        .hero h1 {
+            font-size.clamp: 2.5rem;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1.5px;
         }
 
-        .visual-badge i {
-            font-size: 2rem;
-            color: var(--accent);
-        }
-
-        .visual-badge h4 {
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
-
-        .visual-badge p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        /* =================================================================
-           ABOUT PREVIEW SECTION
-           ================================================================= */
-        .about-preview {
-            padding: 8rem 2rem;
-            max-width: 1280px;
-            margin: 0 auto;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .about-content h2 {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-        }
-
-        .about-content p {
-            font-size: 1.15rem;
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-        }
-
-        .about-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 3rem;
-            box-shadow: var(--shadow);
-        }
-
-        .about-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--accent);
-        }
-
-        .about-card p {
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        /* =================================================================
-           SERVICES & SOLUTIONS SECTIONS
-           ================================================================= */
-        .services, .solutions {
-            padding: 8rem 2rem;
-            max-width: 1280px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            max-width: 650px;
-            margin: 0 auto 5rem auto;
-        }
-
-        .section-header h2 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .section-header p {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-        }
-
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2.5rem;
-        }
-
-        .luxury-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 3rem 2.5rem;
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .luxury-card:hover {
-            transform: translateY(-6px);
-            border-color: var(--accent);
-            box-shadow: var(--shadow);
-        }
-
-        .card-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: var(--accent);
-            margin-bottom: 1.5rem;
-        }
-
-        .luxury-card h3 {
-            font-size: 1.35rem;
-            margin-bottom: 1rem;
-        }
-
-        .luxury-card p {
-            color: var(--text-secondary);
-            line-height: 1.6;
-            font-size: 0.98rem;
-            margin-bottom: 2rem;
-        }
-
-        .card-link {
-            font-weight: 600;
-            font-size: 0.92rem;
-            color: var(--text-primary);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .card-link:hover {
-            color: var(--accent);
-            gap: 0.75rem;
-        }
-
-        /* =================================================================
-           PORTFOLIO SECTION
-           ================================================================= */
-        .portfolio {
-            padding: 8rem 2rem;
-            max-width: 1280px;
-            margin: 0 auto;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .portfolio-banner {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 28px;
-            padding: 5rem 2rem;
-            text-align: center;
-            box-shadow: var(--shadow);
-        }
-
-        .portfolio-banner h3 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent) 100%);
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .portfolio-banner p {
+        .hero p {
             font-size: 1.15rem;
             color: var(--text-secondary);
-            max-width: 500px;
+            margin-bottom: 35px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 15px;
+        }
+
+        .hero-visual {
+            position: relative;
+            width: 500px;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .laptop-mockup {
+            width: 100%;
+            height: 300px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            position: relative;
+            animation: float 6s ease-in-out infinite;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .laptop-screen {
+            flex: 1;
+            background: var(--bg-primary);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .code-line {
+            height: 10px;
+            background: var(--border-color);
+            border-radius: 5px;
+        }
+
+        .code-line.short { width: 40%; background: var(--accent-primary); }
+        .code-line.medium { width: 70%; }
+        .code-line.long { width: 90%; }
+
+        .floating-card {
+            position: absolute;
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: float 4s ease-in-out infinite alternate;
+        }
+
+        .floating-card.card-1 { top: -20px; left: -30px; animation-delay: 0s; }
+        .floating-card.card-2 { bottom: 20px; right: -40px; animation-delay: 2s; }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Sections Common */
+        section {
+            padding: 120px 5% 80px 5%;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px auto;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .about-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 40px;
+            border-radius: 20px;
+            transition: var(--transition-smooth);
+        }
+
+        .about-card:hover {
+            background: var(--card-hover);
+            border-color: var(--accent-primary);
+            transform: translateY(-5px);
+        }
+
+        .about-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .about-card p {
+            color: var(--text-secondary);
+        }
+
+        /* Services & Solutions Grid */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .luxury-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 40px;
+            text-decoration: none;
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .luxury-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            opacity: 0;
+            transition: var(--transition-smooth);
+            z-index: 1;
+        }
+
+        .luxury-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .luxury-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .luxury-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            transition: var(--transition-smooth);
+        }
+
+        .luxury-card:hover p {
+            color: var(--text-primary);
+        }
+
+        .card-link {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--accent-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            z-index: 2;
+            transition: var(--transition-smooth);
+        }
+
+        .luxury-card:hover .card-link {
+            color: white;
+        }
+
+        /* Portfolio Section */
+        .portfolio-banner {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 80px 40px;
+            text-align: center;
+            max-width: 900px;
             margin: 0 auto;
         }
 
-        /* =================================================================
-           CONTACT SECTION
-           ================================================================= */
-        .contact {
-            padding: 8rem 2rem;
-            max-width: 1280px;
-            margin: 0 auto;
+        .portfolio-banner h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
         }
 
+        .portfolio-banner p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        /* Contact Section */
         .contact-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
         }
 
-        .contact-info-card {
-            background: var(--bg-secondary);
+        .contact-card {
+            background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 3rem;
-            box-shadow: var(--shadow);
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            transition: var(--transition-smooth);
         }
 
-        .contact-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 1.25rem;
+        .contact-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-5px);
         }
 
-        .contact-item i {
-            font-size: 1.4rem;
-            color: var(--accent);
-            margin-top: 0.2rem;
+        .contact-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
         }
 
-        .contact-item h4 {
-            font-size: 1.1rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .contact-item p {
+        .contact-card p, .contact-card a {
             color: var(--text-secondary);
-            font-size: 0.98rem;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
         }
 
-        .map-placeholder {
-            background: var(--bg-secondary);
+        .contact-card a:hover {
+            color: var(--accent-primary);
+        }
+
+        .map-container {
+            margin-top: 50px;
+            width: 100%;
+            height: 400px;
+            border-radius: 20px;
+            overflow: hidden;
             border: 1px solid var(--border-color);
-            border-radius: 24px;
-            height: 100%;
-            min-height: 400px;
+            background: var(--card-bg);
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            color: var(--text-muted);
-            gap: 1rem;
-            box-shadow: var(--shadow);
+            align-items: center;
+            color: var(--text-secondary);
+            font-weight: 600;
         }
 
-        .map-placeholder i {
-            font-size: 3rem;
-            color: var(--accent);
-        }
-
-        /* =================================================================
-           FOOTER
-           ================================================================= */
+        /* Footer */
         footer {
             background: var(--bg-secondary);
             border-top: 1px solid var(--border-color);
-            padding: 6rem 2rem 3rem 2rem;
+            padding: 80px 5% 40px 5%;
         }
 
         .footer-grid {
-            max-width: 1280px;
-            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 3rem;
-            padding-bottom: 4rem;
-            border-bottom: 1px solid var(--border-color);
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
         }
 
         .footer-col h4 {
             font-size: 1rem;
-            margin-bottom: 1.5rem;
             font-weight: 700;
+            margin-bottom: 20px;
             color: var(--text-primary);
         }
 
@@ -856,168 +651,177 @@
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 0.85rem;
+            gap: 12px;
         }
 
         .footer-col ul a {
+            text-decoration: none;
             color: var(--text-secondary);
-            font-size: 0.92rem;
+            font-size: 0.9rem;
+            transition: var(--transition-smooth);
         }
 
         .footer-col ul a:hover {
-            color: var(--accent);
+            color: var(--accent-primary);
         }
 
-        .footer-newsletter {
-            grid-column: span 2;
-        }
-
-        .footer-newsletter h4 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-        }
-
-        .newsletter-form {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: 1rem;
-        }
-
-        .newsletter-form input {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 0.85rem 1.25rem;
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 0.95rem;
-            outline: none;
-            width: 100%;
-        }
-
-        .newsletter-form button {
-            background: var(--accent);
-            color: #090A0F;
-            padding: 0.85rem 1.5rem;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            white-space: nowrap;
-        }
-
-        .newsletter-form button:hover {
-            filter: brightness(1.1);
-        }
-
-        .footer-bottom-bar {
-            max-width: 1280px;
-            margin: 3rem auto 0 auto;
+        .footer-bottom {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: var(--text-muted);
-            font-size: 0.9rem;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
-        .social-icons {
-            display: flex;
-            gap: 1.25rem;
-        }
-
-        .social-icons a {
+        .footer-bottom p {
             color: var(--text-secondary);
-            font-size: 1.2rem;
+            font-size: 0.85rem;
         }
 
-        .social-icons a:hover {
-            color: var(--accent);
+        .social-links {
+            display: flex;
+            gap: 15px;
         }
 
-        /* Responsive Layouts */
-        @media (max-width: 1024px) {
-            .hero { grid-template-columns: 1fr; text-align: center; padding-top: 10rem; }
-            .hero-content p { margin: 0 auto 2.5rem auto; }
+        .social-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition-smooth);
+        }
+
+        .social-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        /* Search Overlay */
+        .search-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 15vh;
+            animation: fadeIn 0.2s ease forwards;
+        }
+
+        .search-overlay.active {
+            display: flex;
+        }
+
+        .search-modal {
+            width: 90%;
+            max-width: 600px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        }
+
+        .search-input-wrapper {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        .search-results {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .search-result-item {
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            display: block;
+            transition: var(--transition-smooth);
+        }
+
+        .search-result-item:hover {
+            background: var(--card-hover);
+            color: var(--accent-primary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 992px) {
+            .nav-center { display: none; }
+            .hero { flex-direction: column; justify-content: center; text-align: center; gap: 50px; height: auto; padding-top: 140px; padding-bottom: 80px; }
+            .hero-content { max-width: 100%; }
             .hero-btns { justify-content: center; }
-            .about-grid, .cards-grid, .contact-grid, .footer-grid { grid-template-columns: 1fr; }
-            .footer-newsletter { grid-column: span 1; }
-            .nav-links { display: none; }
+            .hero-visual { width: 100%; max-width: 400px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Scroll Progress Bar -->
-    <div id="scroll-progress"></div>
-
-    <!-- Luxury Loader -->
-    <div id="page-loader">
-        <div class="loader-brand">Aarya Technologies</div>
+    <!-- Luxury Animated Loader -->
+    <div id="loader">
+        <div class="loader-spinner"></div>
+        <div style="font-weight: 600; font-size: 0.9rem; letter-spacing: 2px;">AARYA TECHNOLOGIES</div>
     </div>
 
-    <!-- Search Overlay -->
-    <div class="search-overlay" id="search-overlay">
-        <div class="search-modal">
-            <div class="search-input-wrapper">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="search-input" placeholder="Search enterprise solutions, services, architecture..." autocomplete="off">
-            </div>
-            <div class="search-results" id="search-results">
-                <div class="search-item" onclick="window.location.href='services.html'"><span>Web Development</span><i class="fa-solid fa-arrow-right"></i></div>
-                <div class="search-item" onclick="window.location.href='solutions.html'"><span>Luxury E-Commerce</span><i class="fa-solid fa-arrow-right"></i></div>
-                <div class="search-item" onclick="window.location.href='contact.html'"><span>Contact & Office Address</span><i class="fa-solid fa-arrow-right"></i></div>
-            </div>
+    <!-- Sticky Glassmorphism Header -->
+    <header id="header">
+        <a href="index.html" class="nav-left">
+            <div class="logo-placeholder">AT</div>
+            <span class="company-name">Aarya Technologies</span>
+        </a>
+
+        <div class="nav-center">
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="solutions.html">Solutions</a></li>
+                    <li><a href="portfolio.html">Portfolio</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
         </div>
-    </div>
 
-    <!-- Header & Navigation -->
-    <header>
-        <div class="nav-container">
-            <a href="index.html" class="logo-wrapper">
-                <div class="logo-placeholder">AT</div>
-                <div class="logo-text">Aarya Technologies</div>
-            </a>
-
-            <ul class="nav-links">
-                <li><a href="#services">Services</a></li>
-                <li><a href="#solutions">Solutions</a></li>
-                <li><a href="#portfolio">Portfolio</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-
-            <div class="nav-actions">
-                <!-- Search Trigger Button -->
-                <button class="icon-btn" id="search-trigger-btn" aria-label="Search">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-
-                <!-- Theme Toggle Button -->
-                <button class="icon-btn" id="theme-toggle" aria-label="Toggle Dark/Light Mode">
-                    <i class="fa-solid fa-moon"></i>
-                </button>
-
-                <!-- Login Button (Shown when logged out) -->
-                <a href="login.html" class="btn-login" id="nav-login-btn">Sign In</a>
-
-                <!-- Profile Dropdown (Shown when logged in) -->
-                <div class="profile-menu-wrapper" id="nav-profile-wrapper">
-                    <button class="profile-avatar-btn" id="profile-menu-trigger" aria-label="User Menu">
-                        <span id="avatar-initial">A</span>
-                    </button>
-                    <div class="profile-dropdown" id="profile-dropdown-menu">
-                        <div class="dropdown-header">
-                            <div class="user-name" id="dropdown-user-name">User Name</div>
-                            <div class="user-email" id="dropdown-user-email">user@aaryatech.com</div>
-                        </div>
-                        <a href="profile.html" class="dropdown-item">
-                            <i class="fa-solid fa-user"></i> My Profile
-                        </a>
-                        <a href="settings.html" class="dropdown-item">
-                            <i class="fa-solid fa-gear"></i> Settings
-                        </a>
-                        <button type="button" class="dropdown-item logout" id="logout-btn" style="width: 100%; border: none; background: none; text-align: left; cursor: pointer;">
-                            <i class="fa-solid fa-right-from-bracket"></i> Logout
-                        </button>
-                    </div>
+        <div class="nav-right">
+            <button class="icon-btn" id="themeToggle" aria-label="Toggle Theme">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
+            <button class="icon-btn" id="searchBtn" aria-label="Open Search (Ctrl + K)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </button>
+            
+            <a href="login.html" class="btn-primary" id="loginBtn">Login</a>
+            
+            <div class="profile-dropdown-container">
+                <img src="" alt="Profile" class="profile-avatar" id="profileAvatar">
+                <div class="profile-menu" id="profileMenu">
+                    <a href="profile.html">My Profile</a>
+                    <a href="settings.html">Settings</a>
+                    <button id="logoutBtn">Logout</button>
                 </div>
             </div>
         </div>
@@ -1026,485 +830,417 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h1>Architecting <span>Digital</span> Excellence & Scale</h1>
-            <p>Empowering global enterprises with bespoke high-performance software architectures, secure cloud solutions, and world-class digital engineering.</p>
+            <h1>Engineering Digital Excellence for <span>Tomorrow</span></h1>
+            <p>Aarya Technologies builds elite software, cutting-edge mobile applications, and advanced AI systems designed to scale visionary enterprises.</p>
             <div class="hero-btns">
-                <a href="login.html" class="btn-primary">Explore Enterprise Portal</a>
-                <a href="#services" class="btn-secondary">Our Services</a>
+                <a href="services.html" class="btn-primary">Explore Services</a>
+                <a href="contact.html" class="btn-secondary">Get in Touch</a>
             </div>
         </div>
         <div class="hero-visual">
-            <div class="visual-badge">
-                <i class="fa-solid fa-shield-halved"></i>
-                <div>
-                    <h4>Secure Infrastructure</h4>
-                    <p>Enterprise Identity & Access Vault</p>
+            <div class="laptop-mockup">
+                <div class="laptop-screen">
+                    <div class="code-line short"></div>
+                    <div class="code-line long"></div>
+                    <div class="code-line medium"></div>
+                    <div class="code-line long"></div>
+                    <div class="code-line short"></div>
                 </div>
+            </div>
+            <div class="floating-card card-1">
+                <span>⚡</span> High Performance
+            </div>
+            <div class="floating-card card-2">
+                <span>🛡️</span> Secure & Scalable
             </div>
         </div>
     </section>
 
-    <!-- About Preview Section -->
-    <section class="about-preview">
+    <!-- About Section -->
+    <section id="about">
+        <div class="section-header">
+            <h2>About Aarya Technologies</h2>
+            <p>Pushing the boundaries of software engineering and digital innovation.</p>
+        </div>
         <div class="about-grid">
-            <div class="about-content">
-                <h2>Engineering World-Class Digital Assets</h2>
-                <p>At Aarya Technologies, we bridge the gap between visionary ideas and flawless technological execution. Our team of elite engineers and architects build robust digital systems designed to scale seamlessly.</p>
-                <p>We adhere to uncompromising standards of code quality, absolute security, and minimalist design elegance.</p>
+            <div class="about-card">
+                <h3>Introduction</h3>
+                <p>We are a premier software development firm delivering mission-critical applications, immersive user experiences, and tailored enterprise intelligence.</p>
             </div>
             <div class="about-card">
-                <h3>Enterprise Philosophy</h3>
-                <p>Precision engineering, uncompromising data security, and flawless user experience form the core of every solution we deliver to our global clientele.</p>
+                <h3>Our Mission</h3>
+                <p>To empower businesses globally through world-class code, intuitive design, and scalable architecture that drives exponential growth.</p>
+            </div>
+            <div class="about-card">
+                <h3>Our Vision</h3>
+                <p>To be the definitive global benchmark for technological innovation, craftsmanship, and reliable digital transformation.</p>
             </div>
         </div>
     </section>
 
     <!-- Services Section -->
-    <section class="services" id="services">
+    <section id="services">
         <div class="section-header">
-            <h2>Core Services</h2>
-            <p>Comprehensive digital engineering solutions tailored for market leaders.</p>
+            <h2>Our Services</h2>
+            <p>Comprehensive engineering capabilities tailored for market leaders.</p>
         </div>
-
-        <div class="cards-grid">
-            <div class="luxury-card" onclick="window.location.href='web-development.html'">
-                <div>
-                    <div class="card-icon"><i class="fa-solid fa-code"></i></div>
+        <div class="grid-cards">
+            <a href="services.html" class="luxury-card">
+                <div class="card-content">
                     <h3>Web Development</h3>
-                    <p>High-performance web applications built with cutting-edge architectures, ultra-fast load speeds, and pristine responsive design.</p>
+                    <p>High-performance, secure, and modern web applications built using advanced frontend and backend frameworks.</p>
                 </div>
-                <a href="web-development.html" class="card-link">Explore Service <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-
-            <div class="luxury-card" onclick="window.location.href='android-apps.html'">
-                <div>
-                    <div class="card-icon"><i class="fa-brands fa-android"></i></div>
-                    <h3>Android Apps</h3>
-                    <p>Native and cross-platform Android solutions engineered for fluid performance, deep hardware integration, and maximum engagement.</p>
+                <div class="card-link">Learn More &rarr;</div>
+            </a>
+            <a href="services.html" class="luxury-card">
+                <div class="card-content">
+                    <h3>Android App Development</h3>
+                    <p>Native and cross-platform mobile solutions engineered for exceptional performance on Android devices.</p>
                 </div>
-                <a href="android-apps.html" class="card-link">Explore Service <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-
-            <div class="luxury-card" onclick="window.location.href='ios-apps.html'">
-                <div>
-                    <div class="card-icon"><i class="fa-brands fa-apple"></i></div>
-                    <h3>iOS Apps</h3>
-                    <p>Exquisite Apple-ecosystem applications featuring meticulous attention to human interface guidelines and buttery-smooth animations.</p>
+                <div class="card-link">Learn More &rarr;</div>
+            </a>
+            <a href="services.html" class="luxury-card">
+                <div class="card-content">
+                    <h3>iOS App Development</h3>
+                    <p>Sleek, responsive, and robust applications meticulously designed for the Apple ecosystem.</p>
                 </div>
-                <a href="ios-apps.html" class="card-link">Explore Service <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-
-            <div class="luxury-card" onclick="window.location.href='ai-solutions.html'">
-                <div>
-                    <div class="card-icon"><i class="fa-solid fa-brain"></i></div>
+                <div class="card-link">Learn More &rarr;</div>
+            </a>
+            <a href="services.html" class="luxury-card">
+                <div class="card-content">
                     <h3>AI Solutions</h3>
-                    <p>Advanced machine learning models and generative AI integrations designed to automate complex workflows and drive smart decisions.</p>
+                    <p>Next-gen machine learning integration, intelligent automation, and customized AI models for enterprise optimization.</p>
                 </div>
-                <a href="ai-solutions.html" class="card-link">Explore Service <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-
-            <div class="luxury-card" onclick="window.location.href='ui-ux-design.html'">
-                <div>
-                    <div class="card-icon"><i class="fa-solid fa-pen-nib"></i></div>
-                    <h3>UI UX Design</h3>
-                    <p>World-class interface and experience design inspired by Apple, Stripe, and Linear standards to elevate brand authority.</p>
+                <div class="card-link">Learn More &rarr;</div>
+            </a>
+            <a href="services.html" class="luxury-card">
+                <div class="card-content">
+                    <h3>UI/UX Design</h3>
+                    <p>Sophisticated, human-centric design systems that convert casual visitors into loyal brand advocates.</p>
                 </div>
-                <a href="ui-ux-design.html" class="card-link">Explore Service <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-
-            <div class="luxury-card" onclick="window.location.href='website-maintenance.html'">
-                <div>
-                    <div class="card-icon"><i class="fa-solid fa-shield-heart"></i></div>
+                <div class="card-link">Learn More &rarr;</div>
+            </a>
+            <a href="services.html" class="luxury-card">
+                <div class="card-content">
                     <h3>Website Maintenance</h3>
-                    <p>Continuous monitoring, security hardening, performance optimization, and regular updates to keep digital assets pristine.</p>
+                    <p>Proactive monitoring, security updates, and performance optimization to ensure zero downtime.</p>
                 </div>
-                <a href="website-maintenance.html" class="card-link">Explore Service <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
+                <div class="card-link">Learn More &rarr;</div>
+            </a>
         </div>
     </section>
 
     <!-- Solutions Section -->
-    <section class="solutions" id="solutions">
+    <section id="solutions">
         <div class="section-header">
-            <h2>Enterprise Solutions</h2>
-            <p>Industry-grade digital ecosystems built for enterprise scale.</p>
+            <h2>Our Solutions</h2>
+            <p>Industry-specific architectures built for absolute reliability.</p>
         </div>
-
-        <div class="cards-grid">
-            <div class="luxury-card" onclick="window.location.href='luxury-ecommerce.html'">
-                <div>
-                    <div class="card-icon"><i class="fa-solid fa-bag-shopping"></i></div>
+        <div class="grid-cards">
+            <a href="solutions.html" class="luxury-card">
+                <div class="card-content">
                     <h3>Luxury Ecommerce</h3>
-                    <p>Immersive online storefronts optimized for high-ticket transactions, seamless checkout flows, and luxury visual storytelling.</p>
+                    <p>High-end digital storefronts delivering frictionless checkout, flawless presentation, and secure transactions.</p>
                 </div>
-                <a href="luxury-ecommerce.html" class="card-link">Explore Solution <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-
-            <div class="luxury-card" onclick="window.location.href='healthcare-systems.html'">
-                <div>
-                    <div class="card-icon"><i class="fa-solid fa-hospital"></i></div>
+                <div class="card-link">Explore Solution &rarr;</div>
+            </a>
+            <a href="solutions.html" class="luxury-card">
+                <div class="card-content">
                     <h3>Healthcare Systems</h3>
-                    <p>Secure, HIPAA-compliant digital portals and management systems designed for hospitals, clinics, and medical practitioners.</p>
+                    <p>HIPAA-compliant patient portals, secure medical records management, and automated clinic workflows.</p>
                 </div>
-                <a href="healthcare-systems.html" class="card-link">Explore Solution <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-
-            <div class="luxury-card" onclick="window.location.href='business-solutions.html'">
-                <div>
-                    <div class="card-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                <div class="card-link">Explore Solution &rarr;</div>
+            </a>
+            <a href="solutions.html" class="luxury-card">
+                <div class="card-content">
                     <h3>Business Solutions</h3>
-                    <p>Custom enterprise resource planning and telemetry dashboards tailored to streamline complex organizational workflows.</p>
+                    <p>Enterprise resource systems, internal tools, and analytics dashboards designed for operational mastery.</p>
                 </div>
-                <a href="business-solutions.html" class="card-link">Explore Solution <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-
-            <div class="luxury-card" onclick="window.location.href='startup-solutions.html'">
-                <div>
-                    <div class="card-icon"><i class="fa-solid fa-rocket"></i></div>
+                <div class="card-link">Explore Solution &rarr;</div>
+            </a>
+            <a href="solutions.html" class="luxury-card">
+                <div class="card-content">
                     <h3>Startup Solutions</h3>
-                    <p>Rapid MVP development, scalable cloud scaffolding, and technical advisory to help ambitious startups dominate their markets.</p>
+                    <p>Rapid MVP deployment, scalable cloud foundations, and strategic technical consulting for hyper-growth startups.</p>
                 </div>
-                <a href="startup-solutions.html" class="card-link">Explore Solution <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-
-            <div class="luxury-card" onclick="window.location.href='custom-software.html'" style="grid-column: span 2;">
-                <div>
-                    <div class="card-icon"><i class="fa-solid fa-network-wired"></i></div>
-                    <h3>Custom Software Architecture</h3>
-                    <p>Bespoke enterprise-grade software engineered from scratch to solve highly unique business challenges with absolute precision and security.</p>
+                <div class="card-link">Explore Solution &rarr;</div>
+            </a>
+            <a href="solutions.html" class="luxury-card">
+                <div class="card-content">
+                    <h3>Custom Software</h3>
+                    <p>Bespoke software systems engineered precisely around your unique business logic and competitive advantages.</p>
                 </div>
-                <a href="custom-software.html" class="card-link">Explore Solution <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
+                <div class="card-link">Explore Solution &rarr;</div>
+            </a>
         </div>
     </section>
 
     <!-- Portfolio Section -->
-    <section class="portfolio" id="portfolio">
+    <section id="portfolio">
         <div class="section-header">
-            <h2>Portfolio</h2>
-            <p>Showcasing our commitment to elite digital engineering.</p>
+            <h2>Our Portfolio</h2>
+            <p>Showcasing our benchmark engineering standards.</p>
         </div>
         <div class="portfolio-banner">
-            <h3>Our Portfolio Will Be Updated Soon</h3>
-            <p>We are currently curating our latest enterprise case studies and high-impact digital deployments. Check back shortly.</p>
+            <h3>Our Portfolio is Coming Soon</h3>
+            <p>We are currently curating our high-impact enterprise case studies and advanced deployments. Check back shortly.</p>
+            <a href="portfolio.html" class="btn-primary">Learn More</a>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section class="contact" id="contact">
+    <section id="contact">
         <div class="section-header">
             <h2>Connect With Us</h2>
-            <p>Reach out to our executive engineering team.</p>
+            <p>Reach out directly for enterprise inquiries and partnership opportunities.</p>
         </div>
-
         <div class="contact-grid">
-            <div class="contact-info-card">
-                <div class="contact-item">
-                    <i class="fa-solid fa-envelope"></i>
-                    <div>
-                        <h4>Business Email</h4>
-                        <p>contact@aaryatech.com</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <i class="fa-solid fa-phone"></i>
-                    <div>
-                        <h4>Phone Number</h4>
-                        <p>+91 (0) 98765 43210</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <i class="fa-brands fa-whatsapp"></i>
-                    <div>
-                        <h4>WhatsApp</h4>
-                        <p>+91 (0) 98765 43210</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <div>
-                        <h4>Office Address</h4>
-                        <p>Aarya Technologies HQ, Enterprise Tower, Maharashtra, India</p>
-                    </div>
-                </div>
+            <div class="contact-card">
+                <h4>Business Email</h4>
+                <p><a href="mailto:contact@aaryatechnologies.com">contact@aaryatechnologies.com</a></p>
             </div>
-
-            <div class="map-placeholder">
-                <i class="fa-solid fa-map-location-dot"></i>
-                <h3>Google Map Location</h3>
-                <p>Interactive Map Integration Active</p>
+            <div class="contact-card">
+                <h4>Business Phone</h4>
+                <p><a href="tel:+919000000000">+91 90000 00000</a></p>
             </div>
+            <div class="contact-card">
+                <h4>WhatsApp</h4>
+                <p><a href="https://wa.me/919000000000" target="_blank" rel="noopener">Chat with Us</a></p>
+            </div>
+            <div class="contact-card">
+                <h4>Office Address</h4>
+                <p>Maharashtra, India</p>
+            </div>
+        </div>
+        <div class="map-container">
+            [ Google Maps Placeholder ]
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
         <div class="footer-grid">
-            <div class="footer-col footer-newsletter">
-                <div class="logo-wrapper" style="margin-bottom: 1rem;">
-                    <div class="logo-placeholder">AT</div>
-                    <div class="logo-text">Aarya Technologies</div>
-                </div>
-                <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem;">Subscribe to our elite engineering newsletter for insights on cloud architecture and digital scale.</p>
-                <form class="newsletter-form" onsubmit="event.preventDefault();">
-                    <input type="email" placeholder="Enter your business email" required>
-                    <button type="submit">Subscribe</button>
-                </form>
-            </div>
-
             <div class="footer-col">
-                <h4>Company & Services</h4>
+                <h4>Company</h4>
                 <ul>
-                    <li><a href="index.html">Company Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="portfolio.html">Portfolio</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <ul>
                     <li><a href="services.html">Web Development</a></li>
-                    <li><a href="services.html">Mobile Applications</a></li>
+                    <li><a href="services.html">Android Apps</a></li>
+                    <li><a href="services.html">iOS Apps</a></li>
                     <li><a href="services.html">AI Solutions</a></li>
                     <li><a href="services.html">UI/UX Design</a></li>
+                    <li><a href="services.html">Maintenance</a></li>
                 </ul>
             </div>
-
             <div class="footer-col">
-                <h4>Solutions & Resources</h4>
+                <h4>Solutions</h4>
                 <ul>
                     <li><a href="solutions.html">Luxury Ecommerce</a></li>
-                    <li><a href="solutions.html">Healthcare Systems</a></li>
-                    <li><a href="solutions.html">Startup Solutions</a></li>
-                    <li><a href="portfolio.html">Portfolio Case Studies</a></li>
+                    <li><a href="solutions.html">Healthcare</a></li>
+                    <li><a href="solutions.html">Business Systems</a></li>
+                    <li><a href="solutions.html">Startups</a></li>
+                    <li><a href="solutions.html">Custom Software</a></li>
                 </ul>
             </div>
-
             <div class="footer-col">
-                <h4>Support & Policies</h4>
+                <h4>Resources & Support</h4>
                 <ul>
                     <li><a href="privacy.html">Privacy Policy</a></li>
                     <li><a href="terms.html">Terms & Conditions</a></li>
                     <li><a href="cookies.html">Cookie Policy</a></li>
+                    <li><a href="refund.html">Refund Policy</a></li>
                     <li><a href="security.html">Security Policy</a></li>
-                    <li><a href="accessibility.html">Accessibility Policy</a></li>
+                    <li><a href="accessibility.html">Accessibility</a></li>
                     <li><a href="disclaimer.html">Disclaimer</a></li>
                     <li><a href="sitemap.html">Sitemap</a></li>
                 </ul>
             </div>
         </div>
-
-        <div class="footer-bottom-bar">
+        <div class="footer-bottom">
             <p>&copy; 2026 Aarya Technologies. All rights reserved.</p>
-            <div class="social-icons">
-                <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
-                <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-                <a href="https://github.com" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
-                <a href="https://youtube.com" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <div class="social-links">
+                <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+                <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://youtube.com" target="_blank" rel="noopener">YouTube</a>
             </div>
         </div>
     </footer>
 
-    <!-- ================= FIREBASE & APP LOGIC ================= -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { 
-            getAuth, 
-            onAuthStateChanged, 
-            signOut 
-        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { 
-            getFirestore, 
-            doc, 
-            getDoc 
-        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    <!-- Search Overlay -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-modal">
+            <div class="search-input-wrapper">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" class="search-input" id="searchInput" placeholder="Type to search navigation links...">
+            </div>
+            <div class="search-results" id="searchResults">
+                <a href="index.html" class="search-result-item">Home</a>
+                <a href="services.html" class="search-result-item">Services</a>
+                <a href="solutions.html" class="search-result-item">Solutions</a>
+                <a href="portfolio.html" class="search-result-item">Portfolio</a>
+                <a href="contact.html" class="search-result-item">Contact</a>
+                <a href="login.html" class="search-result-item">Login</a>
+                <a href="profile.html" class="search-result-item">My Profile</a>
+                <a href="settings.html" class="search-result-item">Settings</a>
+            </div>
+        </div>
+    </div>
 
-        // Exact Firebase Configuration from login.html
+    <!-- Firebase v10+ Modular SDK & App Logic -->
+    <script type="module">
+        import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Exact Firebase Configuration requested
         const firebaseConfig = {
-            apiKey: "AIzaSyDRauyKHGML3a6THpzTx3nWaIWrpSo2Bk4",
-            authDomain: "aarya-tech.firebaseapp.com",
-            projectId: "aarya-tech",
-            storageBucket: "aarya-tech.firebasestorage.app",
-            messagingSenderId: "623415516526",
-            appId: "1:623415516526:web:c81dd1c6bcf4a91b0c757f",
-            measurementId: "G-ZWXXVNZ5TF"
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID",
+            measurementId: "YOUR_MEASUREMENT_ID"
         };
 
-        // Initialize Firebase App, Auth, Firestore
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        let app, auth, db;
+        try {
+            app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
+            auth = getAuth(app);
+            db = getFirestore(app);
+        } catch (error) {
+            console.error("Firebase initialization error:", error);
+        }
 
-        /* =================================================================
-           PAGE LOADER & SCROLL PROGRESS
-           ================================================================= */
+        // DOM Elements
+        const loader = document.getElementById('loader');
+        const header = document.getElementById('header');
+        const themeToggle = document.getElementById('themeToggle');
+        const searchBtn = document.getElementById('searchBtn');
+        const searchOverlay = document.getElementById('searchOverlay');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        const loginBtn = document.getElementById('loginBtn');
+        const profileAvatar = document.getElementById('profileAvatar');
+        const profileMenu = document.getElementById('profileMenu');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Loader Management
         window.addEventListener('load', () => {
-            const loader = document.getElementById('page-loader');
-            if (loader) loader.classList.add('hidden');
+            setTimeout(() => {
+                loader.classList.add('fade-out');
+            }, 300);
         });
 
+        // Sticky Header on Scroll
         window.addEventListener('scroll', () => {
-            const winScroll = document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            const progressBar = document.getElementById('scroll-progress');
-            if (progressBar) progressBar.style.width = scrolled + '%';
-        });
-
-        /* =================================================================
-           THEME TOGGLE MANAGEMENT
-           ================================================================= */
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const htmlElement = document.documentElement;
-
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        htmlElement.setAttribute('data-theme', savedTheme);
-        updateThemeIcon(savedTheme);
-
-        themeToggleBtn.addEventListener('click', () => {
-            const currentTheme = htmlElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            htmlElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
-        });
-
-        function updateThemeIcon(theme) {
-            const icon = themeToggleBtn.querySelector('i');
-            if (icon) {
-                icon.className = theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
-            }
-        }
-
-        /* =================================================================
-           SEARCH OVERLAY & SHORTCUT (CTRL + K)
-           ================================================================= */
-        const searchOverlay = document.getElementById('search-overlay');
-        const searchTriggerBtn = document.getElementById('search-trigger-btn');
-        const searchInput = document.getElementById('search-input');
-
-        function toggleSearch(open) {
-            if (open) {
-                searchOverlay.classList.add('active');
-                if (searchInput) searchInput.focus();
+            if (window.scrollY > 30) {
+                header.classList.add('scrolled');
             } else {
-                searchOverlay.classList.remove('active');
+                header.classList.remove('scrolled');
             }
-        }
+        });
 
-        if (searchTriggerBtn) {
-            searchTriggerBtn.addEventListener('click', () => toggleSearch(true));
-        }
+        // Theme Toggle Logic
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            let theme = document.documentElement.getAttribute('data-theme');
+            let newTheme = theme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Search Overlay & Shortcut Logic
+        searchBtn.addEventListener('click', () => {
+            searchOverlay.classList.add('active');
+            searchInput.focus();
+        });
 
         searchOverlay.addEventListener('click', (e) => {
-            if (e.target === searchOverlay) toggleSearch(false);
+            if (e.target === searchOverlay) {
+                searchOverlay.classList.remove('active');
+            }
         });
 
-        document.addEventListener('keydown', (e) => {
+        window.addEventListener('keydown', (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
                 e.preventDefault();
-                const isActive = searchOverlay.classList.contains('active');
-                toggleSearch(!isActive);
+                searchOverlay.classList.add('active');
+                searchInput.focus();
             }
             if (e.key === 'Escape') {
-                toggleSearch(false);
+                searchOverlay.classList.remove('active');
+                profileMenu.classList.remove('active');
             }
         });
 
-        /* =================================================================
-           PROFILE DROPDOWN INTERACTION
-           ================================================================= */
-        const profileTrigger = document.getElementById('profile-menu-trigger');
-        const profileDropdown = document.getElementById('profile-dropdown-menu');
-
-        if (profileTrigger && profileDropdown) {
-            profileTrigger.addEventListener('click', (e) => {
-                e.stopPropagation();
-                profileDropdown.classList.toggle('active');
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const items = searchResults.querySelectorAll('.search-result-item');
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
             });
+        });
 
-            document.addEventListener('click', (e) => {
-                if (!profileDropdown.contains(e.target) && !profileTrigger.contains(e.target)) {
-                    profileDropdown.classList.remove('active');
+        // Profile Menu Toggle
+        profileAvatar.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileMenu.classList.toggle('active');
+        });
+
+        window.addEventListener('click', () => {
+            profileMenu.classList.remove('active');
+        });
+
+        // Auth State Management
+        if (auth) {
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    loginBtn.style.display = 'none';
+                    profileAvatar.style.display = 'block';
+                    
+                    let avatarUrl = user.photoURL || 'https://via.placeholder.com/40';
+                    try {
+                        const docRef = doc(db, "users", user.uid);
+                        const docSnap = await getDoc(docRef);
+                        if (docSnap.exists() && docSnap.data().photoURL) {
+                            avatarUrl = docSnap.data().photoURL;
+                        }
+                    } catch (err) {
+                        console.error("Firestore read error, falling back to Auth data:", err);
+                    }
+                    profileAvatar.src = avatarUrl;
+                } else {
+                    loginBtn.style.display = 'inline-flex';
+                    profileAvatar.style.display = 'none';
+                    profileMenu.classList.remove('active');
                 }
             });
         }
 
-        /* =================================================================
-           FIREBASE AUTH STATE LISTENER & UI BINDING
-           ================================================================= */
-        const loginBtn = document.getElementById('nav-login-btn');
-        const profileWrapper = document.getElementById('nav-profile-wrapper');
-        const avatarInitial = document.getElementById('avatar-initial');
-        const dropdownUserName = document.getElementById('dropdown-user-name');
-        const dropdownUserEmail = document.getElementById('dropdown-user-email');
-        const logoutBtn = document.getElementById('logout-btn');
-
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                // User is NOT logged in -> Show Login Button, Hide Profile
-                if (loginBtn) loginBtn.style.display = 'inline-block';
-                if (profileWrapper) profileWrapper.style.display = 'none';
-            } else {
-                // User exists -> Reload user to check latest email verification state
-                try {
-                    await user.reload();
-                } catch (err) {
-                    // Ignore network reload errors
-                }
-
-                if (user.emailVerified) {
-                    // Verified -> Hide Login Button, Show Profile
-                    if (loginBtn) loginBtn.style.display = 'none';
-                    if (profileWrapper) profileWrapper.style.display = 'block';
-
-                    // Default fallback values from Auth
-                    let displayName = user.displayName || 'Enterprise User';
-                    let email = user.email || '';
-                    let photoURL = user.photoURL || '';
-
-                    // Read from Firestore users/{uid}
-                    try {
-                        const userDocRef = doc(db, 'users', user.uid);
-                        const userSnap = await getDoc(userDocRef);
-                        if (userSnap.exists()) {
-                            const data = userSnap.data();
-                            if (data.fullName) displayName = data.fullName;
-                            if (data.photoURL) photoURL = data.photoURL;
-                            if (data.theme) {
-                                htmlElement.setAttribute('data-theme', data.theme);
-                                localStorage.setItem('theme', data.theme);
-                                updateThemeIcon(data.theme);
-                            }
-                        }
-                    } catch (firestoreErr) {
-                        // Error fallback: continues gracefully with Auth data without crashing
-                    }
-
-                    // Populate Profile UI
-                    if (dropdownUserName) dropdownUserName.textContent = displayName;
-                    if (dropdownUserEmail) dropdownUserEmail.textContent = email;
-
-                    const avatarBtn = document.getElementById('profile-menu-trigger');
-                    if (avatarBtn) {
-                        if (photoURL) {
-                            avatarBtn.innerHTML = `<img src="${photoURL}" alt="Profile Avatar">`;
-                        } else if (avatarInitial) {
-                            avatarInitial.textContent = displayName.charAt(0).toUpperCase();
-                        }
-                    }
-                } else {
-                    // Email NOT verified -> Show Login Button, Hide Profile
-                    if (loginBtn) loginBtn.style.display = 'inline-block';
-                    if (profileWrapper) profileWrapper.style.display = 'none';
-                }
-            }
-        });
-
-        /* =================================================================
-           LOGOUT FUNCTIONALITY
-           ================================================================= */
-        if (logoutBtn) {
+        // Logout Logic
+        if (logoutBtn && auth) {
             logoutBtn.addEventListener('click', async () => {
                 try {
                     await signOut(auth);
-                    window.location.href = 'index.html';
                 } catch (error) {
-                    // Handle signOut error gracefully
+                    console.error("Logout error:", error);
                 }
             });
         }
