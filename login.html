@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Authentication | Aarya Technologies</title>
-    <meta name="description" content="Secure login and registration portal for Aarya Technologies enterprise solutions.">
-    
+    <title>Enterprise Authentication | Aarya Technologies</title>
+    <meta name="description" content="Secure enterprise sign-in and registration gateway for Aarya Technologies.">
     <style>
         :root {
-            --bg-primary: #090a0f;
-            --bg-secondary: #12141c;
-            --bg-card: rgba(18, 20, 28, 0.7);
+            --bg-primary: #07090e;
+            --bg-secondary: #0f131f;
+            --bg-card: rgba(15, 19, 31, 0.75);
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
             --accent-primary: #6366f1;
             --accent-hover: #4f46e5;
             --accent-secondary: #a855f7;
-            --accent-glow: rgba(99, 102, 241, 0.25);
+            --accent-glow: rgba(99, 102, 241, 0.3);
             --border-color: rgba(255, 255, 255, 0.08);
             --input-bg: rgba(255, 255, 255, 0.03);
             --error-color: #ef4444;
@@ -26,7 +25,7 @@
         }
 
         [data-theme="light"] {
-            --bg-primary: #f8fafc;
+            --bg-primary: #f1f5f9;
             --bg-secondary: #ffffff;
             --bg-card: rgba(255, 255, 255, 0.85);
             --text-primary: #0f172a;
@@ -34,7 +33,7 @@
             --accent-primary: #4f46e5;
             --accent-hover: #4338ca;
             --accent-secondary: #9333ea;
-            --accent-glow: rgba(79, 70, 229, 0.15);
+            --accent-glow: rgba(79, 70, 229, 0.2);
             --border-color: rgba(0, 0, 0, 0.08);
             --input-bg: rgba(0, 0, 0, 0.02);
             --error-color: #dc2626;
@@ -94,14 +93,13 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Split Screen Layout */
+        /* Split Screen Architecture */
         .auth-container {
             display: flex;
             width: 100vw;
             min-height: 100vh;
         }
 
-        /* Left Split - Branding & Animated Background */
         .brand-split {
             flex: 1;
             background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary));
@@ -132,32 +130,32 @@
 
         .shape {
             position: absolute;
-            filter: blur(80px);
-            opacity: 0.15;
+            filter: blur(90px);
+            opacity: 0.18;
             border-radius: 50%;
-            animation: floatShape 10s ease-in-out infinite alternate;
+            animation: floatShape 12s ease-in-out infinite alternate;
         }
 
         .shape-1 {
-            width: 300px;
-            height: 300px;
+            width: 350px;
+            height: 350px;
             background: var(--accent-primary);
-            top: 10%;
+            top: 15%;
             left: 10%;
         }
 
         .shape-2 {
-            width: 400px;
-            height: 400px;
+            width: 450px;
+            height: 450px;
             background: var(--accent-secondary);
             bottom: 10%;
             right: 10%;
-            animation-delay: -5s;
+            animation-delay: -6s;
         }
 
         @keyframes floatShape {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(30px, 30px) scale(1.1); }
+            100% { transform: translate(40px, 40px) scale(1.15); }
         }
 
         .brand-content {
@@ -222,7 +220,7 @@
             font-size: 0.9rem;
         }
 
-        /* Right Split - Authentication Card */
+        /* Right Form Split */
         .form-split {
             flex: 1;
             display: flex;
@@ -242,7 +240,7 @@
             border: 1px solid var(--border-color);
             border-radius: 24px;
             padding: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
             position: relative;
             z-index: 2;
         }
@@ -291,7 +289,6 @@
             font-size: 0.95rem;
         }
 
-        /* Forms Styling */
         .auth-form {
             display: none;
             flex-direction: column;
@@ -361,6 +358,7 @@
             gap: 8px;
             cursor: pointer;
             color: var(--text-secondary);
+            font-size: 0.9rem;
         }
 
         .checkbox-wrapper input {
@@ -382,11 +380,11 @@
         }
 
         /* Password Strength Meter */
-        .strength-meter-container {
+        .strength-container {
             display: flex;
             flex-direction: column;
             gap: 6px;
-            margin-top: -10px;
+            margin-top: -6px;
         }
 
         .strength-bars {
@@ -407,7 +405,6 @@
             color: var(--text-secondary);
         }
 
-        /* Buttons */
         .btn-primary {
             background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             color: white;
@@ -433,7 +430,7 @@
             text-align: center;
             color: var(--text-secondary);
             font-size: 0.85rem;
-            margin: 10px 0;
+            margin: 5px 0;
         }
 
         .divider::before, .divider::after {
@@ -472,10 +469,10 @@
             text-align: center;
             font-size: 0.9rem;
             color: var(--text-secondary);
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
-        /* Modal Popups */
+        /* Modal Overlay */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -540,7 +537,7 @@
             background: var(--border-color);
         }
 
-        /* Toast Notifications Container */
+        /* Toast Container */
         #toastContainer {
             position: fixed;
             bottom: 30px;
@@ -575,20 +572,9 @@
         .toast.warning { border-left: 4px solid var(--warning-color); }
         .toast.info { border-left: 4px solid var(--accent-primary); }
 
-        .toast-content {
-            flex: 1;
-        }
-
-        .toast-title {
-            font-weight: 700;
-            font-size: 0.9rem;
-            margin-bottom: 2px;
-        }
-
-        .toast-message {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
+        .toast-content { flex: 1; }
+        .toast-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 2px; }
+        .toast-message { font-size: 0.85rem; color: var(--text-secondary); }
 
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -614,12 +600,11 @@
         <div style="font-weight: 600; font-size: 0.9rem; letter-spacing: 2px;">AARYA TECHNOLOGIES</div>
     </div>
 
-    <!-- Toast Notifications Container -->
+    <!-- Toast Container -->
     <div id="toastContainer"></div>
 
     <div class="auth-container">
-        
-        <!-- Left Split: Branding -->
+        <!-- Brand Split -->
         <div class="brand-split">
             <div class="animated-bg-shapes">
                 <div class="shape shape-1"></div>
@@ -631,8 +616,8 @@
                     <div class="logo-box">AT</div>
                     <span class="company-title">Aarya Technologies</span>
                 </div>
-                <h1 class="brand-headline">Architecting the Future of <span>Enterprise Software</span></h1>
-                <p class="brand-tagline">Secure, scalable, and sophisticated digital infrastructures tailored for industry leaders worldwide.</p>
+                <h1 class="brand-headline">Architecting Next-Gen <span>Enterprise Solutions</span></h1>
+                <p class="brand-tagline">Secure, high-performance digital infrastructure built for global market leaders.</p>
             </div>
 
             <div class="brand-footer">
@@ -640,7 +625,7 @@
             </div>
         </div>
 
-        <!-- Right Split: Auth Card -->
+        <!-- Form Split -->
         <div class="form-split">
             <div class="top-controls">
                 <button class="icon-btn" id="themeToggle" aria-label="Toggle Theme">
@@ -654,20 +639,20 @@
                 <form id="loginForm" class="auth-form active">
                     <div class="form-header">
                         <h2>Welcome Back</h2>
-                        <p>Enter your credentials to access your dashboard.</p>
+                        <p>Sign in to your enterprise workspace.</p>
                     </div>
 
                     <div class="input-group">
                         <label class="input-label" for="loginEmail">Email Address</label>
                         <div class="input-field-wrapper">
-                            <input type="email" id="loginEmail" class="input-control" placeholder="name@company.com" required autocomplete="email">
+                            <input type="email" id="loginEmail" class="input-control" placeholder="name@aaryatech.com" required autocomplete="email">
                         </div>
                     </div>
 
                     <div class="input-group">
                         <label class="input-label" for="loginPassword">Password</label>
                         <div class="input-field-wrapper">
-                            <input type="password" id="loginPassword" class="input-control" placeholder="Enter your password" required autocomplete="current-password">
+                            <input type="password" id="loginPassword" class="input-control" placeholder="Enter password" required autocomplete="current-password">
                             <button type="button" class="password-toggle" data-target="loginPassword">Show</button>
                         </div>
                     </div>
@@ -697,7 +682,7 @@
                 <form id="signupForm" class="auth-form">
                     <div class="form-header">
                         <h2>Create Account</h2>
-                        <p>Get started with your enterprise workspace.</p>
+                        <p>Initialize your enterprise profile.</p>
                     </div>
 
                     <div class="input-group">
@@ -710,31 +695,31 @@
                     <div class="input-group">
                         <label class="input-label" for="signupEmail">Email Address</label>
                         <div class="input-field-wrapper">
-                            <input type="email" id="signupEmail" class="input-control" placeholder="name@company.com" required autocomplete="email">
+                            <input type="email" id="signupEmail" class="input-control" placeholder="name@aaryatech.com" required autocomplete="email">
                         </div>
                     </div>
 
                     <div class="input-group">
                         <label class="input-label" for="signupPassword">Password</label>
                         <div class="input-field-wrapper">
-                            <input type="password" id="signupPassword" class="input-control" placeholder="Create a secure password" required autocomplete="new-password">
+                            <input type="password" id="signupPassword" class="input-control" placeholder="Create password" required autocomplete="new-password">
                             <button type="button" class="password-toggle" data-target="signupPassword">Show</button>
                         </div>
-                        <div class="strength-meter-container">
+                        <div class="strength-container">
                             <div class="strength-bars">
                                 <div class="strength-bar" id="bar1"></div>
                                 <div class="strength-bar" id="bar2"></div>
                                 <div class="strength-bar" id="bar3"></div>
                                 <div class="strength-bar" id="bar4"></div>
                             </div>
-                            <span class="strength-text" id="strengthText">Password must be min 8 chars with uppercase, lowercase, number & symbol.</span>
+                            <span class="strength-text" id="strengthText">Min 8 chars, upper, lower, number & symbol.</span>
                         </div>
                     </div>
 
                     <div class="input-group">
                         <label class="input-label" for="signupConfirmPassword">Confirm Password</label>
                         <div class="input-field-wrapper">
-                            <input type="password" id="signupConfirmPassword" class="input-control" placeholder="Confirm your password" required autocomplete="new-password">
+                            <input type="password" id="signupConfirmPassword" class="input-control" placeholder="Confirm password" required autocomplete="new-password">
                         </div>
                     </div>
 
@@ -765,20 +750,20 @@
         <div class="modal-card">
             <div class="modal-header">
                 <h3>Reset Password</h3>
-                <p>Enter your registered email address to receive password reset instructions.</p>
+                <p>Enter your email to receive recovery instructions.</p>
             </div>
             <div class="input-group">
                 <label class="input-label" for="resetEmail">Email Address</label>
-                <input type="email" id="resetEmail" class="input-control" placeholder="name@company.com" required>
+                <input type="email" id="resetEmail" class="input-control" placeholder="name@aaryatech.com" required>
             </div>
             <div class="modal-actions">
                 <button type="button" class="btn-secondary" id="cancelReset">Cancel</button>
-                <button type="button" class="btn-primary" id="submitReset" style="padding: 10px 20px;">Send Reset Link</button>
+                <button type="button" class="btn-primary" id="submitReset" style="padding: 10px 20px;">Send Link</button>
             </div>
         </div>
     </div>
 
-    <!-- Firebase v10+ Modular SDK & Core Authentication Logic -->
+    <!-- Firebase v10+ Modular SDK & Core Engine -->
     <script type="module">
         import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { 
@@ -798,29 +783,29 @@
             doc, 
             getDoc, 
             setDoc, 
-            updateData, 
+            updateDoc, 
             serverTimestamp 
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // Exact Firebase Configuration requested
-       const firebaseConfig = {
-  apiKey: "AIzaSyDRauyKHGML3a6THpzTx3nWaIWrpSo2Bk4",
-  authDomain: "aarya-tech.firebaseapp.com",
-  projectId: "aarya-tech",
-  storageBucket: "aarya-tech.firebasestorage.app",
-  messagingSenderId: "623415516526",
-  appId: "1:623415516526:web:c81dd1c6bcf4a91b0c757f",
-  measurementId: "G-ZWXXVNZ5TF"
-};
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID",
+            measurementId: "YOUR_MEASUREMENT_ID"
+        };
 
-        // Initialize Firebase safely (Singleton Pattern)
+        // Singleton Firebase Initialization
         let app, auth, db;
         try {
             app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
             auth = getAuth(app);
             db = getFirestore(app);
         } catch (error) {
-            console.error("Firebase initialization failed:", error);
+            console.error("Firebase initialization critical failure:", error);
         }
 
         // DOM Elements
@@ -846,7 +831,7 @@
         const googleLoginBtn = document.getElementById('googleLoginBtn');
         const googleSignupBtn = document.getElementById('googleSignupBtn');
 
-        // Theme Management
+        // Theme Persistence
         const savedTheme = localStorage.getItem('theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
 
@@ -857,7 +842,7 @@
             localStorage.setItem('theme', newTheme);
         });
 
-        // Toast Notification Function
+        // Professional Toast Engine
         function showToast(title, message, type = 'info') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -866,6 +851,7 @@
             let iconSvg = '';
             if (type === 'success') iconSvg = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
             else if (type === 'error') iconSvg = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+            else if (type === 'warning') iconSvg = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>';
             else iconSvg = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>';
 
             toast.innerHTML = `
@@ -884,23 +870,23 @@
             }, 4000);
         }
 
-        // Firebase Error Code Mapping
+        // Friendly Error Mapper
         function getFriendlyErrorMessage(errorCode) {
             switch (errorCode) {
                 case 'auth/email-already-in-use': return 'This email address is already registered.';
                 case 'auth/user-not-found': return 'No account found with this email address.';
-                case 'auth/wrong-password': return 'Incorrect password. Please try again.';
+                case 'auth/wrong-password': return 'Incorrect password provided.';
                 case 'auth/invalid-email': return 'Please enter a valid email address.';
-                case 'auth/weak-password': return 'Password is too weak. Please meet all criteria.';
-                case 'auth/network-request-failed': return 'Network error. Please check your internet connection.';
-                case 'auth/too-many-requests': return 'Too many unsuccessful attempts. Please try again later.';
+                case 'auth/weak-password': return 'Password is too weak. Meet all security requirements.';
+                case 'auth/network-request-failed': return 'Network error. Check your internet connection.';
+                case 'auth/too-many-requests': return 'Too many attempts. Please try again later.';
                 case 'permission-denied':
-                case 'missing-or-insufficient-permissions': return 'Database permission error. Please contact support.';
-                default: return 'An unexpected error occurred. Please try again.';
+                case 'missing-or-insufficient-permissions': return 'Database permission error. Contact support.';
+                default: return 'An unexpected authentication error occurred.';
             }
         }
 
-        // Password Visibility Toggles
+        // Password Show/Hide
         document.querySelectorAll('.password-toggle').forEach(btn => {
             btn.addEventListener('click', () => {
                 const targetId = btn.getAttribute('data-target');
@@ -915,7 +901,7 @@
             });
         });
 
-        // Form Toggling
+        // Form Switching
         switchToSignup.addEventListener('click', (e) => {
             e.preventDefault();
             loginForm.classList.remove('active');
@@ -928,7 +914,7 @@
             loginForm.classList.add('active');
         });
 
-        // Forgot Password Modal Controls
+        // Forgot Password Modal
         forgotPasswordLink.addEventListener('click', (e) => {
             e.preventDefault();
             forgotModal.classList.add('active');
@@ -947,7 +933,7 @@
             try {
                 loader.classList.remove('hidden');
                 await sendPasswordResetEmail(auth, email);
-                showToast('Success', 'Password reset email sent successfully. Check your inbox.', 'success');
+                showToast('Success', 'Password reset instructions sent to your email.', 'success');
                 forgotModal.classList.remove('active');
                 resetEmail.value = '';
             } catch (error) {
@@ -957,7 +943,7 @@
             }
         });
 
-        // Password Strength Validator
+        // Password Strength Real-time Meter
         signupPassword.addEventListener('input', () => {
             const val = signupPassword.value;
             const bar1 = document.getElementById('bar1');
@@ -976,11 +962,8 @@
             const color = score <= 2 ? '#ef4444' : score <= 4 ? '#f59e0b' : '#22c55e';
             
             [bar1, bar2, bar3, bar4].forEach((bar, idx) => {
-                if (idx < score) {
-                    bar.style.background = color;
-                } else {
-                    bar.style.background = 'var(--border-color)';
-                }
+                if (idx < score) bar.style.background = color;
+                else bar.style.background = 'var(--border-color)';
             });
 
             if (score <= 2) text.textContent = 'Weak password';
@@ -988,14 +971,14 @@
             else text.textContent = 'Strong password';
         });
 
-        // Firestore Document Creator Helper
+        // Firestore User Management Helper (Idempotent, Merge-safe)
         async function createOrUpdateUserDoc(user, additionalData = {}) {
             const userRef = doc(db, "users", user.uid);
             const userSnap = await getDoc(userRef);
 
             const userData = {
                 uid: user.uid,
-                fullName: additionalData.fullName || user.displayName || 'User',
+                fullName: additionalData.fullName || user.displayName || 'Enterprise User',
                 email: user.email,
                 photoURL: user.photoURL || '',
                 role: "user",
@@ -1018,7 +1001,7 @@
             }
         }
 
-        // Signup Flow
+        // Signup Form Handler
         signupForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = signupName.value.trim();
@@ -1028,7 +1011,7 @@
             const acceptTerms = document.getElementById('acceptTerms').checked;
 
             if (!acceptTerms) {
-                showToast('Warning', 'You must accept the terms and conditions.', 'warning');
+                showToast('Warning', 'You must accept the terms & conditions.', 'warning');
                 return;
             }
 
@@ -1037,10 +1020,9 @@
                 return;
             }
 
-            // Password Complexity Validation
             const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
             if (!regex.test(password)) {
-                showToast('Error', 'Password must contain min 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character.', 'error');
+                showToast('Error', 'Password must contain min 8 chars, 1 uppercase, 1 lowercase, 1 number & 1 special character.', 'error');
                 return;
             }
 
@@ -1053,7 +1035,7 @@
                 await sendEmailVerification(user);
                 await createOrUpdateUserDoc(user, { fullName: name });
 
-                showToast('Success', 'Account created successfully! Please verify your email before logging in.', 'success');
+                showToast('Success', 'Account created! Please verify your email before logging in.', 'success');
                 await signOut(auth);
                 signupForm.reset();
                 signupForm.classList.remove('active');
@@ -1065,7 +1047,7 @@
             }
         });
 
-        // Login Flow
+        // Login Form Handler
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = loginEmail.value.trim();
@@ -1085,7 +1067,7 @@
                 }
 
                 await createOrUpdateUserDoc(user);
-                showToast('Success', 'Login successful! Redirecting to dashboard...', 'success');
+                showToast('Success', 'Authentication successful. Redirecting...', 'success');
                 window.location.href = 'dashboard.html';
             } catch (error) {
                 showToast('Error', getFriendlyErrorMessage(error.code), 'error');
@@ -1093,7 +1075,7 @@
             }
         });
 
-        // Google Login / Signup Flow
+        // Google Authentication Flow
         const handleGoogleAuth = async () => {
             try {
                 loader.classList.remove('hidden');
@@ -1102,7 +1084,7 @@
                 const user = result.user;
 
                 await createOrUpdateUserDoc(user);
-                showToast('Success', 'Google authentication successful! Redirecting...', 'success');
+                showToast('Success', 'Google authentication successful. Redirecting...', 'success');
                 window.location.href = 'dashboard.html';
             } catch (error) {
                 showToast('Error', getFriendlyErrorMessage(error.code), 'error');
@@ -1113,13 +1095,13 @@
         googleLoginBtn.addEventListener('click', handleGoogleAuth);
         googleSignupBtn.addEventListener('click', handleGoogleAuth);
 
-        // Auto Login & Auth State Listener (ONLY ONE onAuthStateChanged)
+        // Strict Single onAuthStateChanged Listener
         let authInitialized = false;
         if (auth) {
             onAuthStateChanged(auth, async (user) => {
                 if (!authInitialized) {
                     authInitialized = true;
-                    setTimeout(() => loader.classList.add('hidden'), 200);
+                    setTimeout(() => loader.classList.add('hidden'), 250);
                 }
 
                 if (user) {
