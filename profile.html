@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile — Aarya Technologies</title>
+    <meta name="description" content="Manage your Aarya Technologies user profile, active projects, security settings, and preferences.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.8);
+            --border-color: rgba(226, 232, 240, 0.8);
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --accent-primary: #0f172a;
+            --accent-hover: #1e293b;
+            --accent-glow: rgba(15, 23, 42, 0.1);
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-full: 9999px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #030712;
+            --bg-secondary: #0b0f19;
+            --bg-glass: rgba(11, 15, 25, 0.8);
+            --border-color: rgba(30, 41, 59, 0.8);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-primary: #f8fafc;
+            --accent-hover: #e2e8f0;
+            --accent-glow: rgba(248, 250, 252, 0.1);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Utility Classes */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-placeholder {
+            width: 36px;
+            height: 36px;
+            background: var(--accent-primary);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg-secondary);
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .company-name {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-primary);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .icon-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .icon-btn:hover {
+            border-color: var(--text-primary);
+            background: var(--accent-glow);
+        }
+
+        .search-trigger {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-full);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-trigger:hover {
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+        }
+
+        .search-trigger kbd {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        .header-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            object-fit: cover;
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        /* Main App Layout */
+        .app-container {
+            display: flex;
+            margin-top: 70px;
+            min-height: calc(100vh - 70px);
+            width: 100%;
+        }
+
+        /* Left Sidebar */
+        aside.sidebar {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: sticky;
+            top: 70px;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+            transition: var(--transition);
+        }
+
+        .user-mini-profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .sidebar-avatar-wrapper {
+            position: relative;
+            margin-bottom: 0.75rem;
+        }
+
+        .sidebar-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius-full);
+            object-fit: cover;
+            border: 3px solid var(--border-color);
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .online-badge {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            width: 14px;
+            height: 14px;
+            background: var(--success);
+            border: 2px solid var(--bg-secondary);
+            border-radius: var(--radius-full);
+        }
+
+        .sidebar-username {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            margin-bottom: 0.2rem;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-email {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            list-style: none;
+            flex-grow: 1;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.92rem;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .sidebar-nav a svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background: var(--accent-glow);
+            color: var(--text-primary);
+        }
+
+        .sidebar-nav a.logout-link {
+            color: var(--error);
+            margin-top: auto;
+        }
+        
+        .sidebar-nav a.logout-link:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+        }
+
+        /* Right Content Area */
+        main.main-content {
+            flex-grow: 1;
+            padding: 2.5rem;
+            max-width: calc(100% - 280px);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Welcome Card */
+        .welcome-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .welcome-text h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            margin-bottom: 0.25rem;
+        }
+
+        .welcome-text p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .completion-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .completion-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            background: var(--border-color);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--accent-primary);
+            border-radius: var(--radius-full);
+            width: 0%;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Cards and Grids */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Form Controls */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        input, select, textarea {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--text-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        input:disabled, select:disabled, textarea:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--accent-primary);
+            color: var(--bg-secondary);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.92rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent-glow);
+            border-color: var(--text-primary);
+        }
+
+        .btn-danger {
+            background: var(--error);
+            color: #fff;
+        }
+        
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        /* Account Details List */
+        .account-meta-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .meta-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .meta-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .meta-label {
+            color: var(--text-secondary);
+        }
+
+        .meta-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-success { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .badge-warning { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .badge-neutral { background: var(--accent-glow); color: var(--text-primary); }
+
+        /* Projects & Quotes Section */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1rem;
+            text-align: center;
+            gap: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state svg {
+            width: 48px;
+            height: 48px;
+            stroke: var(--text-muted);
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        /* Toggles */
+        .toggle-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .toggle-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toggle-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .toggle-info p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--border-color);
+            transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: var(--radius-full);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: var(--radius-full);
+            box-shadow: var(--shadow-sm);
+        }
+
+        input:checked + .slider {
+            background-color: var(--accent-primary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Photo Upload Section */
+        .photo-upload-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .current-avatar-preview {
+            width: 72px;
+            height: 72px;
+            border-radius: var(--radius-full);
+            object-fit: cover;
+            border: 2px solid var(--border-color);
+        }
+
+        /* Search Overlay */
+        .search-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 100px;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .search-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .search-modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 600px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            transform: translateY(-20px);
+            transition: var(--transition);
+        }
+
+        .search-overlay.active .search-modal {
+            transform: translateY(0);
+        }
+
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            gap: 12px;
+        }
+
+        .search-input-wrapper svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--text-secondary);
+        }
+
+        .search-input-wrapper input {
+            border: none;
+            background: transparent;
+            font-size: 1.1rem;
+            padding: 0;
+        }
+
+        .search-input-wrapper input:focus {
+            box-shadow: none;
+        }
+
+        .search-results {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .search-item {
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .search-item:hover {
+            background: var(--accent-glow);
+            color: var(--text-primary);
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.92rem;
+            font-weight: 500;
+            transform: translateX(100px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--error); }
+
+        /* Loader Overlay */
+        .loader-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            z-index: 5000;
+            transition: opacity 0.5s ease;
+        }
+
+        .luxury-spinner {
+            width: 48px;
+            height: 48px;
+            border: 2px solid var(--border-color);
+            border-top: 2px solid var(--accent-primary);
+            border-radius: var(--radius-full);
+            animation: spin 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1200px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 900px) {
+            aside.sidebar {
+                display: none;
+            }
+            main.main-content {
+                max-width: 100%;
+                padding: 1.5rem;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            header {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Initial Luxury Loader -->
+    <div id="loaderOverlay" class="loader-overlay">
+        <div class="luxury-spinner"></div>
+        <div class="company-name" style="font-size: 1.1rem; letter-spacing: 0.1em;">AARYA TECHNOLOGIES</div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Search Overlay -->
+    <div id="searchOverlay" class="search-overlay">
+        <div class="search-modal">
+            <div class="search-input-wrapper">
+                <svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="searchInput" placeholder="Search profile settings, security, or documents... (Press ESC to close)">
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="search-item" onclick="scrollToSection('profileInfoCard')">Profile Information & Bio</div>
+                <div class="search-item" onclick="scrollToSection('accountInfoCard')">Account Status & Firebase ID</div>
+                <div class="search-item" onclick="scrollToSection('myProjectsCard')">My Projects & Requests</div>
+                <div class="search-item" onclick="scrollToSection('notificationsCard')">Notification Preferences</div>
+                <div class="search-item" onclick="scrollToSection('securityCard')">Security & Password</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <a href="index.html" class="brand-container">
+            <div class="logo-placeholder">AT</div>
+            <span class="company-name">Aarya Technologies</span>
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="solutions.html">Solutions</a></li>
+            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+
+        <div class="header-actions">
+            <div class="search-trigger" id="openSearchBtn">
+                <span>Search</span>
+                <kbd>⌘K</kbd>
+            </div>
+            <button class="icon-btn" id="themeToggleBtn" aria-label="Toggle theme">
+                <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
+            <img id="headerUserAvatar" src="" alt="User Avatar" class="header-avatar" style="display: none;">
+        </div>
+    </header>
+
+    <!-- App Layout -->
+    <div class="app-container">
+        
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <div class="user-mini-profile">
+                <div class="sidebar-avatar-wrapper">
+                    <div id="sidebarAvatar" class="sidebar-avatar">U</div>
+                    <div class="online-badge"></div>
+                </div>
+                <div id="sidebarUserName" class="sidebar-username">Loading...</div>
+                <div id="sidebarUserEmail" class="sidebar-email">loading@aaryatech.com</div>
+            </div>
+
+            <ul class="sidebar-nav">
+                <li><a href="#dashboard" class="active"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> Dashboard</a></li>
+                <li><a href="#profileInfoCard"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> My Profile</a></li>
+                <li><a href="#myProjectsCard"><svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg> My Projects</a></li>
+                <li><a href="#savedQuotesCard"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Saved Quotes</a></li>
+                <li><a href="#notificationsCard"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg> Notifications</a></li>
+                <li><a href="#securityCard"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> Security</a></li>
+                <li><a href="#settings" onclick="scrollToSection('profileInfoCard')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Settings</a></li>
+                <li><a href="#" id="logoutBtn" class="logout-link"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> Logout</a></li>
+            </ul>
+        </aside>
+
+        <!-- Right Content Area -->
+        <main class="main-content">
+            
+            <!-- Welcome Card -->
+            <section class="welcome-card" id="dashboard">
+                <div class="welcome-header">
+                    <div class="welcome-text">
+                        <h1 id="welcomeHeading">Hello, User</h1>
+                        <p>Welcome back to your Aarya Technologies enterprise workspace.</p>
+                    </div>
+                </div>
+                <div class="completion-container">
+                    <div class="completion-meta">
+                        <span>Profile Completion</span>
+                        <span id="completionPercentage">0%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div id="profileProgressBar" class="progress-bar"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Info & Account Grid -->
+            <div class="profile-grid">
+                
+                <!-- Profile Information Card -->
+                <div class="card" id="profileInfoCard">
+                    <h2 class="card-title">Profile Information</h2>
+                    
+                    <div class="photo-upload-container">
+                        <img id="profilePhotoPreview" src="" alt="Profile Preview" class="current-avatar-preview" style="display: none;">
+                        <div id="profilePhotoFallback" class="current-avatar-preview" style="display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.5rem; background: var(--accent-glow);">U</div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label for="photoUploadInput" class="btn btn-outline" style="cursor: pointer; margin: 0;">Change Photo</label>
+                            <input type="file" id="photoUploadInput" accept="image/*" class="sr-only">
+                            <span style="font-size: 0.78rem; color: var(--text-muted);">JPG, PNG or WEBP. Max 2MB.</span>
+                        </div>
+                    </div>
+
+                    <form id="profileForm" class="form-grid">
+                        <div class="form-group">
+                            <label for="fullNameInput">Full Name</label>
+                            <input type="text" id="fullNameInput" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="emailInput">Email Address</label>
+                            <input type="email" id="emailInput" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneInput">Phone Number</label>
+                            <input type="tel" id="phoneInput">
+                        </div>
+                        <div class="form-group">
+                            <label for="companyInput">Company Name</label>
+                            <input type="text" id="companyInput">
+                        </div>
+                        <div class="form-group">
+                            <label for="jobTitleInput">Job Title</label>
+                            <input type="text" id="jobTitleInput">
+                        </div>
+                        <div class="form-group">
+                            <label for="websiteInput">Website</label>
+                            <input type="url" id="websiteInput" placeholder="https://">
+                        </div>
+                        <div class="form-group">
+                            <label for="countryInput">Country</label>
+                            <input type="text" id="countryInput">
+                        </div>
+                        <div class="form-group">
+                            <label for="stateInput">State</label>
+                            <input type="text" id="stateInput">
+                        </div>
+                        <div class="form-group">
+                            <label for="cityInput">City</label>
+                            <input type="text" id="cityInput">
+                        </div>
+                        <div class="form-group">
+                            <label for="languageSelect">Preferred Language</label>
+                            <select id="languageSelect">
+                                <option value="en">English (US)</option>
+                                <option value="hi">Hindi</option>
+                                <option value="mr">Marathi</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="bioInput">Bio</label>
+                            <textarea id="bioInput" placeholder="Brief overview of yourself or your company..."></textarea>
+                        </div>
+                        <div class="form-group full-width" style="margin-top: 1rem;">
+                            <button type="submit" class="btn" id="saveProfileBtn">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Right Column: Account Info & Notifications -->
+                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                    
+                    <!-- Account Information Card -->
+                    <div class="card" id="accountInfoCard">
+                        <h2 class="card-title">Account Information</h2>
+                        <div class="account-meta-list">
+                            <div class="meta-item">
+                                <span class="meta-label">Firebase UID</span>
+                                <span class="meta-value" id="metaUid" style="font-size: 0.8rem; font-family: monospace;">---</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Account Type</span>
+                                <span class="meta-value"><span class="badge badge-neutral" id="metaAccountType">Free</span></span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Member Since</span>
+                                <span class="meta-value" id="metaCreatedAt">---</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Last Login</span>
+                                <span class="meta-value" id="metaLastLogin">---</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Email Verified</span>
+                                <span class="meta-value"><span class="badge badge-warning" id="metaEmailVerified">No</span></span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Phone Verified</span>
+                                <span class="meta-value"><span class="badge badge-warning" id="metaPhoneVerified">No</span></span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Status</span>
+                                <span class="meta-value"><span class="badge badge-success" id="metaStatus">Active</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notifications Card -->
+                    <div class="card" id="notificationsCard">
+                        <h2 class="card-title">Notifications</h2>
+                        <div class="toggle-list">
+                            <div class="toggle-item">
+                                <div class="toggle-info">
+                                    <h4>Project Updates</h4>
+                                    <p>Real-time status changes</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="notifProjectUpdates" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-item">
+                                <div class="toggle-info">
+                                    <h4>Security Alerts</h4>
+                                    <p>Login & access notifications</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="notifSecurityAlerts" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-item">
+                                <div class="toggle-info">
+                                    <h4>Email Notifications</h4>
+                                    <p>Important account summaries</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="notifEmail" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-item">
+                                <div class="toggle-info">
+                                    <h4>Newsletter</h4>
+                                    <p>Tech insights & product drops</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="notifNewsletter">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- My Projects & Saved Quotes Row -->
+            <div class="profile-grid">
+                
+                <!-- My Projects -->
+                <div class="card" id="myProjectsCard">
+                    <h2 class="card-title">
+                        <span>My Projects</span>
+                        <button class="btn btn-outline" style="font-size: 0.8rem; padding: 6px 12px;" onclick="triggerNewProjectRequest()">Request New Project</button>
+                    </h2>
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                        <p>No Projects Yet</p>
+                        <span style="font-size: 0.85rem; color: var(--text-muted);">Initiate your first digital transformation or enterprise solution with Aarya Technologies.</span>
+                    </div>
+                </div>
+
+                <!-- Saved Quotes -->
+                <div class="card" id="savedQuotesCard">
+                    <h2 class="card-title">Saved Quotes</h2>
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                        <p>No Saved Quotes</p>
+                        <span style="font-size: 0.85rem; color: var(--text-muted);">Your custom project estimations and quotations will appear here.</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Security Section -->
+            <div class="card" id="securityCard">
+                <h2 class="card-title">Security & Sessions</h2>
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-color);">
+                        <div>
+                            <h4 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 4px;">Password Management</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary);">Send a secure password reset link to your registered email address.</p>
+                        </div>
+                        <button class="btn btn-outline" id="changePasswordBtn">Change Password</button>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-color);">
+                        <div>
+                            <h4 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 4px;">Recent Login</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary);" id="securityLastLoginText">Loading last login details...</p>
+                        </div>
+                        <span class="badge badge-success">Current Device</span>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                        <div>
+                            <h4 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; color: var(--error);">Session Termination</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary);">Log out safely from your current authenticated device session.</p>
+                        </div>
+                        <button class="btn btn-danger" id="securityLogoutBtn">Logout From Current Device</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Firebase SDKs (CDN) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+        // Firebase Configuration (Matching login.html standard enterprise keys)
+        const firebaseConfig = {
+            apiKey: "AIzaSyD-PlaceholderKeyForAaryaTechnologies12345",
+            authDomain: "aarya-technologies.firebaseapp.com",
+            projectId: "aarya-technologies",
+            storageBucket: "aarya-technologies.appspot.com",
+            messagingSenderId: "123456789012",
+            appId: "1:123456789012:web:abcdef1234567890"
+        };
+
+        // Initialize Firebase
+        let app, auth, db, storage;
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+            storage = getStorage(app);
+        } catch (error) {
+            console.error("Firebase Initialization Error:", error);
+            showToast("Failed to initialize Firebase services.", "error");
+        }
+
+        // Global DOM Elements
+        const loaderOverlay = document.getElementById('loaderOverlay');
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        const searchOverlay = document.getElementById('searchOverlay');
+        const openSearchBtn = document.getElementById('openSearchBtn');
+        const searchInput = document.getElementById('searchInput');
+        const toastContainer = document.getElementById('toastContainer');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const securityLogoutBtn = document.getElementById('securityLogoutBtn');
+        const profileForm = document.getElementById('profileForm');
+        const photoUploadInput = document.getElementById('photoUploadInput');
+        const changePasswordBtn = document.getElementById('changePasswordBtn');
+
+        // Theme Management & LocalStorage
+        const savedTheme = localStorage.getItem('aarya_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('aarya_theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.innerHTML = `<path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path>`;
+            } else {
+                themeIcon.innerHTML = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
+            }
+        }
+
+        // Search Overlay Controls (CTRL + K)
+        openSearchBtn.addEventListener('click', () => searchOverlay.classList.add('active'));
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                searchOverlay.classList.toggle('active');
+                if (searchOverlay.classList.contains('active')) searchInput.focus();
+            }
+            if (e.key === 'Escape') {
+                searchOverlay.classList.remove('active');
+            }
+        });
+        searchOverlay.addEventListener('click', (e) => {
+            if (e.target === searchOverlay) searchOverlay.classList.remove('active');
+        });
+
+        window.scrollToSection = function(id) {
+            searchOverlay.classList.remove('active');
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+
+        // Toast System
+        window.showToast = function(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<span>${message}</span>`;
+            toastContainer.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 400);
+            }, 4000);
+        };
+
+        // Auth State Observer
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                // If user is NOT logged in, redirect to login.html automatically
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                // Load Firestore document: users/{uid}
+                const userDocRef = doc(db, 'users', user.uid);
+                const userDocSnap = await getDoc(userDocRef);
+
+                let userData = {};
+                if (userDocSnap.exists()) {
+                    userData = userDocSnap.data();
+                } else {
+                    // Fallback document initialization if missing
+                    userData = {
+                        fullName: user.displayName || 'Aarya User',
+                        email: user.email,
+                        photoURL: user.photoURL || '',
+                        phone: user.phoneNumber || '',
+                        company: 'Aarya Technologies Partner',
+                        jobTitle: 'Enterprise Client',
+                        website: 'https://aaryatech.com',
+                        country: 'India',
+                        state: 'Maharashtra',
+                        city: 'Ahmednagar',
+                        bio: 'Dedicated client leveraging advanced enterprise solutions.',
+                        role: 'Member',
+                        status: 'Active',
+                        createdAt: user.metadata.creationTime || new Date().toISOString(),
+                        lastLogin: user.metadata.lastSignInTime || new Date().toISOString()
+                    };
+                    await setDoc(userDocRef, userData);
+                }
+
+                populateProfileData(user, userData);
+                calculateProfileCompletion(userData);
+
+            } catch (error) {
+                console.error("Error loading user profile:", error);
+                if (error.code === 'permission-denied') {
+                    showToast("Firestore Permission Denied. Please re-authenticate.", "error");
+                } else {
+                    showToast("Failed to retrieve profile data. Check connection.", "error");
+                }
+            } finally {
+                setTimeout(() => {
+                    loaderOverlay.style.opacity = '0';
+                    setTimeout(() => loaderOverlay.style.display = 'none', 500);
+                }, 300);
+            }
+        });
+
+        // Populate Form and Display Elements
+        function populateProfileData(user, data) {
+            const fullName = data.fullName || user.displayName || 'Valued User';
+            const email = user.email || data.email || '';
+            const photoURL = data.photoURL || user.photoURL || '';
+
+            // Header & Sidebar UI
+            document.getElementById('sidebarUserName').textContent = fullName;
+            document.getElementById('sidebarUserEmail').textContent = email;
+            document.getElementById('welcomeHeading').textContent = `Hello, ${fullName.split(' ')[0]}`;
+            
+            if (photoURL) {
+                document.getElementById('headerUserAvatar').src = photoURL;
+                document.getElementById('headerUserAvatar').style.display = 'block';
+                document.getElementById('profilePhotoPreview').src = photoURL;
+                document.getElementById('profilePhotoPreview').style.display = 'block';
+                document.getElementById('profilePhotoFallback').style.display = 'none';
+                document.getElementById('sidebarAvatar').innerHTML = `<img src="${photoURL}" alt="Avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+            } else {
+                const initial = fullName.charAt(0).toUpperCase();
+                document.getElementById('profilePhotoFallback').textContent = initial;
+                document.getElementById('profilePhotoFallback').style.display = 'flex';
+                document.getElementById('profilePhotoPreview').style.display = 'none';
+                document.getElementById('sidebarAvatar').textContent = initial;
+                document.getElementById('headerUserAvatar').style.display = 'none';
+            }
+
+            // Form Fields
+            document.getElementById('fullNameInput').value = fullName;
+            document.getElementById('emailInput').value = email;
+            document.getElementById('phoneInput').value = data.phone || '';
+            document.getElementById('companyInput').value = data.company || '';
+            document.getElementById('jobTitleInput').value = data.jobTitle || '';
+            document.getElementById('websiteInput').value = data.website || '';
+            document.getElementById('countryInput').value = data.country || '';
+            document.getElementById('stateInput').value = data.state || '';
+            document.getElementById('cityInput').value = data.city || '';
+            document.getElementById('bioInput').value = data.bio || '';
+            if(data.language) document.getElementById('languageSelect').value = data.language;
+
+            // Account Metadata Panel
+            document.getElementById('metaUid').textContent = user.uid;
+            document.getElementById('metaAccountType').textContent = data.role || 'Member';
+            document.getElementById('metaCreatedAt').textContent = formatDate(data.createdAt || user.metadata.creationTime);
+            document.getElementById('metaLastLogin').textContent = formatDate(data.lastLogin || user.metadata.lastSignInTime);
+            document.getElementById('securityLastLoginText').textContent = `Last active session recorded on ${formatDate(data.lastLogin || user.metadata.lastSignInTime)}`;
+
+            if (user.emailVerified) {
+                const badge = document.getElementById('metaEmailVerified');
+                badge.textContent = 'Yes';
+                badge.className = 'badge badge-success';
+            }
+        }
+
+        function calculateProfileCompletion(data) {
+            const fields = ['fullName', 'phone', 'company', 'jobTitle', 'country', 'state', 'city', 'bio'];
+            let filled = fields.filter(field => data[field] && data[field].trim() !== '').length;
+            const percentage = Math.round((filled / fields.length) * 100);
+            
+            document.getElementById('completionPercentage').textContent = `${percentage}%`;
+            document.getElementById('profileProgressBar').style.width = `${percentage}%`;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return isNaN(date.getTime()) ? dateString : date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        // Handle Profile Photo Upload to Firebase Storage & Firestore
+        photoUploadInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (file.size > 2 * 1024 * 1024) {
+                showToast("File size exceeds 2MB limit.", "error");
+                return;
+            }
+
+            try {
+                showToast("Uploading profile image...", "success");
+                const user = auth.currentUser;
+                const storageRef = ref(storage, `profile_photos/${user.uid}/${file.name}`);
+                
+                await uploadBytes(storageRef, file);
+                const downloadURL = await getDownloadURL(storageRef);
+
+                // Update Firestore
+                const userDocRef = doc(db, 'users', user.uid);
+                await setDoc(userDocRef, { photoURL: downloadURL }, { merge: true });
+
+                // Refresh UI
+                document.getElementById('headerUserAvatar').src = downloadURL;
+                document.getElementById('headerUserAvatar').style.display = 'block';
+                document.getElementById('profilePhotoPreview').src = downloadURL;
+                document.getElementById('profilePhotoPreview').style.display = 'block';
+                document.getElementById('profilePhotoFallback').style.display = 'none';
+                document.getElementById('sidebarAvatar').innerHTML = `<img src="${downloadURL}" alt="Avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+
+                showToast("Profile photo updated successfully!", "success");
+            } catch (error) {
+                console.error("Storage upload error:", error);
+                showToast("Failed to upload profile photo. Storage error.", "error");
+            }
+        });
+
+        // Save Profile Changes
+        profileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const saveBtn = document.getElementById('saveProfileBtn');
+            saveBtn.textContent = 'Saving...';
+            saveBtn.disabled = true;
+
+            try {
+                const user = auth.currentUser;
+                const updatedData = {
+                    fullName: document.getElementById('fullNameInput').value.trim(),
+                    phone: document.getElementById('phoneInput').value.trim(),
+                    company: document.getElementById('companyInput').value.trim(),
+                    jobTitle: document.getElementById('jobTitleInput').value.trim(),
+                    website: document.getElementById('websiteInput').value.trim(),
+                    country: document.getElementById('countryInput').value.trim(),
+                    state: document.getElementById('stateInput').value.trim(),
+                    city: document.getElementById('cityInput').value.trim(),
+                    language: document.getElementById('languageSelect').value,
+                    bio: document.getElementById('bioInput').value.trim(),
+                    updatedAt: new Date().toISOString()
+                };
+
+                const userDocRef = doc(db, 'users', user.uid);
+                await setDoc(userDocRef, updatedData, { merge: true });
+
+                document.getElementById('sidebarUserName').textContent = updatedData.fullName;
+                document.getElementById('welcomeHeading').textContent = `Hello, ${updatedData.fullName.split(' ')[0]}`;
+                calculateProfileCompletion(updatedData);
+
+                showToast("Profile updated successfully!", "success");
+            } catch (error) {
+                console.error("Error updating profile:", error);
+                showToast("Failed to save changes. Please try again.", "error");
+            } finally {
+                saveBtn.textContent = 'Save Changes';
+                saveBtn.disabled = false;
+            }
+        });
+
+        // Password Reset Handler
+        changePasswordBtn.addEventListener('click', async () => {
+            const user = auth.currentUser;
+            if (!user || !user.email) return;
+
+            try {
+                await sendPasswordResetEmail(auth, user.email);
+                showToast(`Password reset email sent to ${user.email}`, "success");
+            } catch (error) {
+                console.error("Password reset error:", error);
+                showToast("Failed to send password reset email.", "error");
+            }
+        });
+
+        // Logout Handlers
+        const handleLogout = async () => {
+            try {
+                await signOut(auth);
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error("Logout error:", error);
+                showToast("Failed to log out securely.", "error");
+            }
+        };
+
+        logoutBtn.addEventListener('click', (e) => { e.preventDefault(); handleLogout(); });
+        securityLogoutBtn.addEventListener('click', handleLogout);
+
+        // Project Request Simulation
+        window.triggerNewProjectRequest = function() {
+            showToast("Redirecting to enterprise project inquiry portal...", "success");
+            setTimeout(() => {
+                window.location.href = 'contact.html';
+            }, 1000);
+        };
+    </script>
+</body>
+</html>
