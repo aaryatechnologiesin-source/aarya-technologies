@@ -91,7 +91,7 @@
 
     <!-- Firebase App & Services via Modular CDN -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
@@ -105,12 +105,18 @@
             appId: "YOUR_APP_ID"
         };
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
+        // Initialize Firebase ONLY ONCE
+        let app;
+        if (!getApps().length) {
+            app = initializeApp(firebaseConfig);
+            console.log("Firebase initialized");
+        } else {
+            app = getApps()[0];
+            console.log("Firebase already initialized");
+        }
+
         const auth = getAuth(app);
         const db = getFirestore(app);
-
-        console.log("Firebase initialized");
 
         // Helper Toast Function
         function showToast(message, type = "info") {
@@ -144,7 +150,7 @@
                     loader.style.display = "none";
                 }, 300);
             }
-            console.log("Loader Hidden");
+            console.log("Loader hidden");
         }
 
         // Safe Redirect Helper (prevents redirect loops)
@@ -155,9 +161,9 @@
             }
         }
 
-        console.log("Checking auth...");
+        console.log("Checking authentication");
 
-        // Correct onAuthStateChanged implementation with try/catch/finally
+        // Use ONLY ONE onAuthStateChanged() listener with try/catch/finally
         onAuthStateChanged(auth, async (user) => {
             try {
                 if (!user) {
@@ -186,7 +192,8 @@
                     uid: refreshedUser.uid
                 };
 
-                // Load Firestore users/{uid}
+                // Load Firestore user document
+                console.log("Loading Firestore");
                 try {
                     const userDocRef = doc(db, "users", refreshedUser.uid);
                     const userDocSnap = await getDoc(userDocRef);
@@ -194,16 +201,19 @@
                     if (userDocSnap.exists()) {
                         const data = userDocSnap.data();
                         profileData = { ...profileData, ...data };
+                        console.log("Firestore loaded");
                     } else {
+                        // Create document automatically if it does not exist
                         await setDoc(userDocRef, {
                             displayName: refreshedUser.displayName || "User",
                             email: refreshedUser.email,
                             photoURL: refreshedUser.photoURL || "",
                             createdAt: new Date().toISOString()
                         }, { merge: true });
+                        console.log("Firestore loaded");
                     }
                 } catch (firestoreError) {
-                    console.error("Firestore Error:", firestoreError.code || firestoreError.message);
+                    console.error("Firestore error, using Firebase Authentication data:", firestoreError.code || firestoreError.message);
                 }
 
                 // Render Profile Data to DOM
