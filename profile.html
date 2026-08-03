@@ -1,258 +1,1614 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    <!-- Tailwind CSS CDN (Preserved Existing UI/Styling) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Toastify CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-</head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-slate-950">
+    <title>Enterprise Profile | Aarya Technologies</title>
+    <meta name="description" content="Ultra-premium enterprise SaaS user profile page for Aarya Technologies.">
+    <style>
+        :root {
+            --bg-primary: #07090e;
+            --bg-secondary: #0f131f;
+            --bg-card: rgba(15, 19, 31, 0.75);
+            --bg-glass: rgba(15, 19, 31, 0.65);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-primary: #6366f1;
+            --accent-hover: #4f46e5;
+            --accent-secondary: #a855f7;
+            --accent-glow: rgba(99, 102, 241, 0.25);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --input-bg: rgba(255, 255, 255, 0.03);
+            --error-color: #ef4444;
+            --success-color: #22c55e;
+            --warning-color: #f59e0b;
+            --sidebar-width: 280px;
+            --navbar-height: 75px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-    <!-- Global Fullscreen Loader (Preserved Existing UI/Animation/Layout) -->
-    <div id="global-loader" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950/90 backdrop-blur-md transition-opacity duration-300">
-        <div class="relative flex items-center justify-center">
-            <div class="w-16 h-16 border-4 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin"></div>
-            <div class="absolute text-emerald-400 font-mono text-xs tracking-widest uppercase">Loading</div>
+        [data-theme="light"] {
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-glass: rgba(255, 255, 255, 0.75);
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --accent-primary: #4f46e5;
+            --accent-hover: #4338ca;
+            --accent-secondary: #9333ea;
+            --accent-glow: rgba(79, 70, 229, 0.15);
+            --border-color: rgba(0, 0, 0, 0.08);
+            --input-bg: rgba(0, 0, 0, 0.02);
+            --error-color: #dc2626;
+            --success-color: #16a34a;
+            --warning-color: #d97706;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Professional Enterprise Loader */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        #loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 24px;
+        }
+
+        .logo-box {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: 800;
+            font-size: 1.5rem;
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .spinner {
+            width: 44px;
+            height: 44px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Toast Notifications Container */
+        #toastContainer {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 5000;
+            max-width: 380px;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: var(--bg-card);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--border-color);
+            padding: 16px 20px;
+            border-radius: 14px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            pointer-events: auto;
+            animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .toast.success { border-left: 4px solid var(--success-color); }
+        .toast.error { border-left: 4px solid var(--error-color); }
+        .toast.warning { border-left: 4px solid var(--warning-color); }
+        .toast.info { border-left: 4px solid var(--accent-primary); }
+
+        .toast-content { flex: 1; }
+        .toast-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 2px; }
+        .toast-message { font-size: 0.85rem; color: var(--text-secondary); }
+
+        /* App Layout */
+        .app-layout {
+            display: flex;
+            width: 100vw;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Animated Background Gradients */
+        .app-bg-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .glow-orb {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: var(--accent-primary);
+            filter: blur(120px);
+            opacity: 0.08;
+            border-radius: 50%;
+            animation: floatOrb 15s ease-in-out infinite alternate;
+        }
+
+        .glow-orb-2 {
+            width: 600px;
+            height: 600px;
+            background: var(--accent-secondary);
+            bottom: -100px;
+            right: -100px;
+            animation-delay: -7s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        /* Left Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            height: var(--navbar-height);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-brand-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sidebar-menu {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .sidebar-menu::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar-menu::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .menu-item svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+            transition: var(--transition);
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background: var(--input-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .menu-item.active {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15));
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .menu-item.logout {
+            color: var(--error-color);
+            margin-top: auto;
+        }
+
+        .menu-item.logout:hover {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--error-color);
+        }
+
+        /* Main Wrapper */
+        .main-wrapper {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Top Navbar */
+        .navbar {
+            height: var(--navbar-height);
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 36px;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        .navbar-search {
+            position: relative;
+            width: 320px;
+        }
+
+        .search-input {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px 16px 10px 42px;
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        .navbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .datetime-display {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            border-right: 1px solid var(--border-color);
+            padding-right: 20px;
+        }
+
+        .datetime-display .time {
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .icon-btn-wrapper {
+            position: relative;
+        }
+
+        .icon-btn {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .icon-btn:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .badge-counter {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: var(--error-color);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid var(--bg-primary);
+        }
+
+        /* Profile Dropdown */
+        .profile-dropdown-container {
+            position: relative;
+        }
+
+        .profile-trigger {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            padding: 6px 14px 6px 6px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .profile-trigger:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .profile-name-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+            max-width: 120px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
+            width: 240px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            animation: fadeInDropdown 0.2s ease forwards;
+            z-index: 1000;
+        }
+
+        .dropdown-menu.active {
+            display: flex;
+        }
+
+        @keyframes fadeInDropdown {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .dropdown-item:hover {
+            background: var(--input-bg);
+            color: var(--accent-primary);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 6px 0;
+        }
+
+        /* Profile Content Area */
+        .profile-content {
+            flex: 1;
+            padding: 36px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* Profile Header Card */
+        .profile-header-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .cover-banner {
+            height: 220px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            position: relative;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .cover-edit-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .cover-edit-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .profile-header-details {
+            padding: 0 36px 36px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            position: relative;
+            margin-top: -60px;
+        }
+
+        .profile-avatar-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--bg-card);
+            background: var(--bg-secondary);
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .profile-avatar-wrapper img, .profile-avatar-wrapper .avatar-large {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-avatar-wrapper .avatar-large {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .avatar-edit-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 4px 0;
+            cursor: pointer;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .profile-avatar-wrapper:hover .avatar-edit-overlay {
+            opacity: 1;
+        }
+
+        .profile-meta-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-left: 20px;
+            flex: 1;
+        }
+
+        .profile-meta-info h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .profile-meta-info p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .profile-badges {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 4px;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .badge.verified { background: rgba(34, 197, 94, 0.15); color: var(--success-color); }
+        .badge.role { background: rgba(99, 102, 241, 0.15); color: var(--accent-primary); }
+
+        .profile-header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--input-bg);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-primary);
+            background: var(--border-color);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error-color);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: var(--error-color);
+            color: white;
+        }
+
+        /* Profile Layout Grid */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 1280px) {
+            .profile-grid { grid-template-columns: 1fr; }
+        }
+
+        .card-box {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .card-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
+
+        .card-header-row h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        /* Form Layouts */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr; }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 768px) {
+            .form-group.full-width { grid-column: span 1; }
+        }
+
+        .form-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Account Details List */
+        .account-info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .account-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .account-info-row:last-child {
+            border-bottom: none;
+        }
+
+        .account-info-row span:first-child {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .account-info-row span:last-child {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 440px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .modal-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        @keyframes slideInUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .profile-header-details {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            .profile-meta-info {
+                margin-left: 0;
+            }
+            .profile-header-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Professional Enterprise Loader -->
+    <div id="loader">
+        <div class="loader-brand">
+            <div class="logo-box">AT</div>
+            <div style="font-weight: 700; font-size: 1.2rem; letter-spacing: 1px;">AARYA TECHNOLOGIES</div>
         </div>
-        <p class="mt-4 text-slate-400 text-sm font-medium tracking-wide animate-pulse">Initializing Profile...</p>
+        <div class="spinner"></div>
     </div>
 
-    <!-- Header / Nav -->
-    <header class="border-b border-slate-800/80 bg-slate-900/50 backdrop-blur-md sticky top-0 z-40">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold">
-                    P
-                </div>
-                <span class="font-semibold text-slate-200 tracking-tight">User Portal</span>
+    <!-- Toast Notification Container -->
+    <div id="toastContainer"></div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-card">
+            <h3>Delete Account Confirmation</h3>
+            <p>Are you sure you want to permanently delete your enterprise account? This action is irreversible and all data will be purged from Aarya Technologies servers.</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="cancelDeleteBtn">Cancel</button>
+                <button class="btn btn-danger" id="confirmDeleteBtn">Permanently Delete</button>
             </div>
-            <button id="logout-btn" class="flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-colors border border-transparent hover:border-slate-700">
-                <i class="fa-solid fa-right-from-bracket text-xs"></i>
-                <span>Logout</span>
-            </button>
         </div>
-    </header>
+    </div>
 
-    <!-- Main Content Container -->
-    <main class="flex-grow max-w-3xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden backdrop-blur-xl">
-            
-            <!-- Decorative Glow -->
-            <div class="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <!-- Background Glow Elements -->
+    <div class="app-bg-glow">
+        <div class="glow-orb"></div>
+        <div class="glow-orb glow-orb-2"></div>
+    </div>
 
-            <div class="flex flex-col sm:flex-row items-center sm:items-start space-y-6 sm:space-y-0 sm:space-x-6">
-                <!-- Avatar Container -->
-                <div class="relative group">
-                    <div id="avatar-container" class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-slate-800 border-2 border-slate-700 overflow-hidden flex items-center justify-center text-3xl font-bold text-emerald-400 shadow-inner">
-                        <span id="avatar-initial">?</span>
+    <div class="app-layout">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-box" style="width: 36px; height: 36px; font-size: 1rem; border-radius: 10px;">AT</div>
+                <span class="sidebar-brand-name">Aarya Technologies</span>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    Dashboard
+                </a>
+                <a href="profile.html" class="menu-item active">
+                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    Profile
+                </a>
+                <a href="settings.html" class="menu-item">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    Settings
+                </a>
+                <a href="services.html" class="menu-item">
+                    <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    Services
+                </a>
+                <a href="projects.html" class="menu-item">
+                    <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                    Projects
+                </a>
+                <a href="portfolio.html" class="menu-item">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    Portfolio
+                </a>
+                <a href="solutions.html" class="menu-item">
+                    <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                    Solutions
+                </a>
+                <a href="analytics.html" class="menu-item">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    Analytics
+                </a>
+                <a href="billing.html" class="menu-item">
+                    <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                    Billing
+                </a>
+                <a href="support.html" class="menu-item">
+                    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    Support
+                </a>
+                <a href="contact.html" class="menu-item">
+                    <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    Contact
+                </a>
+                <a href="#" id="sidebarLogoutBtn" class="menu-item logout">
+                    <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Workspace -->
+        <div class="main-wrapper">
+            <!-- Top Navbar -->
+            <header class="navbar">
+                <div class="navbar-search">
+                    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="globalSearchInput" class="search-input" placeholder="Search profile settings, options...">
+                </div>
+
+                <div class="navbar-actions">
+                    <div class="datetime-display">
+                        <span class="time" id="currentTimeDisplay">--:--:--</span>
+                        <span class="date" id="currentDateDisplay">---- -- --</span>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <div class="icon-btn-wrapper">
+                        <button class="icon-btn" id="themeToggle" aria-label="Toggle Theme">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                        </button>
+                    </div>
+
+                    <!-- Notification Bell -->
+                    <div class="icon-btn-wrapper">
+                        <button class="icon-btn" aria-label="Notifications">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                            <span class="badge-counter">2</span>
+                        </button>
+                    </div>
+
+                    <!-- Messages -->
+                    <div class="icon-btn-wrapper">
+                        <button class="icon-btn" aria-label="Messages">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                            <span class="badge-counter">1</span>
+                        </button>
+                    </div>
+
+                    <!-- Profile Dropdown -->
+                    <div class="profile-dropdown-container">
+                        <div class="profile-trigger" id="profileTrigger">
+                            <div class="avatar" id="navUserAvatar">AT</div>
+                            <span class="profile-name-text" id="navUserName">Loading...</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+
+                        <div class="dropdown-menu" id="profileDropdown">
+                            <a href="profile.html" class="dropdown-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                Profile
+                            </a>
+                            <a href="settings.html" class="dropdown-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                                Settings
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <div class="dropdown-item" id="logoutDropdownBtn" style="color: var(--error-color);">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                                Logout
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Profile Body -->
+            <main class="profile-content">
+                <!-- Profile Header Card -->
+                <div class="profile-header-card">
+                    <div class="cover-banner" id="coverBanner">
+                        <button class="cover-edit-btn" id="editCoverBtn">Edit Cover</button>
+                        <input type="file" id="coverUploadInput" accept="image/*" style="display: none;">
+                    </div>
+                    <div class="profile-header-details">
+                        <div style="display: flex; align-items: flex-end; gap: 24px;">
+                            <div class="profile-avatar-wrapper" id="avatarWrapper">
+                                <div class="avatar-large" id="headerUserAvatar">AT</div>
+                                <div class="avatar-edit-overlay">Change Photo</div>
+                                <input type="file" id="photoUploadInput" accept="image/*" style="display: none;">
+                            </div>
+                            <div class="profile-meta-info">
+                                <h1 id="headerFullName">Loading...</h1>
+                                <p id="headerJobTitle">Enterprise Architect</p>
+                                <div class="profile-badges">
+                                    <span class="badge verified" id="headerEmailVerifiedBadge">Verified</span>
+                                    <span class="badge role" id="headerRoleBadge">Enterprise User</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-header-actions">
+                            <button class="btn btn-secondary" id="verifyEmailBtn">Verify Email</button>
+                            <button class="btn btn-primary" id="saveTopBtn">Save Changes</button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- User Meta Details -->
-                <div class="flex-1 text-center sm:text-left space-y-2">
-                    <div class="inline-flex items-center space-x-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span id="badge-status">Active Account</span>
+                <!-- Profile Information & Settings Grid -->
+                <div class="profile-grid">
+                    <!-- Left Column: Editable Information Form -->
+                    <div class="card-box">
+                        <div class="card-header-row">
+                            <h3>Edit Profile Information</h3>
+                        </div>
+                        <form id="profileForm" class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" id="inputFullName" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email Address (Read-only)</label>
+                                <input type="email" id="inputEmail" class="form-input" disabled style="opacity: 0.7; cursor: not-allowed;">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" id="inputPhone" class="form-input" placeholder="+1 (555) 019-2834">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Company Name</label>
+                                <input type="text" id="inputCompany" class="form-input" placeholder="Aarya Technologies">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Job Title</label>
+                                <input type="text" id="inputJobTitle" class="form-input" placeholder="Senior Architect">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Website</label>
+                                <input type="url" id="inputWebsite" class="form-input" placeholder="https://aaryatech.com">
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Address</label>
+                                <input type="text" id="inputAddress" class="form-input" placeholder="100 Enterprise Way">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">City</label>
+                                <input type="text" id="inputCity" class="form-input" placeholder="San Francisco">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">State</label>
+                                <input type="text" id="inputState" class="form-input" placeholder="California">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Country</label>
+                                <input type="text" id="inputCountry" class="form-input" placeholder="United States">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Zip Code</label>
+                                <input type="text" id="inputZip" class="form-input" placeholder="94107">
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Bio</label>
+                                <textarea id="inputBio" class="form-textarea" placeholder="Write a short enterprise bio..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">LinkedIn URL</label>
+                                <input type="url" id="inputLinkedin" class="form-input" placeholder="https://linkedin.com/in/...">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">GitHub URL</label>
+                                <input type="url" id="inputGithub" class="form-input" placeholder="https://github.com/...">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Instagram URL</label>
+                                <input type="url" id="inputInstagram" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Twitter / X URL</label>
+                                <input type="url" id="inputTwitter" class="form-input">
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Facebook URL</label>
+                                <input type="url" id="inputFacebook" class="form-input">
+                            </div>
+                            <div style="display: flex; gap: 12px; margin-top: 10px;">
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                                <button type="button" class="btn btn-secondary" id="resetFormBtn">Cancel</button>
+                            </div>
+                        </form>
                     </div>
-                    <h1 id="user-display-name" class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Loading Name...</h1>
-                    <p id="user-email" class="text-slate-400 text-sm font-mono">loading@domain.com</p>
-                </div>
-            </div>
 
-            <!-- Divider -->
-            <div class="my-8 border-t border-slate-800"></div>
+                    <!-- Right Column: Account Information & Security -->
+                    <div style="display: flex; flex-direction: column; gap: 24px;">
+                        <!-- Account Information Card -->
+                        <div class="card-box">
+                            <div class="card-header-row">
+                                <h3>Account Information</h3>
+                            </div>
+                            <div class="account-info-list">
+                                <div class="account-info-row">
+                                    <span>UID</span>
+                                    <span id="accUid" style="font-family: monospace; font-size: 0.8rem;">--</span>
+                                </div>
+                                <div class="account-info-row">
+                                    <span>Role</span>
+                                    <span id="accRole">Enterprise User</span>
+                                </div>
+                                <div class="account-info-row">
+                                    <span>Status</span>
+                                    <span id="accStatus" style="color: var(--success-color);">Active</span>
+                                </div>
+                                <div class="account-info-row">
+                                    <span>Account Created</span>
+                                    <span id="accCreatedAt">--</span>
+                                </div>
+                                <div class="account-info-row">
+                                    <span>Last Login</span>
+                                    <span id="accLastLogin">Just now</span>
+                                </div>
+                                <div class="account-info-row">
+                                    <span>Theme</span>
+                                    <span id="accTheme">Dark</span>
+                                </div>
+                            </div>
+                        </div>
 
-            <!-- Additional Details Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div class="bg-slate-950/40 border border-slate-800/60 rounded-xl p-4">
-                    <span class="text-xs font-mono uppercase tracking-wider text-slate-500 block mb-1">Account UID</span>
-                    <span id="user-uid" class="text-sm font-mono text-slate-300 break-all">---</span>
+                        <!-- Security Settings Card -->
+                        <div class="card-box">
+                            <div class="card-header-row">
+                                <h3>Security & Access</h3>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 14px;">
+                                <button class="btn btn-secondary" id="resetPasswordBtn" style="width: 100%; justify-content: center;">Send Password Reset Email</button>
+                                <button class="btn btn-danger" id="deleteAccountTriggerBtn" style="width: 100%; justify-content: center;">Delete Account</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="bg-slate-950/40 border border-slate-800/60 rounded-xl p-4">
-                    <span class="text-xs font-mono uppercase tracking-wider text-slate-500 block mb-1">Email Verified</span>
-                    <span id="email-verified-status" class="text-sm font-medium text-slate-300">---</span>
-                </div>
-            </div>
+            </main>
         </div>
-    </main>
+    </div>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-900 py-6 text-center text-xs text-slate-600 font-mono">
-        Secure Portal &bull; All Rights Reserved
-    </footer>
-
-    <!-- Toastify JS -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
-    <!-- Firebase App & Services via Modular CDN -->
+    <!-- Firebase v10+ Modular SDK Engine -->
     <script type="module">
         import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { 
+            getAuth, 
+            signOut, 
+            onAuthStateChanged,
+            sendPasswordResetEmail,
+            sendEmailVerification 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { 
+            getFirestore, 
+            doc, 
+            getDoc, 
+            setDoc, 
+            updateDoc, 
+            serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Firebase Configuration
+        // Exact Firebase Configuration requested
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
+  apiKey: "AIzaSyDRauyKHGML3a6THpzTx3nWaIWrpSo2Bk4",
+  authDomain: "aarya-tech.firebaseapp.com",
+  projectId: "aarya-tech",
+  storageBucket: "aarya-tech.firebasestorage.app",
+  messagingSenderId: "623415516526",
+  appId: "1:623415516526:web:c81dd1c6bcf4a91b0c757f",
+  measurementId: "G-ZWXXVNZ5TF"
+};
 
-        // Initialize Firebase ONLY ONCE
-        let app;
-        if (!getApps().length) {
-            app = initializeApp(firebaseConfig);
-            console.log("Firebase initialized");
-        } else {
-            app = getApps()[0];
-            console.log("Firebase already initialized");
+        // Singleton Firebase Initialization
+        let app, auth, db;
+        try {
+            app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
+            auth = getAuth(app);
+            db = getFirestore(app);
+        } catch (error) {
+            console.error("Firebase initialization error:", error);
         }
 
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        // DOM Elements
+        const loader = document.getElementById('loader');
+        const themeToggle = document.getElementById('themeToggle');
+        const profileTrigger = document.getElementById('profileTrigger');
+        const profileDropdown = document.getElementById('profileDropdown');
+        const logoutDropdownBtn = document.getElementById('logoutDropdownBtn');
+        const sidebarLogoutBtn = document.getElementById('sidebarLogoutBtn');
+        const globalSearchInput = document.getElementById('globalSearchInput');
+        const profileForm = document.getElementById('profileForm');
+        
+        const photoUploadInput = document.getElementById('photoUploadInput');
+        const avatarWrapper = document.getElementById('avatarWrapper');
+        const coverUploadInput = document.getElementById('coverUploadInput');
+        const editCoverBtn = document.getElementById('editCoverBtn');
+        const coverBanner = document.getElementById('coverBanner');
 
-        // Helper Toast Function
-        function showToast(message, type = "info") {
-            let background = "#10b981";
-            if (type === "error") background = "#ef4444";
-            if (type === "warning") background = "#f59e0b";
+        const verifyEmailBtn = document.getElementById('verifyEmailBtn');
+        const resetPasswordBtn = document.getElementById('resetPasswordBtn');
+        const deleteAccountTriggerBtn = document.getElementById('deleteAccountTriggerBtn');
+        const deleteModal = document.getElementById('deleteModal');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        const saveTopBtn = document.getElementById('saveTopBtn');
 
-            Toastify({
-                text: message,
-                duration: 4000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                style: {
-                    background: background,
-                    color: "#ffffff",
-                    borderRadius: "12px",
-                    fontSize: "13px",
-                    fontFamily: "ui-sans-serif, system-ui, sans-serif",
-                    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.3)"
-                }
-            }).showToast();
+        // Professional Toast Engine
+        function showToast(title, message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            let iconSvg = '';
+            if (type === 'success') iconSvg = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+            else if (type === 'error') iconSvg = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+            else if (type === 'warning') iconSvg = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path></svg>';
+            else iconSvg = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line></svg>';
+
+            toast.innerHTML = `${iconSvg}<div class="toast-content"><div class="toast-title">${title}</div><div class="toast-message">${message}</div></div>`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideInUp 0.3s ease reverse forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
         }
 
-        // Helper Loader Hider
-        function hideLoader() {
-            const loader = document.getElementById("global-loader");
-            if (loader) {
-                loader.style.opacity = "0";
-                setTimeout(() => {
-                    loader.style.display = "none";
-                }, 300);
-            }
-            console.log("Loader hidden");
-        }
+        // Theme Initialization & Persistence
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
 
-        // Safe Redirect Helper (prevents redirect loops)
-        function redirectToLogin() {
-            if (!window.location.pathname.includes("login.html")) {
-                console.log("Redirecting to login");
-                window.location.replace("login.html");
-            }
-        }
+        themeToggle.addEventListener('click', async () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            document.getElementById('accTheme').textContent = next.charAt(0).toUpperCase() + next.slice(1);
 
-        console.log("Checking authentication");
-
-        // Use ONLY ONE onAuthStateChanged() listener with try/catch/finally
-        onAuthStateChanged(auth, async (user) => {
-            try {
-                if (!user) {
-                    console.log("User not found");
-                    redirectToLogin();
-                    return;
-                }
-
-                console.log("User found");
-
-                // Reload user before checking email verification
-                await user.reload();
-                const refreshedUser = auth.currentUser || user;
-
-                // Check email verification status
-                if (!refreshedUser.emailVerified) {
-                    showToast("Please verify your email address to access your profile.", "warning");
-                    redirectToLogin();
-                    return;
-                }
-
-                let profileData = {
-                    displayName: refreshedUser.displayName || "User",
-                    email: refreshedUser.email || "No Email",
-                    photoURL: refreshedUser.photoURL || null,
-                    uid: refreshedUser.uid
-                };
-
-                // Load Firestore user document
-                console.log("Loading Firestore");
+            if (auth && auth.currentUser) {
                 try {
-                    const userDocRef = doc(db, "users", refreshedUser.uid);
-                    const userDocSnap = await getDoc(userDocRef);
-
-                    if (userDocSnap.exists()) {
-                        const data = userDocSnap.data();
-                        profileData = { ...profileData, ...data };
-                        console.log("Firestore loaded");
-                    } else {
-                        // Create document automatically if it does not exist
-                        await setDoc(userDocRef, {
-                            displayName: refreshedUser.displayName || "User",
-                            email: refreshedUser.email,
-                            photoURL: refreshedUser.photoURL || "",
-                            createdAt: new Date().toISOString()
-                        }, { merge: true });
-                        console.log("Firestore loaded");
-                    }
-                } catch (firestoreError) {
-                    console.error("Firestore error, using Firebase Authentication data:", firestoreError.code || firestoreError.message);
+                    const userRef = doc(db, "users", auth.currentUser.uid);
+                    await setDoc(userRef, { theme: next }, { merge: true });
+                } catch (e) {
+                    console.error("Theme sync error:", e);
                 }
-
-                // Render Profile Data to DOM
-                document.getElementById("user-display-name").textContent = profileData.displayName || "User";
-                document.getElementById("user-email").textContent = profileData.email || "No Email";
-                document.getElementById("user-uid").textContent = profileData.uid || "---";
-                
-                const verifiedEl = document.getElementById("email-verified-status");
-                verifiedEl.textContent = refreshedUser.emailVerified ? "Verified" : "Unverified";
-                verifiedEl.className = refreshedUser.emailVerified ? "text-sm font-medium text-emerald-400" : "text-sm font-medium text-amber-400";
-
-                // Generate avatar using first letter if photo missing
-                const avatarContainer = document.getElementById("avatar-container");
-                if (profileData.photoURL && profileData.photoURL.trim() !== "") {
-                    avatarContainer.innerHTML = `<img src="${profileData.photoURL}" alt="Profile Avatar" class="w-full h-full object-cover">`;
-                } else {
-                    const firstLetter = (profileData.displayName || profileData.email || "U").charAt(0).toUpperCase();
-                    avatarContainer.innerHTML = `<span id="avatar-initial">${firstLetter}</span>`;
-                }
-
-                console.log("Profile loaded");
-
-            } catch (error) {
-                console.error("Authentication Error:", error);
-                redirectToLogin();
-            } finally {
-                hideLoader();
             }
         });
 
-        // Logout Event Listener
-        document.getElementById("logout-btn").addEventListener("click", async () => {
+        // Dropdown toggle
+        profileTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('active');
+        });
+        document.addEventListener('click', () => profileDropdown.classList.remove('active'));
+
+        // Real-time Clock & Date
+        function updateDateTime() {
+            const now = new Date();
+            document.getElementById('currentTimeDisplay').textContent = now.toLocaleTimeString();
+            document.getElementById('currentDateDisplay').textContent = now.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        // Logout Handlers
+        const handleLogout = async () => {
             try {
+                loader.classList.remove('hidden');
                 await signOut(auth);
-                showToast("Logged out successfully.", "success");
-                redirectToLogin();
+                window.location.href = 'login.html';
+            } catch (error) {
+                showToast('Error', 'Failed to log out securely.', 'error');
+                loader.classList.add('hidden');
+            }
+        };
+        logoutDropdownBtn.addEventListener('click', handleLogout);
+        sidebarLogoutBtn.addEventListener('click', handleLogout);
+
+        // Photo Upload Trigger
+        avatarWrapper.addEventListener('click', () => photoUploadInput.click());
+        photoUploadInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = async (event) => {
+                    const base64Url = event.target.result;
+                    const avatarDiv = document.getElementById('headerUserAvatar');
+                    avatarDiv.innerHTML = `<img src="${base64Url}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;">`;
+                    
+                    if (auth && auth.currentUser) {
+                        try {
+                            const userRef = doc(db, "users", auth.currentUser.uid);
+                            await setDoc(userRef, { photoURL: base64Url }, { merge: true });
+                            showToast('Success', 'Profile photo updated successfully.', 'success');
+                        } catch (err) {
+                            showToast('Error', 'Failed to save photo to Firestore.', 'error');
+                        }
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Cover Upload Trigger
+        editCoverBtn.addEventListener('click', () => coverUploadInput.click());
+        coverUploadInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    coverBanner.style.backgroundImage = `url('${event.target.result}')`;
+                    showToast('Success', 'Cover banner updated.', 'success');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Global Search
+        globalSearchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase().trim();
+            document.querySelectorAll('.form-group, .card-box').forEach(el => {
+                const text = el.textContent.toLowerCase();
+                el.style.opacity = !term || text.includes(term) ? '1' : '0.3';
+            });
+        });
+
+        // Delete Modal triggers
+        deleteAccountTriggerBtn.addEventListener('click', () => deleteModal.classList.add('active'));
+        cancelDeleteBtn.addEventListener('click', () => deleteModal.classList.remove('active'));
+        confirmDeleteBtn.addEventListener('click', () => {
+            deleteModal.classList.remove('active');
+            showToast('Error', 'Account deletion requires enterprise administrator approval.', 'error');
+        });
+
+        // Single onAuthStateChanged listener & Data population
+        let currentAuthUser = null;
+        if (auth) {
+            onAuthStateChanged(auth, async (user) => {
+                if (!user) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                currentAuthUser = user;
+
+                try {
+                    const userRef = doc(db, "users", user.uid);
+                    const userSnap = await getDoc(userRef);
+
+                    let data = {
+                        fullName: user.displayName || 'Enterprise User',
+                        email: user.email,
+                        phone: user.phoneNumber || '',
+                        company: 'Aarya Technologies',
+                        jobTitle: 'Enterprise Architect',
+                        address: '',
+                        city: '',
+                        state: '',
+                        country: '',
+                        zip: '',
+                        website: '',
+                        bio: '',
+                        linkedin: '',
+                        github: '',
+                        instagram: '',
+                        twitter: '',
+                        facebook: '',
+                        photoURL: user.photoURL || '',
+                        role: 'Enterprise User',
+                        status: 'Active',
+                        theme: savedTheme,
+                        language: 'English',
+                        emailVerified: user.emailVerified,
+                        createdAt: new Date().toLocaleDateString(),
+                        lastLogin: 'Just now'
+                    };
+
+                    if (userSnap.exists()) {
+                        data = { ...data, ...userSnap.data() };
+                    } else {
+                        // Create initial document if missing without overwriting
+                        await setDoc(userRef, {
+                            uid: user.uid,
+                            fullName: data.fullName,
+                            email: data.email,
+                            role: data.role,
+                            status: data.status,
+                            theme: data.theme,
+                            emailVerified: data.emailVerified,
+                            createdAt: serverTimestamp(),
+                            lastLogin: serverTimestamp()
+                        }, { merge: true });
+                    }
+
+                    // Populate UI Header
+                    document.getElementById('navUserName').textContent = data.fullName;
+                    document.getElementById('headerFullName').textContent = data.fullName;
+                    document.getElementById('headerJobTitle').textContent = data.jobTitle || 'Enterprise Architect';
+                    document.getElementById('headerRoleBadge').textContent = data.role;
+                    
+                    const verifiedBadge = document.getElementById('headerEmailVerifiedBadge');
+                    if (data.emailVerified) {
+                        verifiedBadge.textContent = 'Verified Email';
+                        verifiedBadge.style.background = 'rgba(34, 197, 94, 0.15)';
+                        verifiedBadge.style.color = 'var(--success-color)';
+                    } else {
+                        verifiedBadge.textContent = 'Unverified Email';
+                        verifiedBadge.style.background = 'rgba(239, 68, 68, 0.15)';
+                        verifiedBadge.style.color = 'var(--error-color)';
+                    }
+
+                    const initials = data.fullName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                    document.getElementById('navUserAvatar').textContent = initials;
+                    
+                    const avatarDiv = document.getElementById('headerUserAvatar');
+                    if (data.photoURL) {
+                        avatarDiv.innerHTML = `<img src="${data.photoURL}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;">`;
+                    } else {
+                        avatarDiv.textContent = initials;
+                    }
+
+                    // Populate Form Fields
+                    document.getElementById('inputFullName').value = data.fullName || '';
+                    document.getElementById('inputEmail').value = data.email || '';
+                    document.getElementById('inputPhone').value = data.phone || '';
+                    document.getElementById('inputCompany').value = data.company || '';
+                    document.getElementById('inputJobTitle').value = data.jobTitle || '';
+                    document.getElementById('inputWebsite').value = data.website || '';
+                    document.getElementById('inputAddress').value = data.address || '';
+                    document.getElementById('inputCity').value = data.city || '';
+                    document.getElementById('inputState').value = data.state || '';
+                    document.getElementById('inputCountry').value = data.country || '';
+                    document.getElementById('inputZip').value = data.zip || '';
+                    document.getElementById('inputBio').value = data.bio || '';
+                    document.getElementById('inputLinkedin').value = data.linkedin || '';
+                    document.getElementById('inputGithub').value = data.github || '';
+                    document.getElementById('inputInstagram').value = data.instagram || '';
+                    document.getElementById('inputTwitter').value = data.twitter || '';
+                    document.getElementById('inputFacebook').value = data.facebook || '';
+
+                    // Populate Account Info List
+                    document.getElementById('accUid').textContent = user.uid;
+                    document.getElementById('accRole').textContent = data.role;
+                    document.getElementById('accStatus').textContent = data.status;
+                    document.getElementById('accCreatedAt').textContent = data.createdAt?.toDate ? data.createdAt.toDate().toLocaleDateString() : 'Recently';
+                    document.getElementById('accTheme').textContent = (data.theme || 'dark').charAt(0).toUpperCase() + (data.theme || 'dark').slice(1);
+
+                } catch (error) {
+                    showToast('Error', 'Failed to load enterprise user profile data.', 'error');
+                } finally {
+                    setTimeout(() => loader.classList.add('hidden'), 300);
+                }
+            });
+        }
+
+        // Save Profile Form Submission
+        const handleProfileSave = async (e) => {
+            e.preventDefault();
+            if (!currentAuthUser) return;
+
+            try {
+                loader.classList.remove('hidden');
+                const userRef = doc(db, "users", currentAuthUser.uid);
+
+                const updatedData = {
+                    fullName: document.getElementById('inputFullName').value.trim(),
+                    phone: document.getElementById('inputPhone').value.trim(),
+                    company: document.getElementById('inputCompany').value.trim(),
+                    jobTitle: document.getElementById('inputJobTitle').value.trim(),
+                    website: document.getElementById('inputWebsite').value.trim(),
+                    address: document.getElementById('inputAddress').value.trim(),
+                    city: document.getElementById('inputCity').value.trim(),
+                    state: document.getElementById('inputState').value.trim(),
+                    country: document.getElementById('inputCountry').value.trim(),
+                    zip: document.getElementById('inputZip').value.trim(),
+                    bio: document.getElementById('inputBio').value.trim(),
+                    linkedin: document.getElementById('inputLinkedin').value.trim(),
+                    github: document.getElementById('inputGithub').value.trim(),
+                    instagram: document.getElementById('inputInstagram').value.trim(),
+                    twitter: document.getElementById('inputTwitter').value.trim(),
+                    facebook: document.getElementById('inputFacebook').value.trim(),
+                    lastLogin: serverTimestamp()
+                };
+
+                // Merge update to never overwrite existing documents
+                await setDoc(userRef, updatedData, { merge: true });
+
+                document.getElementById('headerFullName').textContent = updatedData.fullName;
+                document.getElementById('headerJobTitle').textContent = updatedData.jobTitle;
+                document.getElementById('navUserName').textContent = updatedData.fullName;
+
+                showToast('Success', 'Profile updated successfully.', 'success');
+            } catch (error) {
+                showToast('Error', 'Failed to save changes to Firestore.', 'error');
+            } finally {
+                loader.classList.add('hidden');
+            }
+        };
+
+        profileForm.addEventListener('submit', handleProfileSave);
+        saveTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            profileForm.requestSubmit();
+        });
+
+        // Security Actions
+        resetPasswordBtn.addEventListener('click', async () => {
+            if (!currentAuthUser || !currentAuthUser.email) return;
+            try {
+                await sendPasswordResetEmail(auth, currentAuthUser.email);
+                showToast('Success', 'Password reset email sent successfully.', 'success');
             } catch (err) {
-                console.error("Logout Error:", err);
-                showToast("Failed to log out cleanly.", "error");
+                showToast('Error', 'Failed to send password reset email.', 'error');
+            }
+        });
+
+        verifyEmailBtn.addEventListener('click', async () => {
+            if (!currentAuthUser) return;
+            try {
+                await sendEmailVerification(currentAuthUser);
+                showToast('Success', 'Verification email sent.', 'success');
+            } catch (err) {
+                showToast('Error', 'Failed to send verification email.', 'error');
             }
         });
     </script>
