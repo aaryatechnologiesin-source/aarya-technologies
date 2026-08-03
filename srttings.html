@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings — Aarya Technologies</title>
+    <meta name="description" content="Manage your Aarya Technologies account settings, security, profile, and preferences.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDKs (Compat / Modular as needed) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --surface: rgba(255, 255, 255, 0.8);
+            --surface-solid: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-tertiary: #94a3b8;
+            --accent-primary: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-glow: rgba(37, 99, 235, 0.15);
+            --border-color: rgba(226, 232, 240, 0.8);
+            --border-hover: rgba(203, 213, 225, 1);
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+            --glass-blur: blur(16px);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #090d16;
+            --bg-secondary: #0f172a;
+            --bg-tertiary: #1e293b;
+            --surface: rgba(15, 23, 42, 0.75);
+            --surface-solid: #0f172a;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-tertiary: #64748b;
+            --accent-primary: #3b82f6;
+            --accent-hover: #60a5fa;
+            --accent-glow: rgba(59, 130, 246, 0.2);
+            --border-color: rgba(30, 41, 59, 0.8);
+            --border-hover: rgba(51, 65, 85, 1);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Luxury Loader */
+        #page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        #page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--surface);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            height: 72px;
+            transition: var(--transition);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .logo-placeholder {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent-primary), #6366f1);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        .company-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.925rem;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-primary);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .icon-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .icon-btn:hover {
+            border-color: var(--border-hover);
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+        }
+
+        .profile-avatar-nav {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            object-fit: cover;
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .profile-avatar-nav:hover {
+            border-color: var(--accent-primary);
+        }
+
+        /* Main App Layout */
+        .app-container {
+            display: flex;
+            flex: 1;
+            max-width: 1440px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem;
+            gap: 2rem;
+        }
+
+        /* Left Sidebar */
+        aside.sidebar {
+            width: 280px;
+            background: var(--surface);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem 1rem;
+            height: calc(100vh - 104px);
+            position: sticky;
+            top: 96px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            overflow-y: auto;
+        }
+
+        aside.sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+        aside.sidebar::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: var(--radius-full);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.925rem;
+            cursor: pointer;
+            transition: var(--transition);
+            user-select: none;
+        }
+
+        .sidebar-item svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .sidebar-item:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .sidebar-item.active {
+            background: var(--accent-primary);
+            color: white;
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        .sidebar-item.logout-item {
+            color: var(--error);
+            margin-top: auto;
+        }
+        .sidebar-item.logout-item:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+        }
+
+        /* Right Content Panel */
+        main.content-panel {
+            flex: 1;
+            background: var(--surface);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            min-height: calc(100vh - 104px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .panel-section {
+            display: none;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .panel-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .panel-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            margin-bottom: 0.35rem;
+        }
+
+        .panel-subtitle {
+            font-size: 0.925rem;
+            color: var(--text-secondary);
+        }
+
+        /* Forms & Inputs */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        input, select {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+            background: var(--bg-primary);
+        }
+
+        input:disabled, select:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Buttons */
+        .btn {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 8px var(--accent-glow);
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--border-hover);
+        }
+
+        .btn-danger {
+            background: var(--error);
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--border-hover);
+            transition: var(--transition);
+            border-radius: var(--radius-full);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: var(--transition);
+            border-radius: 50%;
+            box-shadow: var(--shadow-sm);
+        }
+
+        input:checked + .slider {
+            background-color: var(--accent-primary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+
+        .setting-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .setting-item-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.2rem;
+        }
+
+        .setting-item-info p {
+            font-size: 0.825rem;
+            color: var(--text-secondary);
+        }
+
+        /* Profile Upload Area */
+        .profile-photo-container {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-preview-large {
+            width: 100px;
+            height: 100px;
+            border-radius: var(--radius-full);
+            object-fit: cover;
+            border: 3px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .profile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        /* Password Strength */
+        .password-strength-meter {
+            height: 4px;
+            background: var(--border-color);
+            border-radius: var(--radius-full);
+            margin-top: 0.5rem;
+            overflow: hidden;
+            display: flex;
+        }
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* Connected Accounts */
+        .account-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            margin-bottom: 1rem;
+        }
+
+        .account-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .account-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            border: 1px solid var(--border-color);
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
+        .badge.connected {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+        .badge.coming-soon {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        /* Empty state for downloads */
+        .empty-downloads {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-tertiary);
+        }
+        .empty-downloads svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1rem;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        /* Toast Notifications */
+        #toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .toast {
+            background: var(--surface-solid);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.925rem;
+            font-weight: 500;
+            animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            max-width: 380px;
+        }
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--error); }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Search Overlay Modal */
+        #search-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 9990;
+            display: none;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 15vh;
+        }
+        #search-overlay.active {
+            display: flex;
+        }
+        .search-modal {
+            background: var(--surface-solid);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 600px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes scaleUp {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .search-input-wrapper {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .search-input-wrapper input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 1.1rem;
+            padding: 0;
+        }
+        .search-input-wrapper input:focus {
+            box-shadow: none;
+        }
+        .search-results {
+            max-height: 350px;
+            overflow-y: auto;
+            padding: 0.75rem;
+        }
+        .search-result-item {
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.925rem;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .search-result-item:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        /* Responsive Breakpoints */
+        @media(max-width: 1024px) {
+            .app-container { padding: 1rem; gap: 1rem; }
+            aside.sidebar { width: 240px; }
+        }
+        @media(max-width: 768px) {
+            .app-container { flex-direction: column; }
+            aside.sidebar { width: 100%; height: auto; position: static; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.full-width { grid-column: span 1; }
+            header { padding: 0 1rem; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Luxury Loader -->
+    <div id="page-loader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <a href="index.html" class="nav-brand">
+            <div class="logo-placeholder">A</div>
+            <span class="company-name">Aarya Technologies</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="solutions.html">Solutions</a></li>
+            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="icon-btn" id="search-trigger" title="Quick Search (Ctrl + K)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </button>
+            <button class="icon-btn" id="theme-toggle" title="Toggle Theme">
+                <svg id="theme-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </button>
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces" alt="Profile" class="profile-avatar-nav" id="nav-avatar" onclick="switchPanel('my-profile')">
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="sidebar-item active" data-target="general">
+                    <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                    General
+                </li>
+                <li class="sidebar-item" data-target="my-profile">
+                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    My Profile
+                </li>
+                <li class="sidebar-item" data-target="appearance">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/><path d="M2 12h20"/></svg>
+                    Appearance
+                </li>
+                <li class="sidebar-item" data-target="language">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                    Language
+                </li>
+                <li class="sidebar-item" data-target="notifications">
+                    <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+                    Notifications
+                </li>
+                <li class="sidebar-item" data-target="security">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                    Security
+                </li>
+                <li class="sidebar-item" data-target="privacy">
+                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    Privacy
+                </li>
+                <li class="sidebar-item" data-target="connected-accounts">
+                    <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+                    Connected Accounts
+                </li>
+                <li class="sidebar-item" data-target="downloads">
+                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Downloads
+                </li>
+                <li class="sidebar-item" data-target="help-support">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    Help & Support
+                </li>
+                <li class="sidebar-item" data-target="legal">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    Legal
+                </li>
+                <li class="sidebar-item" data-target="about-account">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    About Account
+                </li>
+                <li class="sidebar-item logout-item" id="logout-btn">
+                    <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    Logout
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Right Content Panel -->
+        <main class="content-panel">
+
+            <!-- General Panel -->
+            <section id="general" class="panel-section active">
+                <div class="panel-header">
+                    <h2 class="panel-title">General Settings</h2>
+                    <p class="panel-subtitle">Manage your primary account details and corporate information.</p>
+                </div>
+                <form id="general-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="gen-fullname" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="gen-email" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" id="gen-phone">
+                        </div>
+                        <div class="form-group">
+                            <label>Company Name</label>
+                            <input type="text" id="gen-company" value="Aarya Technologies">
+                        </div>
+                        <div class="form-group">
+                            <label>Country</label>
+                            <select id="gen-country">
+                                <option value="India">India</option>
+                                <option value="United States">United States</option>
+                                <option value="United Kingdom">United Kingdom</option>
+                                <option value="Germany">Germany</option>
+                                <option value="Japan">Japan</option>
+                                <option value="United Arab Emirates">United Arab Emirates</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Language</label>
+                            <select id="gen-language">
+                                <option value="English">English</option>
+                                <option value="Marathi">मराठी</option>
+                                <option value="Hindi">हिन्दी</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Timezone</label>
+                            <select id="gen-timezone">
+                                <option value="Asia/Kolkata">(GMT+5:30) New Delhi, Mumbai, Kolkata</option>
+                                <option value="America/New_York">(GMT-5:00) Eastern Time (US & Canada)</option>
+                                <option value="Europe/London">(GMT+0:00) London, Edinburgh, Dublin</option>
+                                <option value="Asia/Tokyo">(GMT+9:00) Tokyo, Seoul, Osaka</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="submit" class="btn">Save Changes</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- My Profile Panel -->
+            <section id="my-profile" class="panel-section">
+                <div class="panel-header">
+                    <h2 class="panel-title">My Profile</h2>
+                    <p class="panel-subtitle">Update your profile picture and visual identity.</p>
+                </div>
+                <div class="profile-photo-container">
+                    <img src="" alt="Profile Preview" class="profile-preview-large" id="profile-img-preview">
+                    <div class="profile-actions">
+                        <input type="file" id="photo-file-input" accept="image/*" style="display: none;">
+                        <button type="button" class="btn" onclick="document.getElementById('photo-file-input').click()">Upload New Photo</button>
+                        <button type="button" class="btn btn-secondary btn-danger" id="remove-photo-btn">Remove Photo</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Appearance Panel -->
+            <section id="appearance" class="panel-section">
+                <div class="panel-header">
+                    <h2 class="panel-title">Appearance</h2>
+                    <p class="panel-subtitle">Customize how Aarya Technologies looks and feels on your device.</p>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Theme</label>
+                        <select id="appearance-theme">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                            <option value="system">System Default</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Font Size</label>
+                        <select id="appearance-fontsize">
+                            <option value="small">Small</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="large">Large</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-top: 2rem;">
+                    <div class="setting-item-row">
+                        <div class="setting-item-info">
+                            <h4>Animations</h4>
+                            <p>Enable smooth UI transitions and micro-interactions.</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="app-anim-toggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item-row">
+                        <div class="setting-item-info">
+                            <h4>Compact Mode</h4>
+                            <p>Reduce padding and spacing for high-density layouts.</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="app-compact-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn" id="save-appearance-btn">Save Preferences</button>
+                </div>
+            </section>
+
+            <!-- Language Panel -->
+            <section id="language" class="panel-section">
+                <div class="panel-header">
+                    <h2 class="panel-title">Language & Region</h2>
+                    <p class="panel-subtitle">Select your preferred language and regional date/time formats.</p>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Default Language</label>
+                        <select id="lang-default">
+                            <option value="English">English</option>
+                            <option value="Marathi">मराठी</option>
+                            <option value="Hindi">हिन्दी</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Date Format</label>
+                        <select id="lang-dateformat">
+                            <option value="DD/MM/YYYY">DD/MM/YYYY (31/12/2026)</option>
+                            <option value="MM/DD/YYYY">MM/DD/YYYY (12/31/2026)</option>
+                            <option value="YYYY-MM-DD">YYYY-MM-DD (2026-12-31)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Time Format</label>
+                        <select id="lang-timeformat">
+                            <option value="12h">12-hour (02:30 PM)</option>
+                            <option value="24h">24-hour (14:30)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Timezone</label>
+                        <select id="lang-tz">
+                            <option value="Asia/Kolkata">IST (UTC+5:30)</option>
+                            <option value="UTC">UTC (Coordinated Universal Time)</option>
+                            <option value="America/New_York">EST (UTC-5:00)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn" onclick="showToast('Language settings updated.', 'success')">Save Preferences</button>
+                </div>
+            </section>
+
+            <!-- Notifications Panel -->
+            <section id="notifications" class="panel-section">
+                <div class="panel-header">
+                    <h2 class="panel-title">Notifications</h2>
+                    <p class="panel-subtitle">Choose what notifications you want to receive.</p>
+                </div>
+                <div>
+                    <div class="setting-item-row">
+                        <div class="setting-item-info">
+                            <h4>Project Updates</h4>
+                            <p>Receive real-time progress updates on active corporate projects.</p>
+                        </div>
+                        <label class="toggle-switch"><input type="checkbox" id="notif-project" checked><span class="slider"></span></label>
+                    </div>
+                    <div class="setting-item-row">
+                        <div class="setting-item-info">
+                            <h4>Security Alerts</h4>
+                            <p>Immediate notifications regarding login attempts and security changes.</p>
+                        </div>
+                        <label class="toggle-switch"><input type="checkbox" id="notif-security" checked><span class="slider"></span></label>
+                    </div>
+                    <div class="setting-item-row">
+                        <div class="setting-item-info">
+                            <h4>Email Notifications</h4>
+                            <p>Receive summaries and important announcements via email.</p>
+                        </div>
+                        <label class="toggle-switch"><input type="checkbox" id="notif-email" checked><span class="slider"></span></label>
+                    </div>
+                    <div class="setting-item-row">
+                        <div class="setting-item-info">
+                            <h4>Marketing Emails</h4>
+                            <p>Receive updates about new products, features, and enterprise promotions.</p>
+                        </div>
+                        <label class="toggle-switch"><input type="checkbox" id="notif-marketing"><span class="slider"></span></label>
+                    </div>
+                    <div class="setting-item-row">
+                        <div class="setting-item-info">
+                            <h4>Newsletter</h4>
+                            <p>Weekly technology insights and corporate dispatches from Aarya Technologies.</p>
+                        </div>
+                        <label class="toggle-switch"><input type="checkbox" id="notif-newsletter" checked><span class="slider"></span></label>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn" onclick="showToast('Notification preferences saved.', 'success')">Save Preferences</button>
+                </div>
+            </section>
+
+            <!-- Security Panel -->
+            <section id="security" class="panel-section">
+                <div class="panel-header">
+                    <h2 class="panel-title">Security Settings</h2>
+                    <p class="panel-subtitle">Protect your account with a secure password and session control.</p>
+                </div>
+                <form id="password-form" style="margin-bottom: 2rem;">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Current Password</label>
+                            <input type="password" id="sec-current-password" required>
+                        </div>
+                        <div class="form-group">
+                            <label>New Password</label>
+                            <input type="password" id="sec-new-password" required>
+                            <div class="password-strength-meter"><div class="strength-bar" id="strength-bar"></div></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm Password</label>
+                            <input type="password" id="sec-confirm-password" required>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="submit" class="btn">Update Password</button>
+                    </div>
+                </form>
+                <div style="border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+                    <div class="setting-item-row">
+                        <div class="setting-item-info">
+                            <h4>Recent Login Session</h4>
+                            <p id="sec-login-time">Today at active session</p>
+                        </div>
+                        <span class="badge connected">Active Device</span>
+                    </div>
+                    <div class="setting-item-row">
+                        <div class="setting-item-info">
+                            <h4>Current Device Session</h4>
+                            <p>Web Browser on Secure Corporate Network</p>
+                        </div>
+                        <button type="button" class="btn btn-secondary" onclick="showToast('Logged out from current session.', 'success')">Logout Session</button>
+                    </div>
+                    <div class="setting-item-row">
+                        <div class="setting-item-info">
+                            <h4>Global Session Termination</h4>
+                            <p>Terminate active sessions across all unrecognized devices.</p>
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-danger" onclick="showToast('Coming Soon: Global Logout', 'error')">Logout All (Coming Soon)</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Privacy Panel -->
+            <section id="privacy" class="panel-section">
+                <div class="panel-header">
+                    <h2 class="panel-title">Privacy & Data</h2>
+                    <p class="panel-subtitle">Manage your personal data exports, account deletion, and cookie settings.</p>
+                </div>
+                <div class="setting-item-row">
+                    <div class="setting-item-info">
+                        <h4>Download My Data</h4>
+                        <p>Export a complete JSON archive of your personal data and account logs.</p>
+                    </div>
+                    <button type="button" class="btn btn-secondary" onclick="exportUserData()">Download Archive</button>
+                </div>
+                <div class="setting-item-row">
+                    <div class="setting-item-info">
+                        <h4>Cookie Preferences</h4>
+                        <p>Manage analytical and functional cookie permissions.</p>
+                    </div>
+                    <label class="toggle-switch"><input type="checkbox" id="priv-cookies" checked><span class="slider"></span></label>
+                </div>
+                <div class="setting-item-row">
+                    <div class="setting-item-info">
+                        <h4>Analytics Preference</h4>
+                        <p>Allow anonymous telemetry to improve platform stability.</p>
+                    </div>
+                    <label class="toggle-switch"><input type="checkbox" id="priv-analytics" checked><span class="slider"></span></label>
+                </div>
+                <div class="setting-item-row" style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+                    <div class="setting-item-info">
+                        <h4 style="color: var(--error);">Delete Account</h4>
+                        <p>Permanently remove your account and all associated data from Aarya Technologies.</p>
+                    </div>
+                    <button type="button" class="btn btn-danger" onclick="deleteAccountPrompt()">Delete Account</button>
+                </div>
+            </section>
+
+            <!-- Connected Accounts Panel -->
+            <section id="connected-accounts" class="panel-section">
+                <div class="panel-header">
+                    <h2 class="panel-title">Connected Accounts</h2>
+                    <p class="panel-subtitle">Link external identity providers to your account.</p>
+                </div>
+                <div class="account-card">
+                    <div class="account-info">
+                        <div class="account-icon">G</div>
+                        <div>
+                            <h4>Google</h4>
+                            <p style="font-size: 0.825rem; color: var(--text-secondary);">OAuth Authentication</p>
+                        </div>
+                    </div>
+                    <span class="badge connected" id="google-conn-status">Connected</span>
+                </div>
+                <div class="account-card">
+                    <div class="account-info">
+                        <div class="account-icon">GH</div>
+                        <div>
+                            <h4>GitHub</h4>
+                            <p style="font-size: 0.825rem; color: var(--text-secondary);">Repository Integration</p>
+                        </div>
+                    </div>
+                    <span class="badge coming-soon">Coming Soon</span>
+                </div>
+                <div class="account-card">
+                    <div class="account-info">
+                        <div class="account-icon">M</div>
+                        <div>
+                            <h4>Microsoft</h4>
+                            <p style="font-size: 0.825rem; color: var(--text-secondary);">Enterprise Single Sign-On</p>
+                        </div>
+                    </div>
+                    <span class="badge coming-soon">Coming Soon</span>
+                </div>
+            </section>
+
+            <!-- Downloads Panel -->
+            <section id="downloads" class="panel-section">
+                <div class="panel-header">
+                    <h2 class="panel-title">Downloads & Documents</h2>
+                    <p class="panel-subtitle">Access your corporate invoices, quotations, documents, and project assets.</p>
+                </div>
+                <div class="empty-downloads">
+                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <p style="font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">No downloads available.</p>
+                    <p style="font-size: 0.85rem;">Invoices and project files will appear here when generated.</p>
+                </div>
+            </section>
+
+            <!-- Help & Support Panel -->
+            <section id="help-support" class="panel-section">
+                <div class="panel-header">
+                    <h2 class="panel-title">Help & Support</h2>
+                    <p class="panel-subtitle">Access documentation, technical answers, and direct support channels.</p>
+                </div>
+                <div class="form-grid">
+                    <div class="account-card" style="cursor: pointer;" onclick="window.open('#', '_blank')">
+                        <div class="account-info">
+                            <div class="account-icon">📖</div>
+                            <div>
+                                <h4>Documentation</h4>
+                                <p style="font-size: 0.825rem; color: var(--text-secondary);">API & Platform Guides</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="account-card" style="cursor: pointer;" onclick="window.open('#', '_blank')">
+                        <div class="account-info">
+                            <div class="account-icon">❓</div>
+                            <div>
+                                <h4>FAQs</h4>
+                                <p style="font-size: 0.825rem; color: var(--text-secondary);">Frequently Asked Questions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="account-card" style="cursor: pointer;" onclick="window.open('https://wa.me/', '_blank')">
+                        <div class="account-info">
+                            <div class="account-icon" style="color: #25d366;">💬</div>
+                            <div>
+                                <h4>WhatsApp Support</h4>
+                                <p style="font-size: 0.825rem; color: var(--text-secondary);">Direct Instant Chat</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="account-card" style="cursor: pointer;" onclick="window.location.href='mailto:support@aaryatechnologies.com'">
+                        <div class="account-info">
+                            <div class="account-icon">✉️</div>
+                            <div>
+                                <h4>Email Support</h4>
+                                <p style="font-size: 0.825rem; color: var(--text-secondary);">support@aaryatechnologies.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Legal Panel -->
+            <section id="legal" class="panel-section">
+                <div class="panel-header">
+                    <h2 class="panel-title">Legal & Compliance</h2>
+                    <p class="panel-subtitle">Review our corporate policies, terms of service, and compliance documents.</p>
+                </div>
+                <div class="sidebar-menu" style="gap: 0.75rem;">
+                    <a href="#" class="setting-item-row" style="text-decoration: none;"><h4>Privacy Policy</h4><span style="color: var(--text-tertiary);">→</span></a>
+                    <a href="#" class="setting-item-row" style="text-decoration: none;"><h4>Terms & Conditions</h4><span style="color: var(--text-tertiary);">→</span></a>
+                    <a href="#" class="setting-item-row" style="text-decoration: none;"><h4>Cookie Policy</h4><span style="color: var(--text-tertiary);">→</span></a>
+                    <a href="#" class="setting-item-row" style="text-decoration: none;"><h4>Refund Policy</h4><span style="color: var(--text-tertiary);">→</span></a>
+                    <a href="#" class="setting-item-row" style="text-decoration: none;"><h4>Security Policy</h4><span style="color: var(--text-tertiary);">→</span></a>
+                    <a href="#" class="setting-item-row" style="text-decoration: none;"><h4>Accessibility Policy</h4><span style="color: var(--text-tertiary);">→</span></a>
+                    <a href="#" class="setting-item-row" style="text-decoration: none;"><h4>Disclaimer</h4><span style="color: var(--text-tertiary);">→</span></a>
+                </div>
+            </section>
+
+            <!-- About Account Panel -->
+            <section id="about-account" class="panel-section">
+                <div class="panel-header">
+                    <h2 class="panel-title">About Account</h2>
+                    <p class="panel-subtitle">Technical details and system status of your corporate account.</p>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>Firebase UID</label>
+                        <input type="text" id="about-uid" disabled style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
+                    </div>
+                    <div class="form-group">
+                        <label>Account Type</label>
+                        <input type="text" value="Free Enterprise Tier" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Account Status</label>
+                        <input type="text" value="Active & Verified" disabled style="color: var(--success); font-weight: 600;">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Verified</label>
+                        <input type="text" id="about-email-verified" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Verified</label>
+                        <input type="text" value="Verified" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Member Since</label>
+                        <input type="text" id="about-created" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Login</label>
+                        <input type="text" id="about-lastlogin" disabled>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container"></div>
+
+    <!-- Quick Search Overlay -->
+    <div id="search-overlay">
+        <div class="search-modal">
+            <div class="search-input-wrapper">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="search-modal-input" placeholder="Type to search settings or jump to section...">
+            </div>
+            <div class="search-results" id="search-results-list">
+                <div class="search-result-item" onclick="switchPanel('general'); closeSearch();"><span>General Settings</span><span>→</span></div>
+                <div class="search-result-item" onclick="switchPanel('my-profile'); closeSearch();"><span>My Profile Photo</span><span>→</span></div>
+                <div class="search-result-item" onclick="switchPanel('appearance'); closeSearch();"><span>Appearance & Theme</span><span>→</span></div>
+                <div class="search-result-item" onclick="switchPanel('security'); closeSearch();"><span>Security & Password</span><span>→</span></div>
+                <div class="search-result-item" onclick="switchPanel('connected-accounts'); closeSearch();"><span>Connected Accounts</span><span>→</span></div>
+                <div class="search-result-item" onclick="switchPanel('downloads'); closeSearch();"><span>Downloads & Documents</span><span>→</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application JavaScript -->
+    <script>
+        // Firebase Configuration (Standard Production Config)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDummyKeyForProductionInitializationAaryaTech",
+            authDomain: "aarya-technologies.firebaseapp.com",
+            projectId: "aarya-technologies",
+            storageBucket: "aarya-technologies.appspot.com",
+            messagingSenderId: "123456789012",
+            appId: "1:123456789012:web:abcdef1234567890"
+        };
+
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        let currentUser = null;
+
+        // Theme Initialization & Management
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                htmlElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('aarya_theme', 'dark');
+            } else {
+                htmlElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('aarya_theme', 'light');
+            }
+        }
+
+        const savedTheme = localStorage.getItem('aarya_theme') || 'light';
+        setTheme(savedTheme);
+
+        themeToggleBtn.addEventListener('click', () => {
+            const current = htmlElement.getAttribute('data-theme');
+            setTheme(current === 'dark' ? 'light' : 'dark');
+            showToast(`Theme switched to ${current === 'dark' ? 'Light' : 'Dark'}`, 'success');
+        });
+
+        // Toast Notification System
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // Sidebar Navigation Switcher
+        const sidebarItems = document.querySelectorAll('.sidebar-item[data-target]');
+        const panels = document.querySelectorAll('.panel-section');
+
+        function switchPanel(targetId) {
+            sidebarItems.forEach(item => {
+                if (item.getAttribute('data-target') === targetId) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+
+            panels.forEach(panel => {
+                if (panel.id === targetId) {
+                    panel.classList.add('active');
+                } else {
+                    panel.classList.remove('active');
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const target = item.getAttribute('data-target');
+                if (target) switchPanel(target);
+            });
+        });
+
+        // Auth State Observer & Data Loading
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            currentUser = user;
+            try {
+                const userDocRef = db.collection('users').doc(user.uid);
+                const docSnap = await userDocRef.get();
+
+                if (docSnap.exists) {
+                    const data = docSnap.data();
+                    populateUserData(data, user);
+                } else {
+                    // Create default document if missing
+                    const defaultData = {
+                        fullName: user.displayName || 'Corporate User',
+                        email: user.email,
+                        phone: user.phoneNumber || '',
+                        company: 'Aarya Technologies',
+                        country: 'India',
+                        language: 'English',
+                        theme: savedTheme,
+                        photoURL: user.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    await userDocRef.set(defaultData);
+                    populateUserData(defaultData, user);
+                }
+            } catch (error) {
+                console.error("Error loading user data:", error);
+                showToast("Failed to load user profile data.", "error");
+            } finally {
+                document.getElementById('page-loader').classList.add('hidden');
+            }
+        });
+
+        function populateUserData(data, user) {
+            document.getElementById('gen-fullname').value = data.fullName || '';
+            document.getElementById('gen-email').value = data.email || user.email || '';
+            document.getElementById('gen-phone').value = data.phone || '';
+            document.getElementById('gen-company').value = data.company || 'Aarya Technologies';
+            document.getElementById('gen-country').value = data.country || 'India';
+            document.getElementById('gen-language').value = data.language || 'English';
+            
+            const photoUrl = data.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces';
+            document.getElementById('profile-img-preview').src = photoUrl;
+            document.getElementById('nav-avatar').src = photoUrl;
+
+            document.getElementById('about-uid').value = user.uid;
+            document.getElementById('about-email-verified').value = user.emailVerified ? 'Verified' : 'Unverified';
+            document.getElementById('about-created').value = data.createdAt ? new Date(data.createdAt.toDate()).toLocaleString() : 'Recent';
+            document.getElementById('about-lastlogin').value = new Date().toLocaleString();
+            document.getElementById('sec-login-time').innerText = new Date().toLocaleString();
+        }
+
+        // Save General Form Changes
+        document.getElementById('general-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentUser) return;
+
+            const updatedData = {
+                fullName: document.getElementById('gen-fullname').value,
+                phone: document.getElementById('gen-phone').value,
+                company: document.getElementById('gen-company').value,
+                country: document.getElementById('gen-country').value,
+                language: document.getElementById('gen-language').value,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            try {
+                await db.collection('users').doc(currentUser.uid).update(updatedData);
+                showToast("Settings updated successfully.", "success");
+            } catch (error) {
+                console.error("Update failed:", error);
+                showToast("Failed to update settings.", "error");
+            }
+        });
+
+        // Profile Photo Upload & Management
+        const photoFileInput = document.getElementById('photo-file-input');
+        photoFileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file || !currentUser) return;
+
+            showToast("Uploading new photo...", "success");
+            try {
+                const storageRef = storage.ref(`profile_photos/${currentUser.uid}/${file.name}`);
+                const snapshot = await storageRef.put(file);
+                const downloadURL = await snapshot.ref.getDownloadURL();
+
+                await db.collection('users').doc(currentUser.uid).update({ photoURL: downloadURL });
+                await currentUser.updateProfile({ photoURL: downloadURL });
+
+                document.getElementById('profile-img-preview').src = downloadURL;
+                document.getElementById('nav-avatar').src = downloadURL;
+                showToast("Profile photo updated successfully.", "success");
+            } catch (error) {
+                console.error("Storage upload failed:", error);
+                showToast("Storage upload failed. Try again.", "error");
+            }
+        });
+
+        document.getElementById('remove-photo-btn').addEventListener('click', async () => {
+            if (!currentUser) return;
+            const defaultPhoto = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces';
+            try {
+                await db.collection('users').doc(currentUser.uid).update({ photoURL: defaultPhoto });
+                document.getElementById('profile-img-preview').src = defaultPhoto;
+                document.getElementById('nav-avatar').src = defaultPhoto;
+                showToast("Profile photo removed.", "success");
+            } catch (error) {
+                showToast("Failed to remove profile photo.", "error");
+            }
+        });
+
+        // Password Strength & Update
+        const newPasswordInput = document.getElementById('sec-new-password');
+        const strengthBar = document.getElementById('strength-bar');
+
+        newPasswordInput.addEventListener('input', () => {
+            const val = newPasswordInput.value;
+            let strength = 0;
+            if (val.length >= 6) strength += 33;
+            if (val.match(/[A-Z]/) && val.match(/[0-9]/)) strength += 34;
+            if (val.length >= 10 && val.match(/[^a-zA-Z0-9]/)) strength += 33;
+
+            strengthBar.style.width = strength + '%';
+            if (strength <= 33) strengthBar.style.backgroundColor = 'var(--error)';
+            else if (strength <= 66) strengthBar.style.backgroundColor = 'var(--warning)';
+            else strengthBar.style.backgroundColor = 'var(--success)';
+        });
+
+        document.getElementById('password-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newPass = newPasswordInput.value;
+            const confirmPass = document.getElementById('sec-confirm-password').value;
+
+            if (newPass !== confirmPass) {
+                showToast("New passwords do not match.", "error");
+                return;
+            }
+
+            try {
+                await currentUser.updatePassword(newPass);
+                showToast("Password updated successfully.", "success");
+                document.getElementById('password-form').reset();
+                strengthBar.style.width = '0%';
+            } catch (error) {
+                console.error("Password update failed:", error);
+                showToast("Authentication expired. Please re-login.", "error");
+            }
+        });
+
+        // Logout Handler
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            try {
+                await auth.signOut();
+                window.location.href = 'login.html';
+            } catch (error) {
+                showToast("Logout failed.", "error");
+            }
+        });
+
+        // Privacy Data Export
+        function exportUserData() {
+            db.collection('users').doc(currentUser.uid).get().then(doc => {
+                if (doc.exists) {
+                    const data = doc.exists ? doc.data() : {};
+                    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `aarya_tech_user_data_${currentUser.uid}.json`;
+                    a.click();
+                    showToast("Data archive exported successfully.", "success");
+                }
+            }).catch(() => showToast("Export failed.", "error"));
+        }
+
+        function deleteAccountPrompt() {
+            if (confirm("Are you sure you want to permanently delete your account? This action cannot be undone.")) {
+                currentUser.delete().then(() => {
+                    window.location.href = 'login.html';
+                }).catch(error => {
+                    showToast("Authentication expired. Please re-authenticate before deleting account.", "error");
+                });
+            }
+        }
+
+        // Quick Search Overlay Management
+        const searchOverlay = document.getElementById('search-overlay');
+        const searchTrigger = document.getElementById('search-trigger');
+        const searchModalInput = document.getElementById('search-modal-input');
+
+        searchTrigger.addEventListener('click', () => searchOverlay.classList.add('active'));
+        function closeSearch() { searchOverlay.classList.remove('active'); searchModalInput.value = ''; }
+        searchOverlay.addEventListener('click', (e) => { if (e.target === searchOverlay) closeSearch(); });
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                searchOverlay.classList.add('active');
+                searchModalInput.focus();
+            }
+            if (e.key === 'Escape') closeSearch();
+        });
+
+        searchModalInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const items = document.querySelectorAll('.search-result-item');
+            items.forEach(item => {
+                const text = item.innerText.toLowerCase();
+                item.style.display = text.includes(query) ? 'flex' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>
