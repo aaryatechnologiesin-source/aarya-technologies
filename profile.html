@@ -49,7 +49,6 @@
                 <!-- Avatar Container -->
                 <div class="relative group">
                     <div id="avatar-container" class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-slate-800 border-2 border-slate-700 overflow-hidden flex items-center justify-center text-3xl font-bold text-emerald-400 shadow-inner">
-                        <!-- Loaded dynamically or fallback to initial -->
                         <span id="avatar-initial">?</span>
                     </div>
                 </div>
@@ -96,7 +95,7 @@
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Firebase Configuration (Replace with your secure project credentials if needed)
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_AUTH_DOMAIN",
@@ -111,13 +110,13 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        console.log("Firebase Initialized");
+        console.log("Firebase initialized");
 
         // Helper Toast Function
         function showToast(message, type = "info") {
-            let background = "#10b981"; // success emerald
-            if (type === "error") background = "#ef4444"; // red
-            if (type === "warning") background = "#f59e0b"; // amber
+            let background = "#10b981";
+            if (type === "error") background = "#ef4444";
+            if (type === "warning") background = "#f59e0b";
 
             Toastify({
                 text: message,
@@ -148,30 +147,32 @@
             console.log("Loader Hidden");
         }
 
-        // Safe Redirect Helper (prevents loops)
+        // Safe Redirect Helper (prevents redirect loops)
         function redirectToLogin() {
             if (!window.location.pathname.includes("login.html")) {
+                console.log("Redirecting to login");
                 window.location.replace("login.html");
             }
         }
 
-        // Main Auth State Observer
+        console.log("Checking auth...");
+
+        // Correct onAuthStateChanged implementation with try/catch/finally
         onAuthStateChanged(auth, async (user) => {
             try {
                 if (!user) {
-                    console.log("User Logged In: None / Unauthenticated");
-                    showToast("Please log in to continue.", "warning");
+                    console.log("User not found");
                     redirectToLogin();
                     return;
                 }
 
-                console.log("User Logged In");
+                console.log("User found");
 
-                // 4. Reload user before checking email verification
+                // Reload user before checking email verification
                 await user.reload();
                 const refreshedUser = auth.currentUser || user;
 
-                // 5. If email is NOT verified, redirect to login
+                // Check email verification status
                 if (!refreshedUser.emailVerified) {
                     showToast("Please verify your email address to access your profile.", "warning");
                     redirectToLogin();
@@ -185,7 +186,7 @@
                     uid: refreshedUser.uid
                 };
 
-                // 6. Load Firestore users/{uid}
+                // Load Firestore users/{uid}
                 try {
                     const userDocRef = doc(db, "users", refreshedUser.uid);
                     const userDocSnap = await getDoc(userDocRef);
@@ -193,36 +194,19 @@
                     if (userDocSnap.exists()) {
                         const data = userDocSnap.data();
                         profileData = { ...profileData, ...data };
-                        console.log("Firestore Loaded");
                     } else {
-                        // Create it automatically using Firebase Authentication data
                         await setDoc(userDocRef, {
                             displayName: refreshedUser.displayName || "User",
                             email: refreshedUser.email,
                             photoURL: refreshedUser.photoURL || "",
                             createdAt: new Date().toISOString()
                         }, { merge: true });
-                        console.log("Firestore Loaded: Document created automatically");
                     }
                 } catch (firestoreError) {
                     console.error("Firestore Error:", firestoreError.code || firestoreError.message);
-                    
-                    // 7. Handle specific Firebase errors & show beautiful toast messages
-                    const errCode = firestoreError.code || "";
-                    if (errCode.includes("permission-denied") || errCode.includes("missing-or-insufficient-permissions")) {
-                        showToast("Permission denied accessing user data. Loading fallback data.", "error");
-                    } else if (errCode.includes("network-request-failed")) {
-                        showToast("Network error connecting to database. Using offline session.", "warning");
-                    } else {
-                        showToast("Database error encountered. Loading standard session.", "error");
-                    }
-                    
-                    // 8. If Firestore fails, still load profile using Firebase Authentication data (Never keep loader running forever)
                 }
 
-                console.log("Profile Loaded");
-
-                // Render Profile to DOM (Preserving Existing UI Elements)
+                // Render Profile Data to DOM
                 document.getElementById("user-display-name").textContent = profileData.displayName || "User";
                 document.getElementById("user-email").textContent = profileData.email || "No Email";
                 document.getElementById("user-uid").textContent = profileData.uid || "---";
@@ -231,7 +215,7 @@
                 verifiedEl.textContent = refreshedUser.emailVerified ? "Verified" : "Unverified";
                 verifiedEl.className = refreshedUser.emailVerified ? "text-sm font-medium text-emerald-400" : "text-sm font-medium text-amber-400";
 
-                // 9. If profile image missing, generate avatar using first letter of user name
+                // Generate avatar using first letter if photo missing
                 const avatarContainer = document.getElementById("avatar-container");
                 if (profileData.photoURL && profileData.photoURL.trim() !== "") {
                     avatarContainer.innerHTML = `<img src="${profileData.photoURL}" alt="Profile Avatar" class="w-full h-full object-cover">`;
@@ -240,25 +224,12 @@
                     avatarContainer.innerHTML = `<span id="avatar-initial">${firstLetter}</span>`;
                 }
 
-                showToast("Profile loaded successfully!", "success");
+                console.log("Profile loaded");
 
             } catch (error) {
-                console.error("Critical Profile Loading Error:", error);
-                
-                // 7. Handle all Firebase errors with toast messages
-                const errCode = error.code || "";
-                if (errCode.includes("unauthenticated")) {
-                    showToast("Session expired. Please log in again.", "error");
-                    redirectToLogin();
-                } else if (errCode.includes("user-not-found")) {
-                    showToast("User account not found.", "error");
-                    redirectToLogin();
-                } else {
-                    showToast("An unexpected error occurred while loading your profile.", "error");
-                }
+                console.error("Authentication Error:", error);
+                redirectToLogin();
             } finally {
-                // 2. Use proper try/catch/finally structure. Loader MUST be hidden inside finally.
-                // 12. NEVER leave the loader visible. No matter what happens, loader must disappear.
                 hideLoader();
             }
         });
